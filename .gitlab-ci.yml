@@ -9,6 +9,9 @@ build:
   script:
     - npm install
     - npm run build
+  artifacts:
+    paths:
+      - build/
 
 test:
   image: node:18.18.0
