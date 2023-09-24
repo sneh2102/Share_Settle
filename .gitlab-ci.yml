@@ -14,6 +14,7 @@ test:
   image: node:18.18.0
   stage: test
   script:
+    - npm install
     - npm test
 
 netlify:
