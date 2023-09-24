@@ -1,13 +1,14 @@
-# build:
+build:
+  image: node:18.18.0
   stage: build
   script:
     - npm install
     - npm run build
-# test:
-  stage: test
-  script:
-    - npm test
-# deploy:
-  stage: deploy
-  # script:
-  #   - scp -r build user@server:/var/www/my-app
+# # test:
+#   stage: test
+#   script:
+#     - npm test
+# # deploy:
+#   stage: deploy
+#   # script:
+#   #   - scp -r build user@server:/var/www/my-app
