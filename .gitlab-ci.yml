@@ -1,14 +1,30 @@
+stages:
+  - build
+  - test
+  - deploy
+
 build:
   image: node:18.18.0
   stage: build
   script:
     - npm install
     - npm run build
-# # test:
-#   stage: test
-#   script:
-#     - npm test
+
+test:
+  image: node:18.18.0
+  stage: test
+  script:
+    - npm test
+
+netlify:
+  image: node:18.18.0
+  stage: deploy
+  script:
+    - npm install -g netlify-cli
+    - netlify deploy --dir=build --prod
+
 # # deploy:
+#   image: node:18.18.0
 #   stage: deploy
-#   # script:
-#   #   - scp -r build user@server:/var/www/my-app
+#   script:
+#     - scp -r build user@server:/var/www/my-app
