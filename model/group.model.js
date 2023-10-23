@@ -15,5 +15,8 @@ const groupSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    
+    groupExpensesList:{
+        type: Array,
+        default: []
+    }
 });

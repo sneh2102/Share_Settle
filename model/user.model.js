@@ -18,10 +18,30 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    // optional
-    // phone_number: {
-        
-    // }
+    cardDetails: {
+        cardNumber: {
+            type: String,
+            required: true
+        },
+        cardHolderName:{
+            type: String,
+            required: true
+        },
+        expiryDate:{
+            type: Date,
+            required: true
+        },
+        cvv:{
+            type: Number,
+            required: true
+        },
+        required: true
+    },
+
+    groups: {
+        type: Array,
+        default: []
+    }
 });
 
 module.exports.userSchema = mongoose.model("user", userSchema);

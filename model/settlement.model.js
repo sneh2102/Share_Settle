@@ -21,6 +21,11 @@ const settlementSchema = new mongoose.Schema({
     groupId: {
         type: String,
         required: true
+    },
+    // assuming settlement is associated to list of expenses
+    expenseList:{
+        type: Array,
+        default: []
     }
 });
 
