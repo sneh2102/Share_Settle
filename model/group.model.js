@@ -20,3 +20,5 @@ const groupSchema = new mongoose.Schema({
         default: []
     }
 });
+
+module.exports = mongoose.model('Group', groupSchema);
