@@ -156,6 +156,11 @@ aside.active{
     color: #A4A4A4;
     transition: 0.5s;
 }
+i{
+    margin-right: 40px;
+    color: #A4A4A4;
+    transition: 0.5s;
+}
 .nav__links ul li:hover{
     background: rgba(255, 255, 255, 0.8);
     box-shadow: 0 5px 20px 0 #3782de42;
