@@ -4,7 +4,7 @@ const router = require('./Routes/user');
 const mongoose = require('mongoose'); // Fix typo here
 const app = express();
 const cors = require('cors');
-const PORT = 5000; // Set a default port if PORT environment variable is not set
+const PORT = 1010; // Set a default port if PORT environment variable is not set
 
 app.use(express.json());
 app.use(cors());

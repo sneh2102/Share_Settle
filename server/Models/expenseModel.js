@@ -43,4 +43,4 @@ const expenseSchema = new mongoose.Schema({
     }
 });
 
-module.exports.userSchema = mongoose.model("expense", expenseSchema);
+module.exports.userSchema = mongoose.model("Expense", expenseSchema);
