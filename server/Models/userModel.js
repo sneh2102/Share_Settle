@@ -1,25 +1,48 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')  
-const validator = require('validator')
+const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema
-
-const userSchema = new Schema({
-    name: {
+const userSchema = new mongoose.Schema({
+    name:{
         type: String,
-        required:  true
+        required: true
     },
-
+    
     email: {
         type: String,
+        lowercase: true,
         required: true,
         unique: true
     },
+
     password: {
         type: String,
         required: true
+    },
+
+    cardDetails: {
+        cardNumber: {
+            type: String,
+            required: true
+        },
+        cardHolderName:{
+            type: String,
+            required: true
+        },
+        expiryDate:{
+            type: Date,
+            required: true
+        },
+        cvv:{
+            type: Number,
+            required: true
+        },
+        required: true
+    },
+
+    groups: {
+        type: Array,
+        default: []
     }
-})
+});
 
 userSchema.statics.signup = async function(name, email, password) {
     if(!email || !password || !name)
@@ -46,6 +69,7 @@ userSchema.statics.signup = async function(name, email, password) {
     const user = await this.create({ name, email, password: hash })
     return user
 }
+
 userSchema.statics.login = async function(email, password) {
     if(!email || !password)
     {
@@ -63,7 +87,6 @@ userSchema.statics.login = async function(email, password) {
     if (!user) {
         throw Error("Email not registored")  
     }
-
     const match = await bcrypt.compare(password, user.password)
     if(!match)
     {
@@ -86,6 +109,7 @@ userSchema.statics.forgotpass = async function(email) {
     }
     return user
 }
+
 userSchema.statics.resetpass = async function(id, password) {
     if(!validator.isStrongPassword(password))
     {
@@ -101,4 +125,34 @@ userSchema.statics.resetpass = async function(id, password) {
     return user
 }
 
-module.exports = mongoose.model('User', userSchema) 
+userSchema.statics.changeUsername = async function(id, uname) {
+    if (!uname) {
+        throw Error('Name must be filled');
+    }
+    const user = await this.findByIdAndUpdate(id, { name: uname });
+    return user; 
+};
+
+userSchema.statics.changePassword = async function(email ,oldPassword, newPassword, newConfirmpassword) {
+    const use = await this.findOne({ email })
+    const match = await bcrypt.compare(oldPassword, use.password)
+    if(!match)
+    {
+        throw Error('Incorrect password')
+    }
+    if(newPassword!=newConfirmpassword)
+    {
+        throw Error('Password dont match.')
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(newPassword, salt)
+
+    const user = await this.findByIdAndUpdate(use._id, { password: hash });
+    
+    return user;
+
+
+};
+
+
+module.exports = mongoose.model('User', userSchema)
