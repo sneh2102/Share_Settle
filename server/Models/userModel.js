@@ -98,3 +98,8 @@ userSchema.statics.resetpass = async function(id, password) {
 }
 
 module.exports = mongoose.model('User', userSchema) 
+
+
+
+
+
