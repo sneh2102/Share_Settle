@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import useLogout from '../../Hooks/useLogout';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const { logout } = useLogout();
@@ -19,12 +20,23 @@ function Navbar() {
         </div>
         <div className="nav__links">
           <ul>
-            <li><a href="#"><i className="fi-rr-magic-wand"></i><span>Profile</span></a></li>
+          <li>
+            <Link to="/profile">
+            <i className="fi-rr-magic-wand"></i><span>Profile</span>
+            </Link>
+
+            </li>
             <li><a href="#"><i className="fi-rr-apps"></i><span>Dashboard</span></a></li>
             <li><a href="#"><i className="fi-rr-browser"></i><span>Groups</span></a></li>
             <li><a href="#"><i className="fi-rr-comment-alt"></i><span>Create Group</span></a></li>
             <li><a href="#"><i className="fi-rr-document-signed"></i><span>Notifications</span></a></li>
-            <li><a href="#"><i className="fi-rr-magic-wand"></i><span>Chat</span></a></li>
+            <li>
+
+            <Link to="/contact" className='contact'>
+            <i className="fi-rr-magic-wand"></i><span>Contact Us</span>
+            </Link>
+            </li>
+
             <li><a href="#" onClick={handleLogout}><i className="fi-rr-magic-wand"></i><span>Logout</span></a></li>
           </ul>
         </div>

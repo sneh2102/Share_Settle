@@ -29,7 +29,8 @@ export default function Login() {
   const handleSubmit= async(e)=>{
     e.preventDefault();
     try{
-        await signup(email,password)
+      console.log(userName,email,password);
+        await signup(userName, email, password)
         if(!serror)
         {
           handleToggle()
@@ -65,7 +66,7 @@ export default function Login() {
   const handleLogin= async(e)=>{
     e.preventDefault();
     try{
-      await login(userName,LogInEmail,LogInPassword)
+      await login(LogInEmail,LogInPassword)
       navigate("/home")
       
         
