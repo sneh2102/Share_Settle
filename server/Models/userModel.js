@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const creditCardSchema = require('./creditCardModel');
+
 const userSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -15,26 +17,6 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: true
-    },
-
-    cardDetails: {
-        cardNumber: {
-            type: String,
-            required: true
-        },
-        cardHolderName:{
-            type: String,
-            required: true
-        },
-        expiryDate:{
-            type: Date,
-            required: true
-        },
-        cvv:{
-            type: Number,
-            required: true
-        },
         required: true
     },
 
