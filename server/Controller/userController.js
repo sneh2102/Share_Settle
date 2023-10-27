@@ -18,7 +18,6 @@ const loginUser = async (req, res) => {
     }
 }
 
-// signup User
 const signupUser = async (req, res) => {
     const {name, email, password} = req.body
     try{
@@ -60,9 +59,8 @@ const forgotPassUser = async (req, res) => {
     const {email} = req.body
     try{
         const user = await User.forgotpass(email)
-        // console.log(user._id);
         const token= createToken(user._id)
-        var transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
           host: "smtp-mail.outlook.com",
           secureConnection: false,
           port: 587,
@@ -93,12 +91,39 @@ const forgotPassUser = async (req, res) => {
     } catch(error)
     {
         res.status(400).json({error: error.message})
-    }
-
-
-    
+    } 
 }
 
-module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser}; 
+const changeUsername = async (req, res) => {
+  const { id, name } = req.body;
+  try {
+    const user = await User.changeUsername(id, name);
+    res.status(200).json({ name: name });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') {
+      res.status(400).json({ error: 'Invalid token' });
+    } else if (err.name === 'TokenExpiredError') {
+      res.status(400).json({ error: 'Token expired' });
+    } else {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+};
 
-// module.exports = { signupUser, loginUser}; 
+const changePassword = async (req, res) => {
+  const { email, oldPassword, newPassword, newConfirmPassword} = req.body;
+  try {
+    const user = await User.changePassword(email, oldPassword, newPassword, newConfirmPassword);
+    res.status(200).json({ user });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') {
+      res.status(400).json({ error: 'Invalid token' });
+    } else if (err.name === 'TokenExpiredError') {
+      res.status(400).json({ error: 'Token expired' });
+    } else {
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+};
+
+module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser, changeUsername, changePassword}; 
