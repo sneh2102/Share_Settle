@@ -29,4 +29,4 @@ const settlementSchema = new mongoose.Schema({
     }
 });
 
-module.exports.settlementSchema = mongoose.model("settlement", settlementSchema);
+module.exports.settlementSchema = mongoose.model("Settlement", settlementSchema);
