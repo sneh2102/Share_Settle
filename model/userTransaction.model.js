@@ -19,4 +19,4 @@ const userTransactionSchema = new mongoose.Schema({
     }
 });
 
-module.exports.userTransactionSchema = mongoose.model("UserTransaction", userTransactionSchema);
+module.exports = mongoose.model("UserTransaction", userTransactionSchema);

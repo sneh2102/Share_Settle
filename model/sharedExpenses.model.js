@@ -19,4 +19,4 @@ const sharedExpensesSchema = new mongoose.Schema({
     }
 });
 
-module.exports.sharedExpensesSchema = mongoose.model("SharedExpenses", sharedExpensesSchema);
+module.exports = mongoose.model("SharedExpenses", sharedExpensesSchema);
