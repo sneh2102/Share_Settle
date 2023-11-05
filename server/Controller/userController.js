@@ -95,10 +95,10 @@ const forgotPassUser = async (req, res) => {
 }
 
 const changeUsername = async (req, res) => {
-  const { id, name } = req.body;
+  const { id , name } = req.body;
   try {
-    const user = await User.changeUsername(id, name);
-    res.status(200).json({ name: name });
+    const user = await User.changeUsername(id , name);
+    res.status(200).json({ user });
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       res.status(400).json({ error: 'Invalid token' });
@@ -124,6 +124,15 @@ const changePassword = async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
   }
+}
+
+  const getUser = async (req,res) => {
+    try {
+      const user = await User.getUser();
+      res.status(200).json({ user });
+    } catch (err) {
+    }
+  
 };
 
-module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser, changeUsername, changePassword}; 
+module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser, changeUsername, changePassword, getUser}

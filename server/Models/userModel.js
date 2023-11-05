@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const validator = require('validator')
+const bcrypt = require('bcrypt')
 
 const creditCardSchema = require('./creditCardModel');
 
@@ -131,6 +133,12 @@ userSchema.statics.changePassword = async function(email ,oldPassword, newPasswo
 
     const user = await this.findByIdAndUpdate(use._id, { password: hash });
     
+    return user;
+
+
+};
+userSchema.statics.getUser = async function() {
+    const user = await this.find();
     return user;
 
 
