@@ -2,7 +2,7 @@ const Group = require("../Models/groupModel");
 
 // create a new group
 const createGroup = async (req, res) => {
-    console.log(req);
+    console.log(req.body);
     var responseStatus = 200;
     var response = {};
     if(!req.body ||!req.body.name || !req.body.members){
@@ -16,6 +16,7 @@ const createGroup = async (req, res) => {
             members: req.body.members
         });
     
+        console.log(response);
         try {
             const savedGroup = await group.save();
             response = savedGroup;
@@ -34,7 +35,7 @@ const createGroup = async (req, res) => {
 
 // fetch all groups of a user by user email
 const fetchUserGroups = async (req, res) => {
-    console.log(req);
+    console.log(req.body);
     var responseStatus = 200;
     var response;
     if(!req.body && !req.body.email){
@@ -48,6 +49,7 @@ const fetchUserGroups = async (req, res) => {
             response = {
                 groups: queryResults
             };
+            console.log(response);
         } catch(err) {
             console.log({message: err});
             responseStatus = 500;
