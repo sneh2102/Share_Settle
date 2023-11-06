@@ -7,14 +7,20 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import ContactUs from './Pages/ContactUs/ContactUs';
+import Navbar from './Components/Navbar/Navbar';
+import GroupCreation from './Pages/GroupCreation/GroupCreation';
 
 function App() {
   const { user } = useUserAuth();
   return (
     <>
+    {user && <Navbar />}
+    
+      <div>
         <Routes>
           <Route path='/' element={!user ? <Login/> : <Navigate to='/home'/>} />
           <Route path='/home' element={user ? <Main/> : <Navigate to='/'/>} />
+          <Route path='/create-group' element={user ? <GroupCreation /> : <Navigate to='/' />} /> 
           <Route path='/forgotpass' element={<ForgotPassword/>}/>
           <Route path='/reset-password/:id/:token' element={<ResetPassword/>}/>
           <Route path='/profile' element={user ? <UserProfile/> : <Navigate to='/'/>} />
@@ -23,6 +29,7 @@ function App() {
           <Route path='/home' element={<Main/>}/> */}
           {/* <Route path='/signup' element={<SignUp/>}/> */}
         </Routes>
+        </div>
     </>
   );
 }

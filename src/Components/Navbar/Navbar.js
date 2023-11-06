@@ -28,7 +28,13 @@ function Navbar() {
             </li>
             <li><a href="#"><i className="fi-rr-apps"></i><span>Dashboard</span></a></li>
             <li><a href="#"><i className="fi-rr-browser"></i><span>Groups</span></a></li>
-            <li><a href="#"><i className="fi-rr-comment-alt"></i><span>Create Group</span></a></li>
+
+            <li>
+              <Link to="/create-group">
+              <i className="fi-rr-comment-alt"></i><span>Create Group</span>
+              </Link>
+            </li>
+            
             <li><a href="#"><i className="fi-rr-document-signed"></i><span>Notifications</span></a></li>
             <li>
 
