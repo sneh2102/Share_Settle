@@ -75,15 +75,7 @@ export default function Login() {
     }
   };
 
-  const handleResetPass = async(e)=>{
-    e.preventDefault(e)
-    try{
-        
-    } 
-    catch(err)
-    {
-    }
-  }
+
 
 
   return (

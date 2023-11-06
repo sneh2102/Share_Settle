@@ -23,7 +23,7 @@ const signupUser = async (req, res) => {
     try{
         const user = await User.signup(name ,email, password)
         const token= createToken(user._id)
-        res.status(200).json({name,email,token})
+        res.status(200).json({email,token,user})
     } catch(error)
     {
         res.status(400).json({error: error.message})
@@ -98,7 +98,7 @@ const changeUsername = async (req, res) => {
   const { id , name } = req.body;
   try {
     const user = await User.changeUsername(id , name);
-    res.status(200).json({ user });
+    res.status(200).json({ email,token,user });
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       res.status(400).json({ error: 'Invalid token' });
@@ -134,5 +134,6 @@ const changePassword = async (req, res) => {
     }
   
 };
+
 
 module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser, changeUsername, changePassword, getUser}

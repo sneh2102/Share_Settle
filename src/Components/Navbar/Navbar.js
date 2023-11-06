@@ -7,16 +7,14 @@ function Navbar() {
   const { logout } = useLogout();
 
   const handleLogout = () => {
-    logout();
-    // You can use the `Navigate` component directly within your JSX.
-    return <Navigate to="/" />;
+      logout();
   };
 
   return (
     <>
       <aside>
-        <div className="head__section">
-          <h2>CD</h2>
+        <div className="head__section" style={{display: 'flex', alignItems: 'centre', justifyContent: 'center'}}>
+          <h2 style={{alignContent: 'center'}}>ShareSettle</h2>
         </div>
         <div className="nav__links">
           <ul>

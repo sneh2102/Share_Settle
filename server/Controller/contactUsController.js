@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 const contactUs = (req, res) => {
     const {name, email, subject, message} = req.body;
-    
+    console.log(name)
     const transporter = nodemailer.createTransport({
         host: process.env.CONTACTUS_EMAIL_HOST,
         secureConnection: false,
