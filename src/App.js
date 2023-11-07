@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 
 import Navbar from './Components/Navbar/Navbar';
 import GroupCreation from './Pages/GroupCreation/GroupCreation';
+import Groups from './Pages/Groups/Groups';
 
 
 function App() {
@@ -26,7 +27,6 @@ function App() {
   return (
     <>
     {user && <Navbar />}
-    
       <div>
         <Routes>
           <Route path='/' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
@@ -39,6 +39,7 @@ function App() {
           <Route path='/reset-password/:id/:token' element={<ResetPassword/> }/>
           <Route path='/profile' element={user || token ? <UserProfile/>  : <Navigate to='/'/>} />
       <Route path='/contact' element={user || token ? <ContactUs/> : <Navigate to='/'/>} />
+      <Route path='/groups' element={user || token ? <Groups/> : <Navigate to='/'/>} />
           {/* <Route path='/' element={<Login/>} />
           <Route path='/home' element={<Main/>}/> */}
           {/* <Route path='/signup' element={<SignUp/>}/> */}

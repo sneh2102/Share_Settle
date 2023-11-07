@@ -44,7 +44,6 @@ const GroupCreation = () => {
       await createGroup(selectedMembers);
       navigate('/groups');
     } catch (error) {
-      // Handle error
     }
   };
 

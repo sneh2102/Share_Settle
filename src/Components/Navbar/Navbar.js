@@ -25,7 +25,8 @@ function Navbar() {
 
             </li>
             <li><a href="#"><i className="fi-rr-apps"></i><span>Dashboard</span></a></li>
-            <li><a href="#"><i className="fi-rr-browser"></i><span>Groups</span></a></li>
+
+            <li><Link to='/groups'><i className="fi-rr-browser"></i><span>Groups</span></Link></li>
 
             <li>
               <Link to="/create-group">
