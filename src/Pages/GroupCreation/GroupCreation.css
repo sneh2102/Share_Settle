@@ -1,11 +1,10 @@
 .gc-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
-    padding-left: 70px;
-    margin-left: 420px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  width: 100%;
+}
 @media (max-width: 768px) {
 .container {
     padding-left: 10px; 
@@ -22,7 +21,7 @@
 
 .gc-card {
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: rgb(175, 216, 255);
     border-radius: 8px;
     /* margin-left: 520px; */
     width: 600px;

@@ -32,11 +32,11 @@ function App() {
           <Route path='/' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
           <Route path='/login' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
           <Route path='/home' element={user || token ? <Main/> : <Navigate to='/'/>} />
-          <Route path='/' element={!user ? <Login/> : <Navigate to='/home'/>} />
-          <Route path='/home' element={user ? <Main/> : <Navigate to='/'/>} />
-          <Route path='/create-group' element={user ? <GroupCreation /> : <Navigate to='/' />} /> 
+          <Route path='/' element={!user || token? <Login/> : <Navigate to='/home'/>} />
+          <Route path='/home' element={user || token? <Main/> : <Navigate to='/'/>} />
+          <Route path='/create-group' element={user || token? <GroupCreation /> : <Navigate to='/' />} /> 
           <Route path='/forgotpass' element={<ForgotPassword/>}/>
-          <Route path='/reset-password/:id/:token' element={user || token ?<ResetPassword/> : <Navigate to='/'/>}/>
+          <Route path='/reset-password/:id/:token' element={<ResetPassword/> }/>
           <Route path='/profile' element={user || token ? <UserProfile/>  : <Navigate to='/'/>} />
       <Route path='/contact' element={user || token ? <ContactUs/> : <Navigate to='/'/>} />
           {/* <Route path='/' element={<Login/>} />
