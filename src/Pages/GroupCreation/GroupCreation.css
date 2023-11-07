@@ -1,0 +1,46 @@
+.gc-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    padding-left: 70px;
+    margin-left: 420px;
+  }
+@media (max-width: 768px) {
+.container {
+    padding-left: 10px; 
+}
+}
+
+
+.gc-delete-btn {
+    cursor: pointer;
+    margin-left: 8px;
+    color: red;
+}
+
+
+.gc-card {
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    /* margin-left: 520px; */
+    width: 600px;
+    max-width: 100%;
+  }
+  
+  .gc-form-group {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  

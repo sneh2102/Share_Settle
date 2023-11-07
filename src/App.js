@@ -7,7 +7,12 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import ContactUs from './Pages/ContactUs/ContactUs';
+
 import { useEffect } from 'react';
+
+import Navbar from './Components/Navbar/Navbar';
+import GroupCreation from './Pages/GroupCreation/GroupCreation';
+
 
 function App() {
 
@@ -20,10 +25,16 @@ function App() {
   
   return (
     <>
+    {user && <Navbar />}
+    
+      <div>
         <Routes>
           <Route path='/' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
           <Route path='/login' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
           <Route path='/home' element={user || token ? <Main/> : <Navigate to='/'/>} />
+          <Route path='/' element={!user ? <Login/> : <Navigate to='/home'/>} />
+          <Route path='/home' element={user ? <Main/> : <Navigate to='/'/>} />
+          <Route path='/create-group' element={user ? <GroupCreation /> : <Navigate to='/' />} /> 
           <Route path='/forgotpass' element={<ForgotPassword/>}/>
           <Route path='/reset-password/:id/:token' element={user || token ?<ResetPassword/> : <Navigate to='/'/>}/>
           <Route path='/profile' element={user || token ? <UserProfile/>  : <Navigate to='/'/>} />
@@ -32,6 +43,7 @@ function App() {
           <Route path='/home' element={<Main/>}/> */}
           {/* <Route path='/signup' element={<SignUp/>}/> */}
         </Routes>
+        </div>
     </>
   );
 }
