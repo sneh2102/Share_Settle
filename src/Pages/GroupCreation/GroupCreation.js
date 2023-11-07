@@ -8,14 +8,15 @@ const GroupCreation = () => {
   const { getUser, createGroup } = useGroup();
   const [groupName, setGroupName] = useState('');
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const [availableMembers, setAvailableMembers] = useState(["sneh"]);
+  const user = JSON.parse(window.localStorage.getItem('user'))
+  const [availableMembers, setAvailableMembers] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const members = await getUser();
+        const members = await getUser();  
         console.log(members);
         setAvailableMembers(members);
       } catch (error) {
@@ -24,6 +25,7 @@ const GroupCreation = () => {
     };
   
     fetchUserData();
+    console.log(selectedMembers);
   }, []);
   
 
@@ -40,8 +42,9 @@ const GroupCreation = () => {
   };
 
   const handleCreateGroup = async (e) => {
+    e.preventDefault();
     try {
-      await createGroup(selectedMembers);
+      await createGroup(groupName,selectedMembers);
       navigate('/groups');
     } catch (error) {
     }

@@ -5,12 +5,6 @@ const groupSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String
-    },
-    groupOwner: {
-        type: String
-    },
     members: {
         type: Array,
         default: []
