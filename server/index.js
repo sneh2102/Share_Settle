@@ -14,6 +14,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', router);
+app.use('/api/group', router)
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }) 
   .then(() => {

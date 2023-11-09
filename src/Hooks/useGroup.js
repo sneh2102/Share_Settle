@@ -55,7 +55,23 @@ export const useGroup = () => {
         }
         
   }
-    return {getUser,createGroup,fetchGroups,error,isLoading}
+
+  const fetchGroup = async (id) => {
+    const serverURL = 'http://localhost:5000';
+    const response = await fetch(`${serverURL}/api/group/view/${id}`, {
+        method: 'get',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        return data;
+      } else {
+        throw new Error('Failed to fetch data');
+      }
+      
+}
+    return {getUser,createGroup,fetchGroups,error,isLoading,fetchGroup}
 }
 
 

@@ -63,4 +63,28 @@ const fetchUserGroups = async (req, res) => {
     res.status(responseStatus).send(response);
 }
 
-module.exports = {createGroup, fetchUserGroups};
+const fetchGroup = async (req, res) => {
+    const { id } = req.params;
+    var responseStatus = 200;
+    var response;
+        try{
+            const queryResults = await Group.findById(id);
+            response = {
+                group: queryResults
+            };
+            console.log(response);
+        } catch(err) {
+            console.log({message: err});
+            responseStatus = 500;
+            response = {
+                errorStatus: 500, 
+                errorMessage: "Internal server error", 
+                cause: "Error while fetching user groups"
+            };
+        }
+    res.status(responseStatus).send(response);
+}
+
+
+
+module.exports = {createGroup, fetchUserGroups, fetchGroup};

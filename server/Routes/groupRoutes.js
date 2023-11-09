@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const {createGroup, fetchUserGroups} = require("../Controller/groupController");
+const {createGroup, fetchUserGroups, fetchGroup} = require("../Controller/groupController");
 
 // routes for group
 router.post("/createGroup", createGroup);
-router.get("/fetchUserGroups", fetchUserGroups);
+router.post("/fetchUserGroups", fetchUserGroups);
+router.get("/view/:id", fetchGroup)
 
 module.exports = router;

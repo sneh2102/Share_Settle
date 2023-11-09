@@ -4,6 +4,7 @@ import './Group.css'
 import { useGroup } from '../../Hooks/useGroup';
 import { useUserAuth } from '../../Context/AuthContext';
 import Navbar from '../../Components/Navbar/Navbar';
+import { Link } from 'react-router-dom';
 
 const Groups = () => {
 
@@ -34,6 +35,7 @@ useEffect(() => {
     <Navbar/>
     <div className="card-list">
       {data.map((groups, index) => (
+        <Link to={`/groups/view/${groups._id}`}>
         <div className="card">
         <div className="members">
           image
@@ -42,6 +44,7 @@ useEffect(() => {
         <p className="card__title">{groups.name}</p>
         <p className="card__count"> members</p>
       </div>
+        </Link>
       ))}
     </div>
       </>

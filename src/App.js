@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import Navbar from './Components/Navbar/Navbar';
 import GroupCreation from './Pages/GroupCreation/GroupCreation';
 import Groups from './Pages/Groups/Groups';
+import GroupView from './Pages/Groups/GroupView';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path='/profile' element={user || token ? <UserProfile/>  : <Navigate to='/'/>} />
       <Route path='/contact' element={user || token ? <ContactUs/> : <Navigate to='/'/>} />
       <Route path='/groups' element={user || token ? <Groups/> : <Navigate to='/'/>} />
+      <Route path='/groups/view/:id' element={user || token ? <GroupView/> : <Navigate to='/'/>}/>
           {/* <Route path='/' element={<Login/>} />
           <Route path='/home' element={<Main/>}/> */}
           {/* <Route path='/signup' element={<SignUp/>}/> */}
