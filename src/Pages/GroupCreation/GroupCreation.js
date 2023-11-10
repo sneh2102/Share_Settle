@@ -4,6 +4,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useGroup } from '../../Hooks/useGroup';
 
+
 const GroupCreation = () => {
   const { getUser, createGroup } = useGroup();
   const [groupName, setGroupName] = useState('');
@@ -43,10 +44,22 @@ const GroupCreation = () => {
 
   const handleCreateGroup = async (e) => {
     e.preventDefault();
+
+    if (!groupName){
+      alert("Please enter a group name.");
+      return;
+    }
+
+    if(selectedMembers.length === 0){
+      alert("Please select at least one member.");
+      return;
+    }
+
     try {
       await createGroup(groupName,selectedMembers);
       navigate('/groups');
     } catch (error) {
+      alert("Group creation failed. Please try again.")
     }
   };
 
@@ -55,8 +68,11 @@ const GroupCreation = () => {
       <Navbar />
       <div className="gc-container">
         <div className="gc-card">
+          <div className="gc-header">
           <h2>Group Creation</h2>
+          </div>
           <form>
+
             <div className="gc-form-group">
               <label htmlFor="groupName">Group Name</label>
               <input
@@ -65,8 +81,8 @@ const GroupCreation = () => {
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
               />
-            </div>
-            <div className="gc-form-group">
+            
+            
               <label htmlFor="members">Members</label>
               <select
                 id="members"
@@ -80,18 +96,16 @@ const GroupCreation = () => {
                   </option>
                 ))}
               </select>
-              <ul>
+              <div className="member-chips">
                 {selectedMembers.map((member, index) => (
-                  <li key={index}>
+                  <div key={index} className="member-chip">
                     {member}
-                    <span className="gc-delete-btn" onClick={() => deleteMember(member)}>
-                      x
-                    </span>
-                  </li>
+                    <span className="chip-delete-btn" onClick={() => deleteMember(member)}>×</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
               <button onClick={handleCreateGroup}>Create Group</button>
-            </div>
+              </div>
           </form>
         </div>
       </div>
