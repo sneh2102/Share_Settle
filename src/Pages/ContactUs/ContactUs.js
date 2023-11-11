@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../GroupCreation/GroupCreation.css'; 
-import './ContactUs.css';
+ import './ContactUs.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useContact } from '../../Hooks/useContact';
+import '../../PagesCommonCSS/PagesCommonCSS.css';
 
 function ContactUs() {
   const [name, setName] = useState('');
@@ -20,21 +20,21 @@ function ContactUs() {
   return (
     <>
     <Navbar/>
-    <div className='gc-container'>
-      <div className="gc-card">
-        <div className="cu-header">
+    <div className='page-layout-container'>
+      <div className="page-layout-card">
+      <div className="page-layout-header" id="orange-header">
         <h2>Contact Us</h2>
         {/* <p>Call us: 782-882-123</p>
         <p>Email us: sharesettle@gmail.com</p> */}
       </div>
 
       <form>
-        <div className="gc-form-group">
+        <div className="page-layout-fields">
           <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
-            className='dropdown-options'
+            className='field-input'
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -44,7 +44,7 @@ function ContactUs() {
           <input
             type="email"
             id="email"
-            className='dropdown-options'
+            className='field-input'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -54,7 +54,7 @@ function ContactUs() {
           <input
             type="text"
             id="subject"
-            className='dropdown-options'
+            className='field-input'
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             required
@@ -63,13 +63,13 @@ function ContactUs() {
           <label htmlFor="message">Message</label>
           <textarea         
             id="message"
-            className='dropdown-options'
+            className='field-input'
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
           ></textarea>
 
-          <button onClick={handleSubmit}>Submit</button>
+          <button className="submit-create-button" onClick={handleSubmit}>Submit</button>
         </div>
       </form>
     </div>
