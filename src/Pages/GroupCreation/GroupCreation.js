@@ -11,10 +11,11 @@ const GroupCreation = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const user = JSON.parse(window.localStorage.getItem('user'))
   const [availableMembers, setAvailableMembers] = useState([]);
+  const [settlementPeriod, setSettlementPeriod] = useState('');
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchUserData = async () => {
       try {
         const members = await getUser();  
@@ -29,6 +30,10 @@ const GroupCreation = () => {
     console.log(selectedMembers);
   }, []);
   
+
+  const handleSettlementPeriodChange = (e) => {
+    setSettlementPeriod(e.target.value);
+  };
 
   const addMember = (member) => {
     if (member) {
@@ -78,6 +83,7 @@ const GroupCreation = () => {
               <input
                 type="text"
                 id="groupName"
+                className='dropdown-options'
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
               />
@@ -86,6 +92,7 @@ const GroupCreation = () => {
               <label htmlFor="members">Members</label>
               <select
                 id="members"
+                className='dropdown-options'
                 onChange={(e) => addMember(e.target.value)}
                 value=""
               >
@@ -104,8 +111,28 @@ const GroupCreation = () => {
                   </div>
                 ))}
               </div>
-              <button onClick={handleCreateGroup}>Create Group</button>
+              
+              <div>
+                <label htmlFor='settlementPeriod'>Settlement Period</label>
+                <select 
+                  id="settlementPeriod" 
+                  name="settlementPeriod" 
+                  className='dropdown-options'
+                  value={settlementPeriod}
+                  onChange={handleSettlementPeriodChange}
+                  >
+
+                  <option value="">Select Period</option>
+                  <option value="60sec">60seconds</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="biweekly">Biweekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
               </div>
+
+
+              <button onClick={handleCreateGroup}>Create Group</button>
+            </div>
           </form>
         </div>
       </div>

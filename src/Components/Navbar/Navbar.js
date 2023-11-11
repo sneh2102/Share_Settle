@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import useLogout from '../../Hooks/useLogout';
 import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 function Navbar() {
   const { logout } = useLogout();

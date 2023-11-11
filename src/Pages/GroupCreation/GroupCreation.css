@@ -1,10 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
 
+.dropdown-options{
+  width: 100%;
+  padding: 8px; 
+  margin-bottom: 15px; 
+  border-radius: 4px; 
+  border: 1px solid #ccc;
+  font-family: 'Nunito', sans-serif;
+}
+
 .member-chips {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-bottom: 10px;
 }
 
 .member-chip {
