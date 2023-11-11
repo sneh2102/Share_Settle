@@ -76,8 +76,8 @@ const GroupCreation = () => {
           <div className="gc-header">
           <h2>Group Creation</h2>
           </div>
-          <form>
 
+          <form>
             <div className="gc-form-group">
               <label htmlFor="groupName">Group Name</label>
               <input
