@@ -1,33 +1,73 @@
-.user-profile {
-  font-family: Arial, sans-serif;
-  border: 2px solid #3498db;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 300px;
-  margin: 20px auto;
-  background-color: #f2f7ff;
+#purple-header{
+  background-color: #9C27B0;
 }
 
-.user-profile h2 {
-  color: #3498db;
-  text-align: center;
+.user-details{
+  font-family: 'Nunito', sans-serif;
 }
 
-.user-profile div {
-  margin: 10px 0;
+#userName{
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+#userEmail{
+  margin-top: 1px;
 }
 
-.user-profile button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+.reset-buttons{
+  padding: 8px;
+  /* margin-bottom: 8px; */
+  /* background-color: #4682A9;  */
+  background-color: white;
+  transition-duration: 0.4s;
+  color: #333; 
+  border: 2px solid #9C27B0;
+  border-radius: 6px;
+  margin-top: 10px;
   cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  display: block;
 }
 
-.user-profile button:hover {
-  background-color: #217dbb;
+.reset-buttons:hover{
+  /* background-color: #316A9E; */
+  background-color: #9C27B0;
+  color: white;
+}
+
+.user-field-input{
+  margin-top: 10px;
+  padding: 8px; 
+  margin-bottom: 5px; 
+  border-radius: 4px; 
+  border: 1px solid #ccc;
+  font-family: 'Nunito', sans-serif;
+  /* display: block; */
+}
+
+.user-submit-buttons{
+  padding: 10px; 
+  background-color: #4682A9; 
+  color: white; 
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  margin-left: 15px;
+}
+
+.user-submit-buttons:hover{
+  background-color: #316A9E;
+}
+
+#newPass-field{
+  display: block;
+}
+
+#resetPass-container{
+  margin-top: 30px;
 }
 
 .user-profile input[type="password"] {
