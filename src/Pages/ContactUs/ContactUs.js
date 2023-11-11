@@ -25,8 +25,8 @@ function ContactUs() {
         <div className="page-layout-header" id="orange-header">
           <h2>Contact Us</h2>
           <div className='subheader'>
-            <span><i className="fa fa-phone"></i> Call us: 782-882-123</span>
-            <span><i className="fa fa-envelope"></i> Email us: sharesettle@gmail.com</span>
+            <span><i className="fa fa-phone"></i> Call us : 782-882-123</span>
+            <span><i className="fa fa-envelope"></i> Email us : sharesettle@gmail.com</span>
           </div>
         </div>
 
