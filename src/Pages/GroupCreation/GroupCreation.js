@@ -3,6 +3,7 @@ import './GroupCreation.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useGroup } from '../../Hooks/useGroup';
+import '../../PagesCommonCSS/PagesCommonCSS.css';
 
 
 const GroupCreation = () => {
@@ -71,19 +72,19 @@ const GroupCreation = () => {
   return (
     <>
       <Navbar />
-      <div className="gc-container">
-        <div className="gc-card">
-          <div className="gc-header">
+      <div className="page-layout-container">
+        <div className="page-layout-card">
+          <div className="page-layout-header" id="green-header">
           <h2>Group Creation</h2>
           </div>
 
           <form>
-            <div className="gc-form-group">
+            <div className="page-layout-fields">
               <label htmlFor="groupName">Group Name</label>
               <input
                 type="text"
                 id="groupName"
-                className='dropdown-options'
+                className='field-input'
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
               />
@@ -92,7 +93,7 @@ const GroupCreation = () => {
               <label htmlFor="members">Members</label>
               <select
                 id="members"
-                className='dropdown-options'
+                className='field-input'
                 onChange={(e) => addMember(e.target.value)}
                 value=""
               >
@@ -117,7 +118,7 @@ const GroupCreation = () => {
                 <select 
                   id="settlementPeriod" 
                   name="settlementPeriod" 
-                  className='dropdown-options'
+                  className='field-input'
                   value={settlementPeriod}
                   onChange={handleSettlementPeriodChange}
                   >
@@ -131,7 +132,7 @@ const GroupCreation = () => {
               </div>
 
 
-              <button onClick={handleCreateGroup}>Create Group</button>
+              <button className="submit-create-button" onClick={handleCreateGroup}>Create Group</button>
             </div>
           </form>
         </div>

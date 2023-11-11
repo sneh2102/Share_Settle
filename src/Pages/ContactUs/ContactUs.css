@@ -1,17 +1,19 @@
-   textarea {
-    height: 150px;
-  }
+textarea {
+  height: 150px;
+}
 
-  .cu-header {
-    background-color: #FF7043;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    width: 100%;
-    margin: 0;
-    box-sizing: border-box;
-    font-size: 18px;
-    font-family: 'Montserrat', sans-serif;
-  }
+#orange-header{
+  background-color: #FF7043;
+}
   
-  
+.subheader {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.subheader i{
+  color: white;
+  margin-right: 4px;
+}
