@@ -6,4 +6,14 @@ textarea {
   background-color: #FF7043;
 }
   
-  
+.subheader {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.subheader i{
+  color: white;
+  margin-right: 4px;
+}
