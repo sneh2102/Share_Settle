@@ -11,39 +11,47 @@ const Groups = () => {
   const [data,setData]=useState([]);
   const {fetchGroups}=useGroup();
   const user = JSON.parse(window.localStorage.getItem('user'));
+  const icons = ['fa-home', 'fa-user', 'fa-envelope', 'fa-star'];
+  const iconBackgroundColors = ['#6691B9', '#BC8AC4', '#FFA07A', '#7CBF7C'];
 
+  function getRandomIcon() {
+    const randomIndex = Math.floor(Math.random() * icons.length);
+    return icons[randomIndex];
+  }
+
+  function getRandomBackgroundColor() {
+    const randomIndex = Math.floor(Math.random() * iconBackgroundColors.length);
+    return iconBackgroundColors[randomIndex];
+  }
   
 
-
-
-
-useEffect(() => {
-  const fetchUserGroup = async () => {
-    try {
-      console.log(user.email);
-      const groups = await fetchGroups(user.email);
-      setData(groups);
-    } catch (error) {
-      
-    }
-  };
-  fetchUserGroup();
-}, []);
+  useEffect(() => {
+    const fetchUserGroup = async () => {
+      try {
+        console.log(user.email);
+        const groups = await fetchGroups(user.email);
+        setData(groups);
+      } catch (error) {
+        
+      }
+    };
+    fetchUserGroup();
+  }, []);
 
   return (
     <>
     <Navbar/>
     <div className="card-list">
-      {data.map((groups, index) => (
-        <Link to={`/groups/view/${groups._id}`}>
-        <div className="card">
-        <div className="members">
-          image
-          <p className="members__count"> members</p>
-        </div>
-        <p className="card__title">{groups.name}</p>
-        <p className="card__count"> members</p>
-      </div>
+      {data.map((group, index) => (
+        <Link to={`/groups/view/${group._id}`} key={group._id}>
+          <div className="card">
+            <i className={`fa ${getRandomIcon()} custom-icon`} 
+              style={{ backgroundColor: getRandomBackgroundColor() }}></i>
+            <div className="card-body">
+              <h5 className="card-title">{group.name}</h5>
+              <p className='settlement-period'>Settlement period</p>
+            </div>
+          </div>
         </Link>
       ))}
     </div>
