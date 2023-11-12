@@ -1,4 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
+
+.navbar-header {
+    display: flex;
+    margin-top: 10px;
+  }
+  
+.navbar-header h2 {
+    text-align: center;
+    flex: 1;
+}
+
+.navbar-toggle {
+    cursor: pointer;
+    margin-top: 6px;
+    font-size: 20px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.fa{
+    margin-right: 5px;
+}
+
+
+.sidebar.collapsed .navbar-header {
+    justify-content: flex-end; /* Aligns the toggle to the right */
+  }
+  
+  .sidebar.collapsed .navbar-header .navbar-toggle {
+    margin-right: 0; /* Adjust the margin as needed */
+  }
+  
+
+  
+
+  
+.sidebar {
+    width: 250px; /* Width of the sidebar when expanded */
+    transition: width 0.3s; /* Smooth transition for the width */
+    /* ... other styles ... */
+  }
+  
+  .sidebar.collapsed {
+    width: 50px; /* Adjust this width to how wide you want the collapsed sidebar to be */
+  }
+  
+  .nav__links.hidden {
+    display: none; /* Hide the links when the navbar is collapsed */
+  }
+  
+  .navbar-toggle {
+    /* Styles for the navbar toggle button */
+    cursor: pointer;
+    /* Add more styles here as needed */
+  }
+  
+
 *{
     padding: 0;
     margin: 0;
