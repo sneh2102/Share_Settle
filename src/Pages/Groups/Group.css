@@ -1,145 +1,48 @@
-/* Base Styling */
-body {
-    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-image: radial-gradient(circle farthest-corner at 0% 100% , #ffffff 0%, #ffffff 100%);
-    background-color: #ffffff;
-    font-size:16px;
-  }
-  
-  .card {
-    margin:1.5em;
-    float:left;
-  }
+.card-list{
+  display: flex;
+  width: 80%;
+  margin-left: 350px;
+  flex-wrap: wrap;
+}
 
-  .card-list{
-    display: flex;
-    width: 80%;
-    /* position: absolute; */
-   margin-left: 300px;
-  }
-  
-  /* Component Styling */
-  .card {
-    padding: 1em;
-    display: inline-block;
-    border-radius: 6px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0px 4px 10px 0px rgba(34, 34, 34, 0.32);
-    color: #444;
-    width:400px;
-    user-select: none;
-    text-align: left;
-    position: relative;
-  }
-  .members {
-    position:absolute;
-    right:1em;
-  }
-  .members__avatar {
-    border-radius:50%;
-    width: 1.5em;
-    height:1.5em;
-    border:2px solid #fff;
-    vertical-align:middle;
-  }
-  .members__avatar:nth-of-type(2) {
-    width:1.5em;
-    height:1.5em;
-    margin:0 -.5em;
-    z-index:2;
-    position:relative;
-  }
-  .card__title {
-    font-size: 1.2em;
-    line-height: 1.2;
-    margin:0;
-    color: rgba(0,0,0,.87);
-    max-width:calc(80% - 4em);
-  }
-  .card__count {
-    display:none;
-  }
-  .members__count {
-    font-size: 0.8em;
-    line-height:1;
-    margin-top:0;
-    color: rgba(0,0,0,.54);
-    text-align:center;
-  }
-  .btn {
-    border-radius: 4px;
-    height: 36px;
-    color: #fff;
-    outline: none;
-    border: 0;
-    margin-top: 1.5em;
-    text-transform: uppercase;
-    width: 100%;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  .btn--active {
-    background-color:#eb1564;
-    color:#fff;
-  }
-  .btn--active:hover {
-    background-color: #D3165F;
-  }
-  .btn--inactive {
-    background-color: #f1f3f5;
-    color:#868e96;
-  }
-  .btn--inactive:hover {
-    background-color: #e9ecef;
-  }
-  .btn svg {
-    vertical-align: bottom;
-  }
-  
-  @media (min-width: 560px) {
-    .card {
-      cursor: pointer;
-      max-width: 10em;
-      text-align: center;
-    }
-  
-    .members {
-      position:static;
-      
-    }
-    .members__avatar {
-      width: 2.5em;
-      height:2.5em;
-    }
-    .members__avatar:nth-of-type(2) {
-      width:3em;
-      height:3em;
-      margin:0 -1em;
-    }
-    .members__avatar.duo {
-      width:3em;
-      height:3em;
-      margin:0;
-    }
-  
-    .card__title {
-        font-size: 1.2em;
-        margin-top: 1em;
-        margin-bottom: 0.5em;
-        color: rgba(0,0,0,.87);
-        max-width:none;
-        height:2.5em;
-    }
-    .members__count {
-      display:none;
-    }
-    .card__count {
-        font-size: 0.8em;
-        line-height:1;
-        margin-top:0;
-        color: rgba(0,0,0,.54);
-      display: block;
-    }
-  
-  }
-  
+.card {
+  margin: 1.5em;
+  display: inline-block;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 4px 10px 0px rgba(34, 34, 34, 0.32);
+  color: #444;
+  width:200px;
+  height: 250px;
+  user-select: none;
+  text-align: left;
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.custom-icon{
+  text-align: center;
+  padding: 40px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 60px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: white;
+}
+
+.card-title{
+  font-family: 'Montserrat', sans-serif; 
+  font-size: 24px;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.settlement-period{
+  font-weight:10;
+  font-family: 'Nunito', sans-serif;
+  color: #333;
+  text-align: center;
+}
