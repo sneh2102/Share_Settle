@@ -25,7 +25,7 @@ export const useGroup = () => {
         const serverURL = 'http://localhost:5000';
         console.log(members);
     try {
-      const response = fetch(`${serverURL}/api/user/createGroup`, {
+      const response = fetch(`${serverURL}/api/group/createGroup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({name, members}),
@@ -41,7 +41,7 @@ export const useGroup = () => {
 
     const fetchGroups = async (email) => {
       const serverURL = 'http://localhost:5000';
-      const response = await fetch(`${serverURL}/api/user/fetchUserGroups`, {
+      const response = await fetch(`${serverURL}/api/group/fetchUserGroups`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({email}),

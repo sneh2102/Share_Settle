@@ -1,4 +1,5 @@
 const Group = require("../Models/groupModel");
+const splitCalculator = require('../helper/spliting')
 
 // create a new group
 const createGroup = async (req, res) => {
@@ -15,6 +16,12 @@ const createGroup = async (req, res) => {
             name: req.body.name,
             members: req.body.members
         });
+        var splitJson = {}
+
+            for (var user of group.members) {
+                splitJson[user] = 0
+            }
+            group.groupExpensesList = splitJson
     
         console.log(response);
         try {
@@ -86,5 +93,83 @@ const fetchGroup = async (req, res) => {
 }
 
 
+const clearExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
+    var group = await Group.findOne({
+        _id: groupId
+    })
+    group.groupTotal -= amount
+    group.groupExpensesList[0][ownerOfExpense] -= amount
+    expenseDistribution = amount / involved.length
+    expenseDistribution = Math.round((expenseDistribution + Number.EPSILON) * 100) / 100;
 
-module.exports = {createGroup, fetchUserGroups, fetchGroup};
+    for (var user of involved) {
+        group.groupExpensesList[0][user] += expenseDistribution
+    }
+
+    let bal=0
+    for(val of Object.entries(group.groupExpensesList[0]))
+    {
+        bal += val[1]
+    }
+    group.groupExpensesList[0][ownerOfExpense] -= bal
+    group.groupExpensesList[0][ownerOfExpense] = Math.round((group.groupExpensesList[0][ownerOfExpense]  + Number.EPSILON) * 100) / 100;
+    
+    return await Group.updateOne({
+        _id: groupId
+    }, group)
+}
+
+
+const addExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
+    var group = await Group.findOne({
+        _id: groupId
+    })
+    group.groupTotal += amount
+    group.groupExpensesList[0][ownerOfExpense] += amount
+    expenseDistribution = amount / involved.length
+    expenseDistribution = Math.round((expenseDistribution  + Number.EPSILON) * 100) / 100;
+    console.log(group);
+    for (var user of involved) {
+        group.groupExpensesList[0][user] -= expenseDistribution
+    }
+    
+    let bal=0
+    for(val of Object.entries(group.groupExpensesList[0]))
+    {
+        bal += val[1]
+    }
+    group.groupExpensesList[0][ownerOfExpense] -= bal
+    group.groupExpensesList[0][ownerOfExpense] = Math.round((group.groupExpensesList[0][ownerOfExpense]  + Number.EPSILON) * 100) / 100;
+    console.log(group);
+    return await Group.updateOne({
+        _id: groupId
+    }, group)
+}
+
+const groupBalanceSheet = async(req, res) =>{
+    try {
+        const group = await Group.findOne({
+            _id: req.body.id
+        })
+        console.log(group);
+        if (!group) {
+            var err = new Error("Invalid Group Id")
+            err.status = 400
+            throw err
+        }
+        res.status(200).json({
+            status: "Success",
+            data: splitCalculator(group.groupExpensesList[0])
+        })
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+
+
+
+
+module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet};
