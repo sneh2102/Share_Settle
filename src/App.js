@@ -42,6 +42,7 @@ function App() {
       <Route path='/contact' element={user || token ? <ContactUs/> : <Navigate to='/'/>} />
       <Route path='/groups' element={user || token ? <Groups/> : <Navigate to='/'/>} />
       <Route path='/groups/view/:id' element={user || token ? <GroupView/> : <Navigate to='/'/>}/>
+      <Route path='/groups/view/:id' element={user || token ? <GroupView/> : <Navigate to='/'/>}/>
           {/* <Route path='/' element={<Login/>} />
           <Route path='/home' element={<Main/>}/> */}
           {/* <Route path='/signup' element={<SignUp/>}/> */}

@@ -123,6 +123,35 @@ const viewUserExpense = async (req, res) => {
         })
     }
 }
+const viewUserGroupExpense = async (req, res) => {
+    console.log(req.body);
+    try {
+        const userExpense = await Expense.find({
+            involved: req.body.email,
+            groupId: req.body.id
+        })
+        console.log(userExpense);
+        if (userExpense.length == 0) {
+            const err = new Error("No expense present")
+            err.status = 400
+            throw err
+        }
+        var totalAmount = 0
+        for (var expense of userExpense) {
+            totalAmount += expense['expenseDistribution']
+        }
+        res.status(200).json({
+            status: "Success",
+            expense: userExpense,
+            total: totalAmount
+        })
+
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
 const viewExpense = async (req, res) => {
     try {
         var expense = await Expense.findOne({
@@ -145,4 +174,4 @@ const viewExpense = async (req, res) => {
 }
 
 
-module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense};
+module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense, viewUserGroupExpense};
