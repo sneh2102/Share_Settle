@@ -123,6 +123,26 @@ const viewUserExpense = async (req, res) => {
         })
     }
 }
+const viewExpense = async (req, res) => {
+    try {
+        var expense = await Expense.findOne({
+            _id: req.body.id
+        })
+        if (expense.length == 0) {
+            var err = new Error("No expense present for the Id")
+            err.status = 400
+            throw err
+        }
+        res.status(200).json({
+            status: "Success",
+            expense: expense
+        })
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
 
 
-module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense };
+module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense};
