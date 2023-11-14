@@ -1,61 +1,19 @@
-.contact-form {
-    margin-top: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    background-color: #749BC2;
-  }
+textarea {
+  height: 150px;
+}
+
+#orange-header{
+  background-color: #FF7043;
+}
   
-  .contact-form h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .contact-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .contact-info p {
-    font-weight: bold;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-  }
-  
-  textarea {
-    height: 150px;
-  }
-  
-  button[type="submit"] {
-    background-color: #4285f4;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #357ae8;
-  }
-  
+.subheader {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.subheader i{
+  color: white;
+  margin-right: 4px;
+}

@@ -4,6 +4,7 @@ import { useResetName } from '../../Hooks/useResetName';
 import Navbar from '../../Components/Navbar/Navbar';
 import {useUserAuth} from '../../Context/AuthContext'
 import { useResetPass } from '../../Hooks/useResetPass';
+import '../../PagesCommonCSS/PagesCommonCSS.css';
 
 const UserProfile = () => {
   // const user = JSON.parse(window.localStorage.getItem('user'));
@@ -51,55 +52,68 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <div className="user-container">
-        <div className="user-con">
-          <div className="user-profile">
+      <div className="page-layout-container">
+        <div className="page-layout-card">
+          <div className="page-layout-header" id="purple-header">
             <h2>User Profile</h2>
-            <div>
-              <strong>Name:</strong> {userName}
-            </div>
-            <div>
-              <strong>Email:</strong> {userEmail}
-            </div>
-            <button onClick={() => setShowResetName(true)}>Reset Name</button>
+          </div>
 
-            <button onClick={() => setShowResetPassword(true)}>Reset Password</button>
+          <div className="page-layout-fields">
+
+            <div className='user-details'>
+              <p id='userName'><strong>Name :</strong> {userName} </p>
+              <p id='userEmail'><strong>Email :</strong> {userEmail} </p>
+            </div>
+
+            <div>
+              <button className='reset-buttons' onClick={() => setShowResetName(true)}>Reset Name</button>
+              {showResetName && (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="New Username"
+                    className='user-field-input'
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                  />
+                  <button className='user-submit-buttons' onClick={handleResetName}>Submit</button>
+                </div>
+              )}
+            </div>
+
+            <button className='reset-buttons' id='resetPass-container' onClick={() => setShowResetPassword(true)}>Reset Password</button>
+
             {showResetPassword && (
               <div>
                 <input
                   type="password"
                   placeholder="Old Password"
+                  className='user-field-input'
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                 />
                 <input
                   type="password"
                   placeholder="New Password"
+                  className='user-field-input'
+                  id='newPass-field'
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
                 <input
                   type="password"
                   placeholder="Confirm New Password"
+                  className='user-field-input'
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <button onClick={handleResetPassword}>Submit</button>
+                <button className='user-submit-buttons' onClick={handleResetPassword}>Submit</button>
                 {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
               </div>
             )}
-            {showResetName && (
-              <div>
-                <input
-                  type="text"
-                  placeholder="New Username"
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                />
-                <button onClick={handleResetName}>Submit</button>
-              </div>
-            )}
+
           </div>
+           
         </div>
       </div>
     </>

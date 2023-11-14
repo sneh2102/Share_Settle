@@ -3,6 +3,8 @@ import './GroupCreation.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useGroup } from '../../Hooks/useGroup';
+import '../../PagesCommonCSS/PagesCommonCSS.css';
+
 
 const GroupCreation = () => {
   const { getUser, createGroup } = useGroup();
@@ -10,10 +12,11 @@ const GroupCreation = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const user = JSON.parse(window.localStorage.getItem('user'))
   const [availableMembers, setAvailableMembers] = useState([]);
+  const [settlementPeriod, setSettlementPeriod] = useState('');
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchUserData = async () => {
       try {
         const members = await getUser();  
@@ -29,6 +32,10 @@ const GroupCreation = () => {
   }, []);
   
 
+  const handleSettlementPeriodChange = (e) => {
+    setSettlementPeriod(e.target.value);
+  };
+
   const addMember = (member) => {
     if (member) {
       setSelectedMembers([...selectedMembers, member]);
@@ -43,33 +50,50 @@ const GroupCreation = () => {
 
   const handleCreateGroup = async (e) => {
     e.preventDefault();
+
+    if (!groupName){
+      alert("Please enter a group name.");
+      return;
+    }
+
+    if(selectedMembers.length === 0){
+      alert("Please select at least one member.");
+      return;
+    }
+
     try {
       await createGroup(groupName,selectedMembers);
       navigate('/groups');
     } catch (error) {
+      alert("Group creation failed. Please try again.")
     }
   };
 
   return (
     <>
       <Navbar />
-      <div className="gc-container">
-        <div className="gc-card">
+      <div className="page-layout-container">
+        <div className="page-layout-card">
+          <div className="page-layout-header" id="green-header">
           <h2>Group Creation</h2>
+          </div>
+
           <form>
-            <div className="gc-form-group">
+            <div className="page-layout-fields">
               <label htmlFor="groupName">Group Name</label>
               <input
                 type="text"
                 id="groupName"
+                className='field-input'
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
               />
-            </div>
-            <div className="gc-form-group">
+            
+            
               <label htmlFor="members">Members</label>
               <select
                 id="members"
+                className='field-input'
                 onChange={(e) => addMember(e.target.value)}
                 value=""
               >
@@ -80,17 +104,35 @@ const GroupCreation = () => {
                   </option>
                 ))}
               </select>
-              <ul>
+              <div className="member-chips">
                 {selectedMembers.map((member, index) => (
-                  <li key={index}>
+                  <div key={index} className="member-chip">
                     {member}
-                    <span className="gc-delete-btn" onClick={() => deleteMember(member)}>
-                      x
-                    </span>
-                  </li>
+                    <span className="chip-delete-btn" onClick={() => deleteMember(member)}>×</span>
+                  </div>
                 ))}
-              </ul>
-              <button onClick={handleCreateGroup}>Create Group</button>
+              </div>
+              
+              <div>
+                <label htmlFor='settlementPeriod'>Settlement Period</label>
+                <select 
+                  id="settlementPeriod" 
+                  name="settlementPeriod" 
+                  className='field-input'
+                  value={settlementPeriod}
+                  onChange={handleSettlementPeriodChange}
+                  >
+
+                  <option value="">Select Period</option>
+                  <option value="60sec">60seconds</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="biweekly">Biweekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div>
+
+
+              <button className="submit-create-button" onClick={handleCreateGroup}>Create Group</button>
             </div>
           </form>
         </div>
