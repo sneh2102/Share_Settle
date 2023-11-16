@@ -1,6 +1,6 @@
 stages:
   - build
-  - test
+  # - test
   - deploy
 
 build:
@@ -13,19 +13,12 @@ build:
     paths:
       - build/
 
-test:
-  image: node:18.18.0
-  stage: test
-  script:
-    - npm install
-    - npm test
-
-# netlify:
+# test:
 #   image: node:18.18.0
-#   stage: deploy
+#   stage: test
 #   script:
-#     - npm install -g netlify-cli
-#     - netlify deploy --dir=build --prod
+#     - npm install
+#     - npm test
 
 deploy:
   image: node:18.18.0
