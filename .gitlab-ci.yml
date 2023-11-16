@@ -20,15 +20,17 @@ test:
     - npm install
     - npm test
 
-netlify:
-  image: node:18.18.0
-  stage: deploy
-  script:
-    - npm install -g netlify-cli
-    - netlify deploy --dir=build --prod
-
-# # deploy:
+# netlify:
 #   image: node:18.18.0
 #   stage: deploy
 #   script:
-#     - scp -r build user@server:/var/www/my-app
+#     - npm install -g netlify-cli
+#     - netlify deploy --dir=build --prod
+
+deploy:
+  image: node:18.18.0
+  stage: deploy
+  script:
+    - chmod 400 "${PASSWORD}"
+    - scp -o StrictHostKeyChecking=no -i "${PASSWORD}" -r build/* csci5308vm1.research.cs.dal.ca
+    - ssh -o StrictHostKeyChecking=no -i "${PASSWORD}" csci5308vm1.research.cs.dal.ca "cd ~/ && serve -s . > webserver.log 2>&1 &"
