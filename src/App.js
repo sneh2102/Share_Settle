@@ -1,4 +1,4 @@
-import './App.css';
+
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Pages/Login/Login';
 import Main from './Pages/Main/Main'
@@ -15,6 +15,7 @@ import GroupCreation from './Pages/GroupCreation/GroupCreation';
 import Groups from './Pages/Groups/Groups';
 import GroupView from './Pages/Groups/GroupView';
 
+import './App.css';
 
 function App() {
 

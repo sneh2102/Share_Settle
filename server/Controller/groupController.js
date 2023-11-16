@@ -31,6 +31,7 @@ const createGroup = async (req, res) => {
         }
     }
     res.status(responseStatus).send(response);
+    return { responseStatus, response };
 };
 
 // fetch all groups of a user by user email
@@ -61,6 +62,7 @@ const fetchUserGroups = async (req, res) => {
         }
     }
     res.status(responseStatus).send(response);
+    return { responseStatus, response };
 }
 
 const fetchGroup = async (req, res) => {
@@ -83,6 +85,7 @@ const fetchGroup = async (req, res) => {
             };
         }
     res.status(responseStatus).send(response);
+    return { responseStatus, response };
 }
 
 
