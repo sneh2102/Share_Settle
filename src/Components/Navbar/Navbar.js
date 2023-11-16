@@ -58,9 +58,9 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <a href="#" onClick={handleLogout}>
+            <div onClick={handleLogout}>
               <i className="fi-rr-magic-wand"></i><span>Logout</span>
-            </a>
+            </div>
           </li>
         </ul>
       </div>
