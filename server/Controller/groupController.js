@@ -1,4 +1,5 @@
 const Group = require("../Models/groupModel");
+const Expense = require("../Models/expenseModel")
 const splitCalculator = require('../helper/spliting')
 
 // create a new group
@@ -168,8 +169,38 @@ const groupBalanceSheet = async(req, res) =>{
     }
 }
 
+const leaveGroup = async (req, res) => {
+    try {
+      const { email, id } = req.body;
+      console.log(email,id);
+  
+      const group = await Group.findOne({ members: email, _id: id });
+  
+      if (!group) {
+        return res.status(404).json({ message: 'Group not found for the member.' });
+      }
+  
+      const memberExpense = group.groupExpensesList[0][email];
+  
+      if (memberExpense !== 0) {
+        return res.status(400).json({ message: 'Cannot delete member without settling all the Expenses.' });
+      }
+  
+      const updatedMembers = group.members.filter((memberItem) => memberItem !== email);
+  
+      const updatedGroup = await Group.findByIdAndUpdate(
+        group._id,
+        { members: updatedMembers },
+        { new: true }
+      );
+  
+      res.json({ message: 'Group left successfully.', group: updatedGroup });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+ 
+  
 
-
-
-
-module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet};
+module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet, leaveGroup};

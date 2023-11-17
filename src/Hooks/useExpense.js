@@ -12,11 +12,11 @@ export const useExpense = () => {
     ownerOfExpense,
     involved
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
     console.log(groupId, name, description, amount, expenseCurrency, category, ownerOfExpense, involved);
 
     try {
-      const response = await fetch(`${serverURL}/api/expense/add`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -46,10 +46,10 @@ export const useExpense = () => {
   const fetchGroupExpense = async (
     id
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
 
     try {
-      const response = await fetch(`${serverURL}/api/expense/groupexpense`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/groupexpense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,10 +73,10 @@ export const useExpense = () => {
   const groupBalanceSheet = async (
     id
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
 
     try {
-      const response = await fetch(`${serverURL}/api/group/balancesheet`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/group/balancesheet`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -100,10 +100,10 @@ export const useExpense = () => {
   const getUserExpenses = async (
     email
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
     console.log(email);
     try {
-      const response = await fetch(`${serverURL}/api/expense/userexpense`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/userexpense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -127,10 +127,10 @@ export const useExpense = () => {
   const getUserGroupExpenses = async (
     email,id
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
     console.log(email);
     try {
-      const response = await fetch(`${serverURL}/api/expense/view/usergroupexpense`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/view/usergroupexpense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -152,9 +152,9 @@ export const useExpense = () => {
 const getExpense = async (
    id
   ) => {
-    const serverURL = 'http://localhost:5000';
+    
     try {
-      const response = await fetch(`${serverURL}/api/expense/view/usergroupexpense`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/view/usergroupexpense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

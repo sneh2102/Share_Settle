@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Chip, Typography } from '@mui/material';
 
-const ExpenseCard = ({ expense }) => {
+const ExpenseCard = ({ expense, onClick }) => {
   const {
     name,
     amount,
@@ -17,12 +17,11 @@ const ExpenseCard = ({ expense }) => {
   };
 
   return (
-    <Card style={cardStyle}>
+    <Card style={cardStyle} onClick={() => onClick(expense)}>
       <CardContent>
         <Typography variant="h6">{name}</Typography>
         <Typography color="text.secondary">Amount: {amount} {expenseCurrency}</Typography>
         <Typography color="text.secondary">Distribution: {expenseDistribution}</Typography>
-        {/* You can customize the Chip styles as needed */}
         <Chip label="Details" color="primary" size="small" style={{ marginTop: '8px' }} />
       </CardContent>
     </Card>

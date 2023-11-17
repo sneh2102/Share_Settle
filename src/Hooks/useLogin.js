@@ -5,12 +5,14 @@ export const useLogin = () => {
   const [lerror, setError] = useState(null)
   const [islLoading, setIsLoading] = useState(null)
   const { dispatch } = useUserAuth()
+  const link = process.env.REACT_APP_SERVER_LINK;
 
   const login = async (email, password) => {
     setIsLoading(true)
     setError(null)
-    const serverURL = 'http://localhost:5000';
-    const response = await fetch(`${serverURL}/api/user/login`, {
+    console.log(link);
+    
+    const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/login`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })
