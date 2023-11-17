@@ -23,6 +23,14 @@ build:
 deploy:
   image: node:18.18.0
   stage: deploy
+    before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSHKEY")
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan csci5308vm1.research.cs.dal.ca >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
     - chmod 400 "${SSHKEY}"
     - scp -o StrictHostKeyChecking=no -i "${SSHKEY}" -r build/* student@csci5308vm1.research.cs.dal.ca:~/frontend
