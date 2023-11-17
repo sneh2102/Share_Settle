@@ -24,7 +24,7 @@ deploy:
   image: node:18.18.0
   stage: deploy
   script:
-    # - chmod 400 "$SSH_PRIVATE_KEY"
-    - chmod "${SSH_PRIVATE_KEY}"
+    - chmod 400 "${SSH_PRIVATE_KEY}"
+    # - chmod "${SSH_PRIVATE_KEY}"
     - scp -o StrictHostKeyChecking=no -i "$SSH_PRIVATE_KEY" -r build/* student@csci5308vm1.research.cs.dal.ca:~/frontend
     - ssh -o StrictHostKeyChecking=no -i "SSH_PRIVATE_KEY" student@csci5308vm1.research.cs.dal.ca "cd ~/ && serve -s . > webserver.log 2>&1 &"
