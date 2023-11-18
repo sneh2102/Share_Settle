@@ -3,6 +3,7 @@ import { useGroup } from '../../Hooks/useGroup';
 import { useParams } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import './GroupView.css'; 
+import '../../PagesCommonCSS/PagesCommonCSS.css';
 
 const GroupView = () => {
   const { fetchGroup } = useGroup();
@@ -35,39 +36,56 @@ const GroupView = () => {
   };
 
   return (
-    <div className='groupView-container'>
-      <Navbar />
-      <div style={{ marginLeft: "300px" }}>
-        <h1>Group Details</h1>
-        {groupDetails ? (
-          <div>
-            <p>Group Name: {groupDetails.group.name}</p>
-            <p>Group Members: {groupDetails.group.members}</p>
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}
-        <button onClick={openAddExpenseModal}>Add Expense</button>
-      </div>
+    <>
+    <Navbar />
+      <div className='page-layout-container'>
+        <div className="page-layout-card">
+          {groupDetails ? (
+            <div className="page-layout-header" id="group-header">
+              <h2>{groupDetails.group.name}</h2>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
 
-      {isAddingExpense && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeAddExpenseModal}>&times;</span>
-            <h2>Add Expense</h2>
-            {/* Your form for adding an expense goes here */}
-            {/* For example: */}
-            <form>
-              {/* Expense input fields */}
-              <input type="text" placeholder="Expense Name" />
-              <input type="number" placeholder="Amount" />
-              <button type="submit">Submit Expense</button>
-            </form>
+          <div className="page-layout-fields">
+
+          <div className='member-emails'>
+          <p><strong>Members :</strong></p>
+            {groupDetails && groupDetails.group && Array.isArray(groupDetails.group.members) ? (
+              <ul>
+                {groupDetails.group.members.map((member, index) => (
+                  <li key={index}>{member}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No members found</p>
+            )}
           </div>
+
+          <button className='bordered-btn' id="add-expense-btn" onClick={openAddExpenseModal}>Add Expense</button>
+        
+
+        {isAddingExpense && (
+          <div>
+            <input 
+              type="text" 
+              placeholder="Expense Name" 
+              className='expense-input-field'
+            />
+            <input 
+              type="number" 
+              placeholder="Amount" 
+              className='expense-input-field'
+            />
+            <button className="small-submit-buttons" type="submit">Submit Expense</button>
+          </div>
+        )}
         </div>
-      )}
-    </div>
+      </div>
+      </div>
+  </>
   );
-};
+}
 
 export default GroupView;

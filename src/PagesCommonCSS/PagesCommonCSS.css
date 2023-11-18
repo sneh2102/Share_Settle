@@ -1,6 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
 
+.small-submit-buttons{
+    padding: 10px; 
+    background-color: #4682A9; 
+    color: white; 
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .small-submit-buttons:hover{
+    background-color: #316A9E;
+  }
+
 .submit-create-button {
     width: 100%;
     padding: 10px; 
@@ -71,6 +87,17 @@
     font-weight: 500;
 }
 
+.bordered-btn{
+    padding: 8px;
+    background-color: white;
+    transition-duration: 0.4s;
+    color: #333; 
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    display: block;
+}
 
 @media (max-width: 768px) {
     .page-layout-container {
