@@ -55,8 +55,8 @@ const deleteExpense = async (req, res) => {
         var deleteExp = await Expense.deleteOne({
             _id: req.body.id
         })
-
-        
+        console.log(expense);
+        console.log(deleteExp);
         await Group.clearExpenseList(expense.groupId, expense.amount, expense.ownerOfExpense, expense.involved)
 
         res.status(200).json({

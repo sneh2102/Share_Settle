@@ -200,7 +200,39 @@ const leaveGroup = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+  const makeSettlement = async(req, res) =>{
+    try{
+        
+        const group = await Group.findOne({
+            _id: req.body.id
+        })
+        console.log(group);
+        if (!group) {
+            var err = new Error("Invalid Group Id")
+            err.status = 400
+            throw err
+        }
+       
+       group.groupExpensesList[0][req.body.From] += req.body.Amount
+       group.groupExpensesList[0][req.body.To] -= req.body.Amount
+
+       
+       var update_response = await Group.updateOne({_id: group._id}, {$set:{groupExpensesList: group.groupExpensesList}})
+        
+
+       res.status(200).json({
+        message: "Settlement successfully!",
+        status: "Success",
+        update: update_response,
+        response: group._id
+    })
+    }catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
  
   
 
-module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet, leaveGroup};
+module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet, leaveGroup, makeSettlement};
