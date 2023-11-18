@@ -19,7 +19,13 @@ function Navbar() {
     <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
 
       <div className="navbar-header">
-        <h2 className={`${isCollapsed ? 'hidden' : ''}`}>ShareSettle</h2>
+        {/* <h2 className={`${isCollapsed ? 'hidden' : ''}`}>Share<i className='fa fa-dollar-sign'></i><span>ettle</span></h2> */}
+        <h2 className={`${isCollapsed ? 'hidden' : 'logo-font'}`}>
+          <span className="logo-share">Share</span>
+          <i className='fa fa-dollar-sign logo-settle'></i>
+          <span className="logo-settle">ettle</span>
+        </h2>
+
         <span onClick={toggleNavbar} className="navbar-toggle">
           <i className={`fa ${isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'}`}></i>
         </span>   

@@ -153,14 +153,14 @@ aside.active{
     padding: 10px 25px;
     width: 100%;
     border-radius: 10px;
-    transition: 0.5s;
+    transition: 0.1s;
 }
 .nav__links ul li:not(li:last-child){
     margin-bottom: 22px;
 }
 .nav__links ul li a span{
     color: #000;
-    font-size: 14px;
+    font-size: 15px;
 }
 .nav__links ul li a i{
     margin-right: 40px;
@@ -168,8 +168,13 @@ aside.active{
     transition: 0.5s;
 }
 .nav__links ul li:hover{
-    background: rgba(255, 255, 255, 0.8);
+    /* background: rgba(255, 255, 255, 0.8); */
+    background: #4682A9;
     box-shadow: 0 5px 20px 0 #3782de42;
+}
+
+.nav__links ul li:hover a span{
+    color: white;
 }
 .nav__links ul li:hover i{
     color: #3781DE;

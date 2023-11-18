@@ -1,48 +1,96 @@
-
-.sidebar {
+/* Basic reset for padding and margin to avoid inconsistencies */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Import Montserrat font from Google Fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  
+  /* Sidebar styling */
+  .sidebar {
     position: fixed;
+    top: 0;
+    left: 0;
     padding: 8px;
     height: 100vh;
-    transition: width 0.5s, padding 0.5s; 
-}
-
-.sidebar.collapsed .navbar-header h2 {
-    display: none;
-}
-.sidebar.collapsed .navbar-header {
-    justify-content: center;
+    width: 250px; /* Default width */
+    background-color: #fff; /* White background */
+    transition: width 0.5s; /* Transition only for width */
+    overflow-x: hidden; /* Prevent horizontal scroll on collapse */
+    z-index: 1000; /* Ensures sidebar is above other content */
   }
-
-  .navbar-header h2{
-    margin-right: 100px;
+  
+  /* Collapsed state of the sidebar */
+  .sidebar.collapsed {
+    width: 50px; /* Width of collapsed sidebar */
+    padding: 8px 0; /* Vertical padding only */
   }
-
-.sidebar.collapsed {
-    width: 50px;
-    padding: 8px 0;
-}
-
-.nav__links.hidden {
-    display: none;
-}
-
-.navbar-toggle {
-    margin-top: 6px;
-    margin-left: 10px;
-    margin-bottom: 20px;
-    font-size: 20px;
+  
+  /* Navbar header styling */
+  .navbar-header {
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between; /* Align items on opposite ends */
+    padding-right: 10px; /* Padding on the right for non-collapsed state */
+  }
+  
+  /* Collapsed navbar header */
+  .sidebar.collapsed .navbar-header {
+    justify-content: center; /* Center items when collapsed */
+    padding-right: 0; /* Remove padding on the right when collapsed */
+  }
+  
+  /* Navbar toggle icon */
+  .navbar-toggle {
+    margin-top: 15px;
+    font-size: 15px;
     cursor: pointer;
-}
-
-.navbar-toggle i{
-    margin-top: 10px;
-}
-
-.hidden {
+  }
+  
+  /* Hide text when collapsed */
+  .sidebar.collapsed .navbar-header h2 {
     display: none;
   }
   
-  .navbar-header {
-    display: flex;
-    align-items: center;
+  /* Logo styling */
+  .logo-font {
+    font-family: 'Montserrat', sans-serif; /* Montserrat font for the logo */
+    font-weight: 700;
+  margin-top: 5px; /* Adjust this value as needed for the top margin */
+  margin-bottom: 35px; /* Adjust this value as needed for the bottom margin */
+  margin-left: 10px;
   }
+  
+  /* Styling for "Share" part of the logo */
+  .logo-share {
+    color: #305777; /* Slightly dark blue for "Share" */
+    font-size: 24px; /* Slightly smaller font size for "Share" */
+    font-weight: 700; /* Bold weight for "Share" */
+  }
+  
+  /* Styling for "Settle" part of the logo */
+  .logo-settle {
+    color: #4682A9; /* Original blue for "Settle" */
+    font-size: 24px; /* Same font size for "Settle" for consistency */
+    font-weight: 700; /* Bold weight for "Settle" */
+  }
+  
+  /* Additional hidden class for toggling visibility */
+  .hidden {
+    display: none;
+  }
+  
+  /* Nav links style */
+  .nav__links {
+    /* Your existing styles for nav links */
+  }
+  
+  .nav__links.hidden {
+    display: none; /* Hide links when navbar is collapsed */
+  }
+  
+  /* Ensure the navbar is not duplicated in the DOM */
+  /* You may need to inspect your React components to ensure you are not rendering the navbar twice */
+  
