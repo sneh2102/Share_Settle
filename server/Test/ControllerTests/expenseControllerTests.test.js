@@ -165,305 +165,226 @@ const { addExpenseList } = require('../../Controller/groupController');
   });
   
   
-  // describe('deleteExpense', () => {
-  //   it('should delete an expense', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'expense123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+  describe('viewGroupExpense', () => {
+    it('should view expenses for a group', async () => {
+      const req = {
+        body: {
+          id: 'group123',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.findOne.mockResolvedValueOnce({ _id: 'expense123' });
-  //     Expense.deleteOne.mockResolvedValueOnce({ deletedCount: 1 });
-  //     Group.clearExpenseList.mockResolvedValueOnce('clear_response');
-  
-  //     await deleteExpense(req, res);
-  
-  //     expect(Expense.findOne).toHaveBeenCalledWith({ _id: 'expense123' });
-  //     expect(Expense.deleteOne).toHaveBeenCalledWith({ _id: 'expense123' });
-  //     expect(Group.clearExpenseList).toHaveBeenCalledWith(
-  //       'expense123',
-  //       undefined,
-  //       undefined,
-  //       undefined
-  //     );
-  //     expect(res.status).toHaveBeenCalledWith(200);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       status: 'Success',
-  //       message: 'Expense is deleted',
-  //       response: { deletedCount: 1 },
-  //     });
-  //   });
-  
-  //   it('should handle invalid expense id during deletion', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'invalidExpenseId',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
-  
-  //     Expense.findOne.mockResolvedValueOnce(null);
-  
-  //     await deleteExpense(req, res);
-  
-  //     expect(Expense.findOne).toHaveBeenCalledWith({ _id: 'invalidExpenseId' });
-  //     expect(res.status).toHaveBeenCalledWith(400);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'Invalid Expense Id',
-  //     });
-  //   });
-  
-  //   it('should handle errors during expense deletion', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'expense123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
-  
-  //     Expense.findOne.mockResolvedValueOnce({ _id: 'expense123' });
-  //     Expense.deleteOne.mockRejectedValueOnce(new Error('Expense deletion error'));
-  
-  //     await deleteExpense(req, res);
-  
-  //     expect(res.status).toHaveBeenCalledWith(500);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'Expense deletion error',
-  //     });
-  //   });
-  // });
-  
-  // describe('viewGroupExpense', () => {
-  //   it('should view expenses for a group', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'group123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
-  
-  //     Expense.find.mockResolvedValueOnce([{ expenseAmount: 50 }, { expenseAmount: 75 }]);
+      Expense.find.mockResolvedValueOnce([{ expenseAmount: 50 }, { expenseAmount: 75 }]);
       
-  //     await viewGroupExpense(req, res);
+      await viewGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
-  //     expect(res.status).toHaveBeenCalledWith(200);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       status: 'Success',
-  //       expense: [{ expenseAmount: 50 }, { expenseAmount: 75 }],
-  //       total: 125,
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'Success',
+        expense: [{ expenseAmount: 50 }, { expenseAmount: 75 }],
+        total: 125,
+      });
+    });
   
-  //   it('should handle no expenses present for the group', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'groupWithoutExpenses',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle no expenses present for the group', async () => {
+      const req = {
+        body: {
+          id: '6556d7eb0d8d449f343c725c',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockResolvedValueOnce([]);
+      Expense.find.mockResolvedValueOnce([]);
   
-  //     await viewGroupExpense(req, res);
+      await viewGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ groupId: 'groupWithoutExpenses' });
-  //     expect(res.status).toHaveBeenCalledWith(400);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'No expense present for the group',
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({ groupId: '6556d7eb0d8d449f343c725c' });
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'No expense present for the group',
+      });
+    });
   
-  //   it('should handle errors during viewing group expenses', async () => {
-  //     const req = {
-  //       body: {
-  //         id: 'group123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle errors during viewing group expenses', async () => {
+      const req = {
+        body: {
+          id: 'group123',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockRejectedValueOnce(new Error('Group expense view error'));
+      Expense.find.mockRejectedValueOnce(new Error('Group expense view error'));
   
-  //     await viewGroupExpense(req, res);
+      await viewGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
-  //     expect(res.status).toHaveBeenCalledWith(500);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'Group expense view error',
-  //     });
-  //   });
-  // });
+      expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Group expense view error',
+      });
+    });
+  });
   
-  // describe('viewUserExpense', () => {
-  //   it('should view expenses for a user', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'user@example.com',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+  describe('viewUserExpense', () => {
+    it('should view expenses for a user', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockResolvedValueOnce([{ expenseDistribution: 30 }, { expenseDistribution: 50 }]);
+      Expense.find.mockResolvedValueOnce([{ expenseDistribution: 30 }, { expenseDistribution: 50 }]);
       
-  //     await viewUserExpense(req, res);
+      await viewUserExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ involved: 'user@example.com' });
-  //     expect(res.status).toHaveBeenCalledWith(200);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       status: 'Success',
-  //       expense: [{ expenseDistribution: 30 }, { expenseDistribution: 50 }],
-  //       total: 80,
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({ involved: 'test@gmail.com' });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'Success',
+        expense: [{ expenseDistribution: 30 }, { expenseDistribution: 50 }],
+        total: 80,
+      });
+    });
   
-  //   it('should handle no expenses present for the user', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'userWithoutExpenses@example.com',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle no expenses present for the user', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockResolvedValueOnce([]);
+      Expense.find.mockResolvedValueOnce([]);
   
-  //     await viewUserExpense(req, res);
+      await viewUserExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ involved: 'userWithoutExpenses@example.com' });
-  //     expect(res.status).toHaveBeenCalledWith(400);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'No expense present',
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({ involved: 'test@gmail.com' });
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'No expense present',
+      });
+    });
   
-  //   it('should handle errors during viewing user expenses', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'user@example.com',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle errors during viewing user expenses', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockRejectedValueOnce(new Error('User expense view error'));
+      Expense.find.mockRejectedValueOnce(new Error('User expense view error'));
   
-  //     await viewUserExpense(req, res);
+      await viewUserExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({ involved: 'user@example.com' });
-  //     expect(res.status).toHaveBeenCalledWith(500);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'User expense view error',
-  //     });
-  //   });
-  // });
+      expect(Expense.find).toHaveBeenCalledWith({ involved: 'test@gmail.com' });
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'User expense view error',
+      });
+    });
+  });
   
-  // describe('viewUserGroupExpense', () => {
-  //   it('should view expenses for a user in a specific group', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'user@example.com',
-  //         id: 'group123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+  describe('viewUserGroupExpense', () => {
+    it('should view expenses for a user in a specific group', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+          id: '6556d7eb0d8d449f343c725c',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockResolvedValueOnce([{ expenseDistribution: 20 }, { expenseDistribution: 30 }]);
+      Expense.find.mockResolvedValueOnce([{ expenseDistribution: 20 }, { expenseDistribution: 30 }]);
       
-  //     await viewUserGroupExpense(req, res);
+      await viewUserGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({
-  //       involved: 'user@example.com',
-  //       groupId: 'group123',
-  //     });
-  //     expect(res.status).toHaveBeenCalledWith(200);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       status: 'Success',
-  //       expense: [{ expenseDistribution: 20 }, { expenseDistribution: 30 }],
-  //       total: 50,
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({
+        involved: 'test@gmail.com',
+        groupId: '6556d7eb0d8d449f343c725c',
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'Success',
+        expense: [{ expenseDistribution: 20 }, { expenseDistribution: 30 }],
+        total: 50,
+      });
+    });
   
-  //   it('should handle no expenses present for the user in the group', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'userWithoutExpenses@example.com',
-  //         id: 'groupWithoutExpenses',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle no expenses present for the user in the group', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+          id: '6556d7eb0d8d449f343c725c',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockResolvedValueOnce([]);
+      Expense.find.mockResolvedValueOnce([]);
   
-  //     await viewUserGroupExpense(req, res);
+      await viewUserGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({
-  //       involved: 'userWithoutExpenses@example.com',
-  //       groupId: 'groupWithoutExpenses',
-  //     });
-  //     expect(res.status).toHaveBeenCalledWith(400);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'No expense present',
-  //     });
-  //   });
+      expect(Expense.find).toHaveBeenCalledWith({
+        involved: 'test@gmail.com',
+        groupId: '6556d7eb0d8d449f343c725c',
+      });
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'No expense present',
+      });
+    });
   
-  //   it('should handle errors during viewing user group expenses', async () => {
-  //     const req = {
-  //       body: {
-  //         email: 'user@example.com',
-  //         id: 'group123',
-  //       },
-  //     };
-  //     const res = {
-  //       status: jest.fn().mockReturnThis(),
-  //       json: jest.fn(),
-  //     };
+    it('should handle errors during viewing user group expenses', async () => {
+      const req = {
+        body: {
+          email: 'test@gmail.com',
+          id: '6556d7eb0d8d449f343c725c',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
   
-  //     Expense.find.mockRejectedValueOnce(new Error('User group expense view error'));
+      Expense.find.mockRejectedValueOnce(new Error('User group expense view error'));
   
-  //     await viewUserGroupExpense(req, res);
+      await viewUserGroupExpense(req, res);
   
-  //     expect(Expense.find).toHaveBeenCalledWith({
-  //       involved: 'user@example.com',
-  //       groupId: 'group123',
-  //     });
-  //     expect(res.status).toHaveBeenCalledWith(500);
-  //     expect(res.json).toHaveBeenCalledWith({
-  //       message: 'User group expense view error',
-  //     });
-  //   });
-  // });
+      expect(Expense.find).toHaveBeenCalledWith({
+        involved: 'test@gmail.com',
+        groupId: '6556d7eb0d8d449f343c725c',
+      });
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'User group expense view error',
+      });
+    });
+  });
   
   
