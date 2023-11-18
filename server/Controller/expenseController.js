@@ -173,5 +173,171 @@ const viewExpense = async (req, res) => {
     }
 }
 
+const categoryExpense = async (req, res) => {
+    try {
+        var categoryExpense = await Expense.aggregate([{
+                $match: {
+                    groupId: req.body.id
+                }
+            },
+            {
+                $group: {
+                    _id: "$category",
+                    amount: {
+                        $sum: "$amount"
+                    }
+                }
+            },{ $sort : {"_id" : 1 } }
+        ])
 
-module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense, viewUserGroupExpense};
+        res.status(200).json({
+            status: "success",
+            data: categoryExpense
+        })
+    } catch (err) {
+
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}                           
+
+const monthlyExpense = async (req, res) => {
+    try {
+        var monthlyExpense = await Expense.aggregate([{
+                $match: {
+                    groupId: req.body.id
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        month: {
+                            $month: "$dateOfExpense"
+                        },
+                        year: {
+                            $year: "$dateOfExpense"
+                        }
+                    },
+                    amount: {
+                        $sum: "$amount"
+                    }
+                }
+            },
+            { $sort : {"_id.month" : 1 } }
+        ])
+        res.status(200).json({
+            status: "success",
+            data: monthlyExpense
+        })
+    } catch (err) {
+      
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+const userCategoryExpense = async (req, res) => {
+    try {
+        var categoryExpense = await Expense.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { involved: req.body.user },
+                        { ownerOfExpense: req.body.user }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: "$category",
+                    amount: {
+                        $sum: {
+                            $cond: {
+                                if: {
+                                    $or: [
+                                        { $in: [req.body.user, ["$involved"]] },
+                                        { $in: [req.body.user, ["$ownerOfExpense"]] }
+                                    ]
+                                },
+                                then: "$expenseDistribution",
+                                else: "$amount"
+                            }
+                        }
+                    }
+                }
+            },
+            { $sort: { "_id": 1 } }
+        ]);
+
+        res.status(200).json({
+            status: "success",
+            data: categoryExpense
+        });
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        });
+    }
+};
+
+
+
+const userMonthlyExpense = async (req, res) => {
+    try {
+        var monthlyExpense = await Expense.aggregate([{
+                $match: {
+                    involved: req.body.user
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        month: {
+                            $month: "$dateOfExpense"
+                        },
+                        year: {
+                            $year: "$dateOfExpense"
+                        }
+                    },
+                    amount: {
+                        $sum: "$expenseDistribution"
+                    }
+                }
+            },
+            { $sort : {"_id.month" : 1 } }
+        ])
+        res.status(200).json({
+            status: "success",
+            data: monthlyExpense
+        })
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+const recentUserExpenses = async (req, res) => {
+    try {
+        var recentExpense = await Expense.find({
+            involved: req.body.user
+        }).sort({
+            $natural: -1  
+        }).limit(5);  
+
+        res.status(200).json({
+            status: "Success",
+            expense: recentExpense
+        })
+    } catch (err) {
+        res.status(err.status || 500).json({
+            message: err.message
+        })
+    }
+}
+
+
+
+module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense, viewUserGroupExpense, categoryExpense, monthlyExpense, userCategoryExpense, userMonthlyExpense, recentUserExpenses};
