@@ -1,18 +1,30 @@
 const {
-    addExpense,
-    deleteExpense,
-    viewGroupExpense,
-    viewUserExpense,
-    viewUserGroupExpense,
-    viewExpense,
-  } = require('../../Controller/expenseController');
+  addExpense,
+  deleteExpense,
+  viewGroupExpense,
+  viewUserExpense,
+  viewUserGroupExpense,
+  viewExpense,
+  categoryExpense,
+  monthlyExpense,
+  userCategoryExpense,
+  userMonthlyExpense,
+  recentUserExpenses
+} = require('../../Controller/expenseController');
 const { addExpenseList } = require('../../Controller/groupController');
 
-  
-  const Expense = require('../../Models/expenseModel');
-  const GroupModal = require('../../Models/groupModel');
-  const Group = require ('../../Controller/groupController')
-  
+
+const Expense = require('../../Models/expenseModel');
+const GroupModal = require('../../Models/groupModel');
+const Group = require ('../../Controller/groupController')
+
+const mockRequest = (body) => ({ body });
+const mockResponse = () => {
+  const res = {};
+  res.status = jest.fn().mockReturnValue(res);
+  res.json = jest.fn().mockReturnValue(res);
+  return res;
+};
   jest.mock('../../Models/expenseModel');
   jest.mock('../../Models/groupModel');
   jest.mock('../../Controller/groupController');
@@ -386,5 +398,200 @@ const { addExpenseList } = require('../../Controller/groupController');
       });
     });
   });
+
+  describe('categoryExpense', () => {
+    it('should return success with category expenses', async () => {
+      const req = mockRequest({ id: 'your-group-id' });
+      const res = mockResponse();
   
+      // Mock the Expense.aggregate method
+      Expense.aggregate.mockResolvedValueOnce([
+        { _id: 'Home', amount: 100 },
+        { _id: 'Entertainment', amount: 150 },
+      ]);
   
+      await categoryExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: [
+          { _id: 'Home', amount: 100 },
+          { _id: 'Entertainment', amount: 150 },
+        ],
+      });
+    });
+  
+    it('should handle errors during category expense retrieval', async () => {
+      const req = mockRequest({ id: '65565f5cc3bfbce951b49ea2' });
+      const res = mockResponse();
+  
+      // Mock the Expense.aggregate method to throw an error
+      Expense.aggregate.mockRejectedValueOnce(new Error('Category expense retrieval error'));
+  
+      await categoryExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Category expense retrieval error',
+      });
+    });
+  });
+
+  describe('monthlyExpense', () => {
+    it('should return success with monthly expenses', async () => {
+      const req = mockRequest({ id: 'your-group-id' });
+      const res = mockResponse();
+  
+      Expense.aggregate.mockResolvedValueOnce([
+        { _id: { month: 1, year: 2023 }, amount: 100 },
+        { _id: { month: 2, year: 2023 }, amount: 150 },
+      ]);
+  
+      await monthlyExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: [
+          { _id: { month: 1, year: 2023 }, amount: 100 },
+          { _id: { month: 2, year: 2023 }, amount: 150 },
+        ],
+      });
+    });
+  
+    it('should handle errors during monthly expense retrieval', async () => {
+      const req = mockRequest({ id: '65565f5cc3bfbce951b49ea2' });
+      const res = mockResponse();
+  
+      Expense.aggregate.mockRejectedValueOnce(new Error('Monthly expense retrieval error'));
+  
+      await monthlyExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Monthly expense retrieval error',
+      });
+    });
+  });
+  
+  describe('userCategoryExpense', () => {
+    it('should return success with user category expenses', async () => {
+      const req = mockRequest({ user: 'your-user-id' });
+      const res = mockResponse();
+  
+      // Mock the Expense.aggregate method
+      Expense.aggregate.mockResolvedValueOnce([
+        { _id: 'Home', amount: 100 },
+        { _id: 'Entertainment', amount: 150 },
+      ]);
+  
+      await userCategoryExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: [
+          { _id: 'Home', amount: 100 },
+          { _id: 'Entertainment', amount: 150 },
+        ],
+      });
+    });
+  
+    it('should handle errors during user category expense retrieval', async () => {
+      const req = mockRequest({ user: '65565f5cc3bfbce951b49ea2' });
+      const res = mockResponse();
+  
+      // Mock the Expense.aggregate method to throw an error
+      Expense.aggregate.mockRejectedValueOnce(new Error('User category expense retrieval error'));
+  
+      await userCategoryExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'User category expense retrieval error',
+      });
+    });
+  });
+  
+  describe('userMonthlyExpense', () => {
+    it('should return success with user monthly expenses', async () => {
+      const req = mockRequest({ user: '65565f5cc3bfbce951b49ea2' });
+      const res = mockResponse();
+  
+      Expense.aggregate.mockResolvedValueOnce([
+        { _id: { month: 1, year: 2023 }, amount: 100 },
+        { _id: { month: 2, year: 2023 }, amount: 150 },
+      ]);
+  
+      await userMonthlyExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'success',
+        data: [
+          { _id: { month: 1, year: 2023 }, amount: 100 },
+          { _id: { month: 2, year: 2023 }, amount: 150 },
+        ],
+      });
+    });
+  
+    it('should handle errors during user monthly expense retrieval', async () => {
+      const req = mockRequest({ user: '65565f5cc3bfbce951b49ea2' });
+      const res = mockResponse();
+  
+      Expense.aggregate.mockRejectedValueOnce(new Error('User monthly expense retrieval error'));
+  
+      await userMonthlyExpense(req, res);
+  
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'User monthly expense retrieval error',
+      });
+    });
+  });
+describe('viewExpense', () => {
+    it('should return a success response with the expense details', async () => {
+
+      const mockExpenseData = {
+        _id: '6556942f35d88d9a95ef104a',
+        groupId: '6556941a35d88d9a95ef103d',
+        name: 'sneh',
+        description: 'sneh',
+        amount: 1000,
+        expenseCurrency: 'CAD',
+        category: 'Entertainment',
+        ownerOfExpense: 'test@gmail.com',
+        involved: ['test@gmail.com', 'snehpatel903@gmail.com', 'krisha@gmail.com'],
+        expenseDistribution: '333.3333333333333',
+        dateOfExpense: '2023-11-16T22:14:07.452Z',
+        __v: 0,
+      };
+  
+      
+      Expense.findOne.mockResolvedValue(mockExpenseData);
+  
+     
+      const req = {
+        body: {
+          id: '6556942f35d88d9a95ef104a', 
+        },
+      };
+  
+     
+      const res = mockResponse();
+  
+      
+      await viewExpense(req, res);
+  
+     
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        status: 'Success',
+        expense: mockExpenseData,
+      });
+    });
+  
+  });
+  
+    
