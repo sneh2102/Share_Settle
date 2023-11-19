@@ -69,7 +69,7 @@ const GroupView = () => {
       // e.preventDefault();
       try {
         console.log(user);
-        const data = await getUserGroupExpenses("test@gmail.com", id);
+        const data = await getUserGroupExpenses(user.email, id);
         setUserExpenses(data.expense)
 
       } catch (error) {
@@ -86,9 +86,9 @@ const GroupView = () => {
   },[]);
 
 
-  const handleLeaveGroup = () => {
+  const handleLeaveGroup = async () => {
     try{
-      leaveGroup(user.email,id);
+     await leaveGroup(user.email,id);
       Navigate('/groups')
       toast.success("leaved Succesfully")
     }

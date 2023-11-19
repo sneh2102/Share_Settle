@@ -11,8 +11,6 @@ a{
 body{
     height: 100vh;
     font-family: 'Comfortaa', cursive;
-    /* background: url("https://cdn.dribbble.com/users/45782/screenshots/11304218/media/314bfdb8d30e516a763ae5b33e173f9e.jpg"); */
-    background-color: aliceblue;
     backdrop-filter: blur( 11.0px );
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -157,7 +155,6 @@ aside.active{
     transition: 0.5s;
 }
 i{
-    margin-right: 40px;
     color: #A4A4A4;
     transition: 0.5s;
 }

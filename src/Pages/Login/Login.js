@@ -41,18 +41,24 @@ export default function Login() {
         setError(err.message);
     }
   };
-  const handleGoogleSignIn =async(e)=>{
+  const handleGoogleSignIn = async (e) => {
     e.preventDefault();
-    try{
-        await gSignIn();
-        dispatch({type: "LOGIN", payload:`${gSignIn()}`})
-        navigate("/home");
-    }catch(err)
-    {
-
-      setError(err.message)
+    try {
+      const result = await gSignIn(); 
+      console.log(result);
+      const user = {
+        user: {name: result.user.displayName},
+        email: result.user.email,
+      };
+  
+      window.localStorage.setItem('user', JSON.stringify(user)); 
+      dispatch({ type: "LOGIN", payload: user });
+      navigate("/home");
+    } catch (err) {
+      setError(err.message);
     }
-  }
+  };
+  
   const handleFacebookSignIn =async(e)=>{
     e.preventDefault();
     try{

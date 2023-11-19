@@ -30,6 +30,7 @@ const [state, dispatch] = useReducer(authReducer, { user: null
     {
         const googleAuthProvider = new GoogleAuthProvider();
         return signInWithPopup(auth, googleAuthProvider)
+        
     }
     function fSignIn() {
         const facebookAuthProvider =new FacebookAuthProvider();
