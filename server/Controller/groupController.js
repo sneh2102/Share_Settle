@@ -1,5 +1,7 @@
 const Group = require("../Models/groupModel");
 const Expense = require("../Models/expenseModel")
+const User = require("../Models/userModel")
+const notificationHandler = require('../helper/NotificationHandler')
 const splitCalculator = require('../helper/spliting')
 
 // create a new group
@@ -27,6 +29,17 @@ const createGroup = async (req, res) => {
         console.log(response);
         try {
             const savedGroup = await group.save();
+
+            const groupName = savedGroup.name;
+            const action = 'groupCreation';
+
+            for (const member of savedGroup.members) {
+                const user = await User.findOne({email: member});
+                if (user && user.email) {
+                    await notificationHandler(user.email, user.name, groupName, action);
+                }
+            }
+
             response = savedGroup;
         } catch (err) {
             console.log({ message: err });

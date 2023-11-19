@@ -167,6 +167,7 @@ const viewExpense = async (req, res) => {
             expense: expense
         })
     } catch (err) {
+        console.log(err)
         res.status(err.status || 500).json({
             message: err.message
         })
@@ -302,7 +303,7 @@ const userMonthlyExpense = async (req, res) => {
                         }
                     },
                     amount: {
-                        $sum: "$expenseDistribution"
+                        $sum: "$amount"
                     }
                 }
             },
@@ -332,11 +333,13 @@ const recentUserExpenses = async (req, res) => {
             expense: recentExpense
         })
     } catch (err) {
+        console.error(err);
         res.status(err.status || 500).json({
             message: err.message
         })
     }
 }
+
 
 
 
