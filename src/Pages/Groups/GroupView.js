@@ -9,9 +9,9 @@ import { Typography } from '@mui/material';
 import ExpenseCard from '../../Components/ExpenseCard/ExpenseCard';
 import ExpensePopUp from '../../Components/ExpensePopUp/ExpensePopUp';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
-
+import '../../PagesCommonCSS/PagesCommonCSS.css'
 
 const GroupView = () => {
   const { fetchGroup, leaveGroup } = useGroup();
@@ -83,17 +83,16 @@ const GroupView = () => {
       fetchGroupBalanceSheet();
       fetchUserExpenses();
     }
-  },[]);
+  }, []);
 
 
   const handleLeaveGroup = async () => {
-    try{
-     await leaveGroup(user.email,id);
+    try {
+      await leaveGroup(user.email, id);
       Navigate('/groups')
       toast.success("leaved Succesfully")
     }
-    catch(err)
-    {
+    catch (err) {
       toast.error(err)
     }
   }
@@ -127,25 +126,25 @@ const GroupView = () => {
 
   const handleAddExpense = async (e) => {
     e.preventDefault();
-    
+
     if (!expenseName || !expenseDescription || !expenseAmount || !category || !expenseOwner || selectedMembers.length === 0) {
       toast.error("All fields must be filled");
       return;
     }
-  
+
     if (isNaN(parseFloat(expenseAmount)) || !isFinite(expenseAmount)) {
       toast.error('Please enter a valid number for the expense amount.');
       return;
     }
-  
+
     try {
       // Add expense
       await addExpense(id, expenseName, expenseDescription, parseFloat(expenseAmount), "CAD", category, expenseOwner, selectedMembers);
-      
+
       // Fetch and update group expenses
       const groupExpenses = await fetchGroupExpense(id);
       setExpense(groupExpenses.expense);
-      
+
       setIsAddingExpense(false);
       setExpenseName('');
       setExpenseDescription('');
@@ -153,7 +152,7 @@ const GroupView = () => {
       setCategory('');
       setExpenseOwner('');
       setSelectedMembers([]);
-      
+
       toast.success('Expense added successfully');
     } catch (error) {
       console.error(error);
@@ -161,10 +160,11 @@ const GroupView = () => {
     }
   };
   ;
-  
-  
+
+
 
   return (
+
     <div className='groupView-container'>
       <Navbar />
       <div style={{ marginLeft: "300px" }}>
@@ -183,21 +183,21 @@ const GroupView = () => {
           </>}
       </div>
 
-      
 
-     {/* --------Who Owe Who ------------ */}
+
+      {/* --------Who Owe Who ------------ */}
       <Typography variant="h4" style={{ marginTop: '20px', marginLeft: "300px" }}>Group Balance Sheet</Typography>
-    {balanceSheet ? <>
-    
-      {balanceSheet.map((relationship, index) => (
-        relationship[2] !== 0 ? (
-          <div key={index} style={{ marginTop: '20px', marginLeft: "300px" }}>
-            <p>{relationship[0]} owes {relationship[2]} to {relationship[1]}</p>
-          </div>
-        ) : null
-      ))}
-    </>: <>Loading</>}
-     
+      {balanceSheet ? <>
+
+        {balanceSheet.map((relationship, index) => (
+          relationship[2] !== 0 ? (
+            <div key={index} style={{ marginTop: '20px', marginLeft: "300px" }}>
+              <p>{relationship[0]} owes {relationship[2]} to {relationship[1]}</p>
+            </div>
+          ) : null
+        ))}
+      </> : <>Loading</>}
+
 
 
 
@@ -298,11 +298,32 @@ const GroupView = () => {
               </div>
               <button type="submit">Submit Expense</button>
             </form>
+
+            <button className='bordered-btn' id="add-expense-btn" onClick={openAddExpenseModal}>Add Expense</button>
+
+
+            {isAddingExpense && (
+              <div>
+                <input
+                  type="text"
+                  placeholder="Expense Name"
+                  className='expense-input-field'
+                />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  className='expense-input-field'
+                />
+                <button className="small-submit-buttons" type="submit">Submit Expense</button>
+              </div>
+            )}
           </div>
         </div>
       )}
-    </div>
-  );
-};
+      </div>
+    
+  )
+}
+
 
 export default GroupView;

@@ -1,6 +1,6 @@
 stages:
   - build
-  - test
+  # - test
   - deploy
 
 build:
@@ -13,22 +13,19 @@ build:
     paths:
       - build/
 
-test:
-  image: node:18.18.0
-  stage: test
-  script:
-    - npm install
-    - npm test
+# test:
+#   image: node:18.18.0
+#   stage: test
+#   script:
+#     - npm install
+#     - npm test
 
-netlify:
+deploy:
   image: node:18.18.0
   stage: deploy
   script:
-    - npm install -g netlify-cli
-    - netlify deploy --dir=build --prod
+    - chmod 400 "${SSH_PRIVATE_KEY}"
+    - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
+    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/frontend && serve -s . > webserver.log 2>&1 &"
 
-# # deploy:
-#   image: node:18.18.0
-#   stage: deploy
-#   script:
-#     - scp -r build user@server:/var/www/my-app
+

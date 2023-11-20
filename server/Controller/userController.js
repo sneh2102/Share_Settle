@@ -1,7 +1,8 @@
 const User = require('../Models/userModel')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer');
-const notificationHandler = require('../helper/NotificationHandler')
+const notificationHandler = require('../helper/NotificationHandler');
+const { toast } = require('react-toastify');
 
 
 const createToken = (_id) =>{
@@ -106,18 +107,14 @@ const changeUsername = async (req, res) => {
   try {
     const user = await User.changeUsername(id , name);
     const action = 'changeUsername';
-    await notificationHandler(user.email, user.name, null, action);
+   notificationHandler(user.email, user.name, null, action);
     res.status(200).json({ email,token,user });
   } catch (err) {
-    if (err.name === 'JsonWebTokenError') {
-      res.status(400).json({ error: 'Invalid token' });
-    } else if (err.name === 'TokenExpiredError') {
-      res.status(400).json({ error: 'Token expired' });
-    } else {
-      res.status(500).json({ error: 'Server error' });
-    }
+    if (err) {
+    toast.error(err.message)
   }
 };
+}
 
 const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, newConfirmPassword} = req.body;
