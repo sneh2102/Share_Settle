@@ -75,6 +75,8 @@ const viewGroupExpense = async (req, res) => {
     try {
         var groupExpense = await Expense.find({
             groupId: req.body.id
+        }).sort({
+            dateOfExpense: -1
         })
         if (groupExpense.length == 0) {
             var err = new Error("No expense present for the group")

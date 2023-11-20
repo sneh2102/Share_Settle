@@ -3,6 +3,7 @@ const Expense = require("../Models/expenseModel")
 const User = require("../Models/userModel")
 const notificationHandler = require('../helper/NotificationHandler')
 const splitCalculator = require('../helper/spliting')
+const RemoveFromExpense = require('../helper/RemoveFromExpenses')
 
 // create a new group
 const createGroup = async (req, res) => {
@@ -219,19 +220,19 @@ const leaveGroup = async (req, res) => {
         const group = await Group.findOne({
             _id: req.body.id
         })
-        console.log(group);
+        const {id,From,To,Amount}=req.body
         if (!group) {
             var err = new Error("Invalid Group Id")
             err.status = 400
             throw err
         }
+        // RemoveFromExpense(id,From)   
        
-       group.groupExpensesList[0][req.body.From] += req.body.Amount
-       group.groupExpensesList[0][req.body.To] -= req.body.Amount
+       group.groupExpensesList[0][From] += Amount
+       group.groupExpensesList[0][To] -= Amount
        
        
        var update_response = await Group.updateOne({_id: group._id}, {$set:{groupExpensesList: group.groupExpensesList}})
-       
 
        res.status(200).json({
         message: "Settlement successfully!",

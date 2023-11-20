@@ -39,6 +39,10 @@ const expenseSchema = new mongoose.Schema({
     expenseDistribution: {
         type: String,
         required: true
+    },
+    settledby: {
+        type: Array,
+        required: true
     }
 });
 
