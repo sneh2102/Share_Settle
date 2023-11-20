@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignup } from '../../Hooks/useSignup';
 import { useLogin } from '../../Hooks/useLogin';
 import { useResetPassword } from '../../Hooks/useResetPassword';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -31,14 +32,8 @@ export default function Login() {
     try{
       console.log(userName,email,password);
         await signup(userName, email, password)
-        if(!serror)
-        {
-          handleToggle()
-        }
-        
-        
     } catch(err){
-        setError(err.message);
+        toast.error(err.message);
     }
   };
   const handleGoogleSignIn = async (e) => {
@@ -54,6 +49,7 @@ export default function Login() {
       window.localStorage.setItem('user', JSON.stringify(user)); 
       dispatch({ type: "LOGIN", payload: user });
       navigate("/home");
+      toast.success("Successfully Logged In")
     } catch (err) {
       setError(err.message);
     }
@@ -74,8 +70,6 @@ export default function Login() {
     try{
       await login(LogInEmail,LogInPassword)
       navigate("/home")
-      
-        
     } catch(err){
       setError(err.message)
     }

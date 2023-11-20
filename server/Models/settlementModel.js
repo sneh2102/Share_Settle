@@ -26,7 +26,7 @@ const settlementSchema = new mongoose.Schema({
     expenseList:{
         type: Array,
         default: []
-    }
+    },
 });
 
 module.exports.settlementSchema = mongoose.model("Settlement", settlementSchema);

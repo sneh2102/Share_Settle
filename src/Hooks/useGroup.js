@@ -85,7 +85,7 @@ const leaveGroup = async (email,id) => {
       console.log(data);
       return data.groups;
     } else {
-      throw new Error('Failed to fetch data');
+      throw new Error("Make settlement befor leaving group");
     }
     
 }

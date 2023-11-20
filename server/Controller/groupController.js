@@ -228,10 +228,10 @@ const leaveGroup = async (req, res) => {
        
        group.groupExpensesList[0][req.body.From] += req.body.Amount
        group.groupExpensesList[0][req.body.To] -= req.body.Amount
-
+       
        
        var update_response = await Group.updateOne({_id: group._id}, {$set:{groupExpensesList: group.groupExpensesList}})
-        
+       
 
        res.status(200).json({
         message: "Settlement successfully!",

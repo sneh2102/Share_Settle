@@ -1,3 +1,95 @@
+
+/* Main content wrapper */
+.content-wrapper {
+  flex-grow: 1;
+  transition: margin-left 0.5s;
+  padding-left: 250px; 
+}
+body{
+  margin: 0;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #fff;
+  transition: width 0.5s;
+  overflow-x: hidden;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Collapsed state of the sidebar */
+.sidebar.collapsed {
+  width: 50px;
+}
+
+/* Navbar header styling */
+.navbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Collapsed navbar header */
+.sidebar.collapsed .navbar-header {
+  justify-content: center;
+  padding-right: 0;
+}
+
+/* Navbar toggle icon */
+.navbar-toggle {
+  margin-top: 15px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed .navbar-header h2 {
+  display: none;
+}
+
+/* Logo styling */
+.logo-font {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-top: 5px;
+  margin-bottom: 35px;
+  margin-left: 10px;
+}
+
+/* Styling for "Share" part of the logo */
+.logo-share {
+  color: #305777;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Styling for "Settle" part of the logo */
+.logo-settle {
+  color: #4682A9;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Additional hidden class for toggling visibility */
+.hidden {
+  display: none;
+}
+
+/* Nav links style */
+.nav__links {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
 *{
     padding: 0;
@@ -20,15 +112,7 @@
 a{
     text-decoration: none;
 }
-body{
-    height: 100vh;
-    font-family: 'Comfortaa', cursive;
-    background: url("https://cdn.dribbble.com/users/45782/screenshots/11304218/media/314bfdb8d30e516a763ae5b33e173f9e.jpg");
-    backdrop-filter: blur( 11.0px );
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-}
+
 aside{
     position: fixed;
     padding: 8px;
@@ -179,3 +263,5 @@ aside.active{
 .nav__links ul li:hover i{
     color: #3781DE;
 }
+/* Ensure the navbar is not duplicated in the DOM */
+/* You may need to inspect your React components to ensure you are not rendering the navbar twice */

@@ -5,13 +5,12 @@ import Navbar from '../../Components/Navbar/Navbar';
 import './GroupView.css';
 import { useExpense } from '../../Hooks/useExpense';
 import { toast } from 'react-toastify';
-import { Typography } from '@mui/material';
+import { Typography , Button, Paper, Grid, Container,Box,Tabs,Tab} from '@mui/material';
 import ExpenseCard from '../../Components/ExpenseCard/ExpenseCard';
 import ExpensePopUp from '../../Components/ExpensePopUp/ExpensePopUp';
+import { useNavigate } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom'
 
-import '../../PagesCommonCSS/PagesCommonCSS.css'
 
 const GroupView = () => {
   const { fetchGroup, leaveGroup } = useGroup();
@@ -34,6 +33,7 @@ const GroupView = () => {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const Navigate = useNavigate();
+  const [selectedTab, setSelectedTab] = useState('group');
 
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const GroupView = () => {
       // e.preventDefault();
       try {
         console.log(user);
-        const data = await getUserGroupExpenses(user.email, id);
+        const data = await getUserGroupExpenses("test@gmail.com", id);
         setUserExpenses(data.expense)
 
       } catch (error) {
@@ -83,17 +83,19 @@ const GroupView = () => {
       fetchGroupBalanceSheet();
       fetchUserExpenses();
     }
-  }, []);
+  },[]);
 
 
-  const handleLeaveGroup = async () => {
-    try {
-      await leaveGroup(user.email, id);
+  const handleLeaveGroup = async() => {
+    try{
+      console.log(user.email,id);
+      await leaveGroup(user.email,id);
       Navigate('/groups')
-      toast.success("leaved Succesfully")
+      toast.success("Leaved Succesfully")
     }
-    catch (err) {
-      toast.error(err)
+    catch(err)
+    {
+      toast.error(err.message)
     }
   }
 
@@ -126,25 +128,25 @@ const GroupView = () => {
 
   const handleAddExpense = async (e) => {
     e.preventDefault();
-
+    
     if (!expenseName || !expenseDescription || !expenseAmount || !category || !expenseOwner || selectedMembers.length === 0) {
       toast.error("All fields must be filled");
       return;
     }
-
+  
     if (isNaN(parseFloat(expenseAmount)) || !isFinite(expenseAmount)) {
       toast.error('Please enter a valid number for the expense amount.');
       return;
     }
-
+  
     try {
       // Add expense
       await addExpense(id, expenseName, expenseDescription, parseFloat(expenseAmount), "CAD", category, expenseOwner, selectedMembers);
-
+      
       // Fetch and update group expenses
       const groupExpenses = await fetchGroupExpense(id);
       setExpense(groupExpenses.expense);
-
+      
       setIsAddingExpense(false);
       setExpenseName('');
       setExpenseDescription('');
@@ -152,7 +154,7 @@ const GroupView = () => {
       setCategory('');
       setExpenseOwner('');
       setSelectedMembers([]);
-
+      
       toast.success('Expense added successfully');
     } catch (error) {
       console.error(error);
@@ -160,84 +162,151 @@ const GroupView = () => {
     }
   };
   ;
-
-
+  
+  
 
   return (
+    <Container>
 
-    <div className='groupView-container'>
+    <Grid className='groupView-container'>
+      <Paper elevation={3} style={{ margin: '20px', padding: '20px', borderRadius: '15px', background: '#ffffff', }}>
       <Navbar />
-      <div style={{ marginLeft: "300px" }}>
-        {/* -----------Group Details-------- */}
-        {groupDetails ?
-          <>
-
-            <h1>Group Details</h1>
-            <div>
-              <p>Group Name: {groupDetails.group.name}</p>
-              <p>Group Members: {groupDetails.group.members}</p>
+      <div>
+      <Paper elevation={3} style={{ margin: '20px', padding: '20px', borderRadius: '15px', background: '#f0f0f0' }}>
+      {/* -----------Group Details-------- */}
+      {groupDetails ? (
+        <>
+          <Typography variant="h4" gutterBottom style={{ color: '#4CAF50', marginBottom: '20px' }}>
+           Group Details 
+          </Typography>
+          <div>
+            <Typography variant="h5" style={{ fontWeight: 'bold', color: '#2196f3', marginBottom: '10px' }}>
+              Group Name: {groupDetails.group.name}
+            </Typography>
+            <Typography variant="subtitle1" style={{ marginBottom: '10px', color: '#777' }}>
+              🌟 Group Members 🌟
+            </Typography>
+            <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+              {groupDetails.group.members.map((member, index) => (
+                <Typography key={index} variant="subtitle1" style={{ marginBottom: '5px', color: '#333' }}>
+                  {member}
+                </Typography>
+              ))}
             </div>
-            <button onClick={openAddExpenseModal}>Add Expense</button>
-            <button onClick={handleLeaveGroup}>Leave Group</button>
-          </> : <> <div>Loading</div>
-          </>}
+          </div>
+          <div style={{ marginTop: '20px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginRight: '10px', background: '#FFD700', color: '#333' }}
+              onClick={openAddExpenseModal}
+              >
+              🚀 Add Expense
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ background: '#FF6347', color: '#fff' }}
+              onClick={handleLeaveGroup}
+              >
+              🚪 Leave Group
+            </Button>
+          </div>
+        </>
+      ) : (
+        <div>Loading</div>
+        )}
+    </Paper>
       </div>
-
-
-
-      {/* --------Who Owe Who ------------ */}
-      <Typography variant="h4" style={{ marginTop: '20px', marginLeft: "300px" }}>Group Balance Sheet</Typography>
-      {balanceSheet ? <>
-
-        {balanceSheet.map((relationship, index) => (
-          relationship[2] !== 0 ? (
-            <div key={index} style={{ marginTop: '20px', marginLeft: "300px" }}>
-              <p>{relationship[0]} owes {relationship[2]} to {relationship[1]}</p>
-            </div>
-          ) : null
-        ))}
-      </> : <>Loading</>}
-
-
-
-
+      <div className='group-balance-sheet' >
+      <Paper elevation={3} style={{ margin: '20px', padding: '20px', borderRadius: '15px', background: '#f0f0f0' }}>
+        {/* --------Who Owe Who ------------ */}
+        <Typography variant="h4" style={{ marginTop: '20px', color: '#4CAF50', marginBottom: '20px' }}>
+          💸 Group Balance Sheet 💸
+        </Typography>
+        {balanceSheet ? (
+          <>
+            {balanceSheet.map((relationship, index) => (
+              relationship[2] !== 0 ? (
+                <div key={index} style={{ marginTop: '20px', marginBottom: '20px', padding: '15px', borderRadius: '10px', background: '#fff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <Typography variant="h6" style={{ marginBottom: '8px', color: '#333' }}>
+                      {relationship[0]}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: '#777' }}>
+                      owes {relationship[2]} to {relationship[1]}
+                    </Typography>
+                  </div>
+                  <div>
+                   <Button
+                   variant="contained"
+                   color="secondary"
+                   style={{ background: '#FF6347', color: '#fff' }}
+                   onClick={handleLeaveGroup}>Settle</Button>
+                  </div>
+                </div>
+              ) : null
+              ))}
+          </>
+        ) : <>
+          <div>No Settlements to Show</div>
+        </>
+          }
+      </Paper>
+    </div>
 
       {/* -------Expense--------- */}
-      <Typography variant="h4" style={{ marginTop: '20px', marginLeft: "300px" }}>Expense Details</Typography>
-      {expenses ? <>
-        <div style={{ marginTop: '20px', marginLeft: "300px", display: "flex" }}>
-          {expenses.map((expense) => (
+ {/* Toggle between "Group Expenses" and "User Expenses" */}
+  <Paper elevation={3} style={{ margin: '20px', padding: '20px', borderRadius: '15px', background: '#f0f0f0' }}>
+ <Box mb={2} display="flex" justifyContent="center">
 
-            <ExpenseCard key={expense._id} expense={expense} onClick={openExpenseModal} />
+        <Tabs value={selectedTab} onChange={(e, newValue) => setSelectedTab(newValue)}>
+          <Tab label="Group Expenses" value="group" />
+          <Tab label="User Expenses" value="user" />
+        </Tabs>
+      </Box>
 
-          ))}
-        </div>
-      </> : <><div>Loading</div></>
-      }
+      {/* Display Expenses based on the selected tab */}
+      <div>
+        <Typography variant="h4" gutterBottom>
+          {selectedTab === 'group' ? 'Group Expenses' : 'User Expenses'}
+        </Typography>
 
-      {/* -----------User Expenses------------------ */}
-      <Typography variant="h4" style={{ marginTop: '20px', marginLeft: "300px" }}>User Expense Details</Typography>
-      {userExpenses ? <>
-        <div style={{ marginTop: '20px', marginLeft: "300px", display: "flex" }}>
-          {userExpenses.map((expense) => (
+        {selectedTab === 'group' && expenses ? (
+          <Grid container spacing={2}>
+            {expenses.map((expense) => (
+              <Grid item key={expense._id} xs={12} sm={6} md={4}>
+                <ExpenseCard expense={expense} onClick={openExpenseModal} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : null}
 
-            <ExpenseCard key={expense._id} expense={expense} onClick={openExpenseModal} />
+        {selectedTab === 'user' && userExpenses ? (
+          <Grid container spacing={2}>
+            {userExpenses.map((expense) => (
+              <Grid item key={expense._id} xs={12} sm={6} md={4}>
+                <ExpenseCard expense={expense} onClick={openExpenseModal} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : null}
 
-          ))}
-        </div>
-      </> : <><div>Loading</div></>
-      }
+        {(!selectedTab || (!expenses && selectedTab === 'group') || (!userExpenses && selectedTab === 'user')) && (
+          <div>No Expenses to Show</div>
+          )}
+      </div>
+      </Paper>
 
+          
       {/* ------------Expense Floadting Window---------------- */}
 
       {isExpenseModalOpen && (
         <ExpensePopUp
-          expense={selectedExpense}
-          onClose={() => setIsExpenseModalOpen(false)}
+        expense={selectedExpense}
+        onClose={() => setIsExpenseModalOpen(false)}
         />
-      )}
-
-
+        )}
 
       {/* -----------AddExpense PopUp---------------- */}
 
@@ -252,7 +321,7 @@ const GroupView = () => {
               <input type="number" placeholder="Amount" onChange={(e) => setExpenseAmount(e.target.value)} />
               <select
                 onChange={(e) => setCategory(e.target.value)}
-              >
+                >
                 <option>Groceries</option>
                 <option>Home</option>
                 <option>Entertainment</option>
@@ -264,7 +333,7 @@ const GroupView = () => {
                 className='field-input'
                 onChange={(e) => setExpenseOwner(e.target.value)}
                 value=""
-              >
+                >
                 <option value="">Select who paid</option>
                 {availableMembers.map((members, index) => (
                   <option key={index} value={members}>
@@ -280,7 +349,7 @@ const GroupView = () => {
                 className='field-input'
                 onChange={(e) => addMember(e.target.value)}
                 value=""
-              >
+                >
                 <option value="">Select Members</option>
                 {availableMembers.map((members, index) => (
                   <option key={index} value={members}>
@@ -298,32 +367,14 @@ const GroupView = () => {
               </div>
               <button type="submit">Submit Expense</button>
             </form>
-
-            <button className='bordered-btn' id="add-expense-btn" onClick={openAddExpenseModal}>Add Expense</button>
-
-
-            {isAddingExpense && (
-              <div>
-                <input
-                  type="text"
-                  placeholder="Expense Name"
-                  className='expense-input-field'
-                />
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  className='expense-input-field'
-                />
-                <button className="small-submit-buttons" type="submit">Submit Expense</button>
-              </div>
-            )}
           </div>
         </div>
       )}
-      </div>
-    
-  )
-}
-
+      </Paper>
+    </Grid>
+      </Container>
+  );
+};
 
 export default GroupView;
+
