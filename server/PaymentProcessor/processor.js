@@ -8,13 +8,13 @@ const processPayment = async (req, res) => {
 
     // if the request doesn't have all required fields then return error
     if(!req || !req.body || !req.body.sender || !req.body.receiver || !req.body.amount){
-        res.status(400).json({
+        res = {
             error:{
                 errorCode: "40001",
                 errorMessage: "request body is missing required fields"
             }
-        });
-        return;
+        };
+        return res;
     }
 
     const body = req.body;
@@ -29,42 +29,42 @@ const processPayment = async (req, res) => {
     // check if the card details are valid
     const validSenderCard = await validCard(senderCard);
     if(!validSenderCard){
-        res.status(200).json({
+        res = {
             sender: sender,
             receiver: receiver,
             error:{
                 errorCode: "40002",
                 errorMessage: "invalid sender card"
             }
-        });
-        return;
+        };
+        return res;
     }
 
     const validReceiverCard = await validCard(receiverCard);
     if(!validReceiverCard){
-        res.status(200).json({
+        res = {
             sender: sender,
             receiver: receiver,
             error:{
                 errorCode: "40003",
                 errorMessage: "invalid receiver card"
             }
-        });
-        return;
+        };
+        return res;
     }
 
     // check if the sender has enough balance
     const isBalanceAvailable = await checkBalance(senderCard, amountToSend);
     if(isBalanceAvailable == false){
-        res.status(200).json({
+        res = {
             sender: sender,
             receiver: receiver,
             error:{
                 errorCode: "40004",
                 errorMessage: "insufficient balance"
             }
-        });
-        return;
+        };
+        return res;
     }
 
     console.log(`inititaing debit for ${sender}`);
@@ -86,42 +86,43 @@ const processPayment = async (req, res) => {
                 isRevetSuccessful = await creditAmountToCard(senderCard, amountToSend);
             }
 
-            res.status(500).json({
+            res = {
                 sender: sender,
                 receiver: receiver,
                 error:{
                     errorCode: "50002",
                     errorMessage: "error crediting amount"
                 }
-            });
-            return;
+            };
+            return res;
         }
     }
     else{
-        res.status(500).json({
+        res = {
             sender: sender,
             receiver: receiver,
             error:{
                 errorCode: "50003",
                 errorMessage: "error debiting amount",
             }
-        });
-        return;
+        };
+        return res;
     }
 
-    res.status(200).json({
+    res = {
         message: "payment processed successfully",
         sender: sender,
         receiver: receiver,
-    });
+    };
 };
 
 // fetch user's card details
 async function fetchCard(userEmail){
     try{
         const user = await userModel.findOne({email: userEmail});
-        if(user.errors){
-            console.log(user.errors);
+
+        if(!user || user.errors){
+            console.log("user not found or error fetching card");
             return {};
         }
 
