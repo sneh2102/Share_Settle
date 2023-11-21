@@ -51,7 +51,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                     }
                 }
 
-                if(paymentReq.error){
+                if(paymentRes.error){
                     console.log("Payment failed");
                     return;
                 }
