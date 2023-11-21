@@ -38,6 +38,12 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
         
         // payment processing and settlement between members
         settlementAmountArray.forEach(async function(settlementInfo){
+
+            // if there is no amount to settle then return
+            if(settlementInfo[2] == 0){
+                return;
+            }
+
             // settlementInfo consists of these information -> from, to, amount
             let paymentReq = {
                 body:{
