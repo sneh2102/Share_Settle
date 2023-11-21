@@ -114,6 +114,7 @@ const processPayment = async (req) => {
         sender: sender,
         receiver: receiver,
     };
+    return res;
 };
 
 // fetch user's card details
