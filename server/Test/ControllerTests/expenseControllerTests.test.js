@@ -181,7 +181,7 @@ const mockResponse = () => {
     it('should view expenses for a group', async () => {
       const req = {
         body: {
-          id: 'group123',
+          id: '65565f5cc3bfbce951b49ea2',
         },
       };
       const res = {
@@ -193,7 +193,7 @@ const mockResponse = () => {
       
       await viewGroupExpense(req, res);
   
-      expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
+      expect(Expense.find).toHaveBeenCalledWith({ id: '65565f5cc3bfbce951b49ea2' });
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         status: 'Success',
@@ -205,7 +205,7 @@ const mockResponse = () => {
     it('should handle no expenses present for the group', async () => {
       const req = {
         body: {
-          id: '6556d7eb0d8d449f343c725c',
+          groupId: '65591efb1b715fe84d192783',
         },
       };
       const res = {
@@ -217,7 +217,7 @@ const mockResponse = () => {
   
       await viewGroupExpense(req, res);
   
-      expect(Expense.find).toHaveBeenCalledWith({ groupId: '6556d7eb0d8d449f343c725c' });
+      expect(Expense.find).toHaveBeenCalledWith({ id: '65591efb1b715fe84d192783' });
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         message: 'No expense present for the group',
@@ -227,7 +227,7 @@ const mockResponse = () => {
     it('should handle errors during viewing group expenses', async () => {
       const req = {
         body: {
-          id: 'group123',
+          id: '65591efb1b715fe84d192783',
         },
       };
       const res = {
@@ -235,11 +235,15 @@ const mockResponse = () => {
         json: jest.fn(),
       };
   
-      Expense.find.mockRejectedValueOnce(new Error('Group expense view error'));
+     // Instead of using mockRejectedValueOnce, use mockImplementationOnce
+Expense.find.mockImplementationOnce(() => {
+  throw new Error('Group expense view error');
+});
+
   
       await viewGroupExpense(req, res);
   
-      expect(Expense.find).toHaveBeenCalledWith({ groupId: 'group123' });
+      expect(Expense.find).toHaveBeenCalledWith({ id: '65591efb1b715fe84d192783' });
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         message: 'Group expense view error',

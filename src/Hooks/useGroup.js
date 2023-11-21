@@ -21,14 +21,14 @@ export const useGroup = () => {
           
     }
     
-    const createGroup=(name , members)=>{
+    const createGroup=(name , members, settlePeriod)=>{
         
         console.log(members);
     try {
       const response = fetch(`${process.env.REACT_APP_SERVER_LINK}/api/group/createGroup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({name, members}),
+        body: JSON.stringify({name, members, settlePeriod}),
       });
        return response;
 
@@ -89,9 +89,22 @@ const leaveGroup = async (email,id) => {
     }
     
 }
-
-
-    return {getUser,createGroup,fetchGroups,error,isLoading,fetchGroup,leaveGroup}
+const makeSettlement = async (id,From,To,Amount) => {
+  
+  const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/group/settle`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({id,From,To,Amount}),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return data.groups;
+    } else {
+      throw new Error("Something Went Wrong");
+    }
+}
+    return {getUser,createGroup,fetchGroups,fetchGroup,leaveGroup,makeSettlement}
 }
 
 

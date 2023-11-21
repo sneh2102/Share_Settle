@@ -10,7 +10,7 @@ const createGroup = async (req, res) => {
     console.log(req.body);
     var responseStatus = 200;
     var response = {};
-    if(!req.body ||!req.body.name || !req.body.members){
+    if(!req.body ||!req.body.name || !req.body.members || !req.body.settlePeriod){
         responseStatus = 404;
         response = { 
             errorMessage: "Invalid request body"
@@ -18,7 +18,8 @@ const createGroup = async (req, res) => {
     } else {
         const group = new Group({
             name: req.body.name,
-            members: req.body.members
+            members: req.body.members,
+            settlePeriod: req.body.settlePeriod
         });
         var splitJson = {}
 
@@ -26,7 +27,7 @@ const createGroup = async (req, res) => {
                 splitJson[user] = 0
             }
             group.groupExpensesList = splitJson
-    
+            
         console.log(response);
         try {
             const savedGroup = await group.save();

@@ -32,6 +32,7 @@ export default function Login() {
     try{
       console.log(userName,email,password);
         await signup(userName, email, password)
+        navigate('/card-details')
     } catch(err){
         toast.error(err.message);
     }
@@ -65,16 +66,17 @@ export default function Login() {
       setError(err.message)
     }
   }
-  const handleLogin= async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try{
-      await login(LogInEmail,LogInPassword)
-      navigate("/home")
-    } catch(err){
-      setError(err.message)
+    try {
+      const c=await login(LogInEmail, LogInPassword);
+      navigate("/home");
+    } catch (err) {
+      setError(err.message);
+     
     }
   };
-
+  
 
 
 

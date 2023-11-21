@@ -15,6 +15,10 @@ const groupSchema = new mongoose.Schema({
     groupTotal: {
         type: Number, 
         default: 0
+    },
+    settlePeriod:  {
+        type: String,
+        required: true
     }
 });
 

@@ -52,10 +52,8 @@ const GroupCreation = () => {
     }
 
     try {
-      await createGroup(groupName, selectedMembers);
-      navigate('/groups',{state:{
-        link: "hiii"
-      }});
+      await createGroup(groupName, selectedMembers, settlementPeriod);
+      navigate('/groups');
     } catch (error) {
       alert('Group creation failed. Please try again.');
     }
@@ -118,10 +116,10 @@ const GroupCreation = () => {
                   onChange={handleSettlementPeriodChange}
                 >
                   <option value="">Select Period</option>
-                  <option value="60sec">60seconds</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="biweekly">Biweekly</option>
-                  <option value="monthly">Monthly</option>
+                  <option value="1 minute">60 second</option>
+                  <option value="1 week">Weekly</option>
+                  <option value="2 weeks">Biweekly</option>
+                  <option value="1 month">Monthly</option>
                 </select>
               </div>
 

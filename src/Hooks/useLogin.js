@@ -11,7 +11,6 @@ export const useLogin = () => {
   const login = async (email, password) => {
     setIsLoading(true)
     setError(null)
-    console.log(link);
     
     const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/login`, {
       method: 'POST',
@@ -23,12 +22,10 @@ export const useLogin = () => {
 
     if (!response.ok) {
       setIsLoading(false)
-      toast.error(json.error)
     }
     if (response.ok) {
       localStorage.setItem('user', JSON.stringify(json))
       window.localStorage.setItem('isLoggedIn', true)
-
       dispatch({type: 'LOGIN', payload: json})
       toast.success("Successfully Logged In")
       setIsLoading(false)

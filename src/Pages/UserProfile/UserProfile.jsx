@@ -9,8 +9,9 @@ import '../../PagesCommonCSS/PagesCommonCSS.css';
 const UserProfile = () => {
   // const user = JSON.parse(window.localStorage.getItem('user'));
   const [user,setUser] = useState()
-  const [userName,setUserName]=useState();
-  const [userEmail,setUserEmail]=useState();
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  
   const { resetName } = useResetName();
   const { resetP } = useResetPass();
   const [showResetPassword, setShowResetPassword] = useState(false);
