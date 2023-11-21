@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const userModel = require("../Models/userModel");
-const {validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard} = require("../PaymentProcessor/bankModel");
+const bankModel = require("../PaymentProcessor/bankModel");
+const {validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard} = bankModel;
 
 // request has information about from user and to user and the amount.
 const processPayment = async (req) => {
