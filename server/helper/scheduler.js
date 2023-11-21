@@ -17,6 +17,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
 
         if(!groupObj){
                 console.log("No group is present");
+                console.log("Cancelling the job");
                 // cancel associated scheduler
                 job.cancel();
                 return;
@@ -84,6 +85,8 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                 }
             }
         });
+
+
     });
 };
 
