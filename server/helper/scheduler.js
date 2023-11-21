@@ -35,8 +35,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                     amount: settlementInfo[2]
                 }
             };
-            let paymentRes = {};
-            await processPayment(paymentReq, paymentRes);
+            let paymentRes = await processPayment(paymentReq, paymentRes);
 
             // retry payment if failed
             if(paymentRes.error){
@@ -46,8 +45,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                 console.log("retrying payment");
                 while(retryCount > 0){
                     retryCount--;
-                    paymentRes = {};
-                    await processPayment(paymentReq, paymentRes);
+                    paymentRes = await processPayment(paymentReq, paymentRes);
                     if(!paymentRes.error){
                         break;
                     }

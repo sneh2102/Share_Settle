@@ -3,9 +3,9 @@ const userModel = require("../Models/userModel");
 const {validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard} = require("../PaymentProcessor/bankModel");
 
 // request has information about from user and to user and the amount.
-const processPayment = async (req, res) => {
+const processPayment = async (req) => {
     console.log(req.body)
-
+    let res = {};
     // if the request doesn't have all required fields then return error
     if(!req || !req.body || !req.body.sender || !req.body.receiver || !req.body.amount){
         res = {
