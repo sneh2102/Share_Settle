@@ -2,7 +2,24 @@ const mongoose = require('mongoose');
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 
-const creditCardSchema = require('./creditCardModel');
+const creditCardModel = new mongoose.Schema({
+    cardNumber: {
+        type: String,
+        required: true
+    },
+    cardHolderName:{
+        type: String,
+        required: true
+    },
+    expiryDate:{
+        type: Date,
+        required: true
+    },
+    cvv:{
+        type: Number,
+        required: true
+    }
+});
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -21,6 +38,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    creditCardDetails: creditCardModel,
 
     groups: {
         type: Array,
