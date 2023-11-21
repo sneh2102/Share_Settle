@@ -18,8 +18,8 @@ build_backend:
   stage: build
   script:
     - cd server
-    - npm install
-    - node index.js
+    # - npm install
+    # - node index.js
   artifacts:
     paths:
       - server/
@@ -45,4 +45,4 @@ deploy_backend:
   script:
   - chmod 400 "${SSH_PRIVATE_KEY}"
     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r server/* student@csci5308vm23.research.cs.dal.ca:~/backend
-    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend > backend.log 2>&1 &"
+    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend && npm install && node index.js > backend.log 2>&1 &"
