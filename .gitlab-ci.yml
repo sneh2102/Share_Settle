@@ -3,7 +3,7 @@ stages:
   # - test
   - deploy
 
-build:
+build_frontend:
   image: node:18.18.0
   stage: build
   script:
@@ -13,6 +13,17 @@ build:
     paths:
       - build/
 
+build_backend:
+  image: node:18.18.0
+  stage: build
+  script:
+    - cd server
+    - npm install
+    - node index.js
+  artifacts:
+    paths:
+      - server/
+
 # test:
 #   image: node:18.18.0
 #   stage: test
@@ -20,7 +31,7 @@ build:
 #     - npm install
 #     - npm test
 
-deploy:
+deploy_frontend:
   image: node:18.18.0
   stage: deploy
   script:
@@ -28,4 +39,10 @@ deploy:
     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
     - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/frontend && serve -s . > webserver.log 2>&1 &"
 
-
+deploy_backend:
+  image: node:18.18.0
+  stage: deploy
+  script:
+  - chmod 400 "${SSH_PRIVATE_KEY}"
+    - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r server/* student@csci5308vm23.research.cs.dal.ca:~/backend
+    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend > backend.log 2>&1 &"
