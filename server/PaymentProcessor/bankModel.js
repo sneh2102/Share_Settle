@@ -102,4 +102,4 @@ const creditAmountToCard = async (card, amount) => {
 };
 
 
-module.exports = {validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard};
+module.exports = {createBankAccount, validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard};
