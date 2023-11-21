@@ -15,12 +15,22 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
         console.log("settlement job started");
         groupObj = await group.findById(groupId);
 
+        // no group present
         if(!groupObj){
-                console.log("No group is present");
-                console.log("Cancelling the job");
-                // cancel associated scheduler
-                job.cancel();
-                return;
+            console.log("No group is present");
+            console.log("Cancelling the job");
+            // cancel associated scheduler
+            job.cancel();
+            return;
+        }
+
+        // no members present in the group
+        if(groupObj.members.length == 0){
+            console.log("No group members present in the group");
+            console.log("Cancelling the job as no members are present");
+            // cancel associated scheduler
+            job.cancel();
+            return;
         }
         
         // split the expenses among the members
