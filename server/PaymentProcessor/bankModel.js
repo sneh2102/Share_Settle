@@ -7,6 +7,26 @@
 
 const userAccountModel = require('../Models/userAccountModel');
 
+const createBankAccount = async (name, email, cardDetails) => {
+    let defaultBalance = 1000;
+    try{
+        const account = new userAccountModel({
+            name: name,
+            email: email,
+            cardDetails: cardDetails,
+            balance: defaultBalance
+        });
+        let response = await account.save();
+        if(response.error){
+            return false;
+        }
+    } catch(error){
+        console.log(error);
+        return false;
+    }
+    return true;
+}
+
 // checking validity of the card
 const validCard = async (card) => {
     try{
