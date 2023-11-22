@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignup } from '../../Hooks/useSignup';
 import { useLogin } from '../../Hooks/useLogin';
 import { useResetPassword } from '../../Hooks/useResetPassword';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -31,28 +32,30 @@ export default function Login() {
     try{
       console.log(userName,email,password);
         await signup(userName, email, password)
-        if(!serror)
-        {
-          handleToggle()
-        }
-        
-        
+        navigate('/card-details')
     } catch(err){
-        setError(err.message);
+        toast.error(err.message);
     }
   };
-  const handleGoogleSignIn =async(e)=>{
+  const handleGoogleSignIn = async (e) => {
     e.preventDefault();
-    try{
-        await gSignIn();
-        dispatch({type: "LOGIN", payload:`${gSignIn()}`})
-        navigate("/home");
-    }catch(err)
-    {
-
-      setError(err.message)
+    try {
+      const result = await gSignIn(); 
+      console.log(result);
+      const user = {
+        user: {name: result.user.displayName},
+        email: result.user.email,
+      };
+  
+      window.localStorage.setItem('user', JSON.stringify(user)); 
+      dispatch({ type: "LOGIN", payload: user });
+      navigate("/home");
+      toast.success("Successfully Logged In")
+    } catch (err) {
+      setError(err.message);
     }
-  }
+  };
+  
   const handleFacebookSignIn =async(e)=>{
     e.preventDefault();
     try{
@@ -63,18 +66,17 @@ export default function Login() {
       setError(err.message)
     }
   }
-  const handleLogin= async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try{
-      await login(LogInEmail,LogInPassword)
-      navigate("/home")
-      
-        
-    } catch(err){
-      setError(err.message)
+    try {
+      const c=await login(LogInEmail, LogInPassword);
+      navigate("/home");
+    } catch (err) {
+      setError(err.message);
+     
     }
   };
-
+  
 
 
 

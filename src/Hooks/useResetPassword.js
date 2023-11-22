@@ -9,9 +9,9 @@ export const useResetPassword = () => {
 
   const resetPass = async (id, token, password) => {
     setIsLoading(true);
-    const serverURL = 'http://localhost:5000';
+    
     try {
-      const response = await fetch(`${serverURL}/api/user/reset-password/${id}/${token}`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/reset-password/${id}/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),

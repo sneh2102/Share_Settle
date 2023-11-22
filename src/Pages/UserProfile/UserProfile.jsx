@@ -9,8 +9,9 @@ import '../../PagesCommonCSS/PagesCommonCSS.css';
 const UserProfile = () => {
   // const user = JSON.parse(window.localStorage.getItem('user'));
   const [user,setUser] = useState()
-  const [userName,setUserName]=useState();
-  const [userEmail,setUserEmail]=useState();
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  
   const { resetName } = useResetName();
   const { resetP } = useResetPass();
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -66,7 +67,7 @@ const UserProfile = () => {
             </div>
 
             <div>
-              <button className='reset-buttons' onClick={() => setShowResetName(true)}>Reset Name</button>
+              <button className='bordered-btn' id ="reset-buttons" onClick={() => setShowResetName(true)}>Reset Name</button>
               {showResetName && (
                 <div>
                   <input
@@ -76,12 +77,12 @@ const UserProfile = () => {
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
                   />
-                  <button className='user-submit-buttons' onClick={handleResetName}>Submit</button>
+                  <button className='small-submit-buttons' id="small-submit-btn-margin" onClick={handleResetName}>Submit</button>
                 </div>
               )}
             </div>
 
-            <button className='reset-buttons' id='resetPass-container' onClick={() => setShowResetPassword(true)}>Reset Password</button>
+            <button className='bordered-btn' id='resetPass-container' onClick={() => setShowResetPassword(true)}>Reset Password</button>
 
             {showResetPassword && (
               <div>
@@ -107,7 +108,7 @@ const UserProfile = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <button className='user-submit-buttons' onClick={handleResetPassword}>Submit</button>
+                <button className='small-submit-buttons' id="small-submit-btn-margin" onClick={handleResetPassword}>Submit</button>
                 {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
               </div>
             )}

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
+    groupId: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -34,13 +38,13 @@ const expenseSchema = new mongoose.Schema({
     },
     expenseDistribution: {
         type: String,
-        default: "equal"
+        required: true
     },
-    // assuming that expense is linked to a group
-    groupId: {
-        type: String,
+    settledby: {
+        type: Array,
         required: true
     }
 });
 
-module.exports.userSchema = mongoose.model("Expense", expenseSchema);
+
+module.exports = mongoose.model("Expense", expenseSchema);

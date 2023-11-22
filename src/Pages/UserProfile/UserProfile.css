@@ -14,23 +14,22 @@
   margin-top: 1px;
 }
 
-.reset-buttons{
-  padding: 8px;
-  /* margin-bottom: 8px; */
-  /* background-color: #4682A9;  */
-  background-color: white;
-  transition-duration: 0.4s;
-  color: #333; 
+#reset-buttons{
   border: 2px solid #9C27B0;
-  border-radius: 6px;
-  margin-top: 10px;
-  cursor: pointer;
-  font-family: 'Nunito', sans-serif;
-  display: block;
 }
 
-.reset-buttons:hover{
+#reset-buttons:hover{
   /* background-color: #316A9E; */
+  background-color: #9C27B0;
+  color: white;
+}
+
+#resetPass-container{
+  border: 2px solid #9C27B0;
+  margin-top: 30px;
+}
+
+#resetPass-container:hover{
   background-color: #9C27B0;
   color: white;
 }
@@ -45,51 +44,10 @@
   /* display: block; */
 }
 
-.user-submit-buttons{
-  padding: 10px; 
-  background-color: #4682A9; 
-  color: white; 
-  border: none;
-  border-radius: 6px;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Nunito', sans-serif;
-  margin-left: 15px;
-}
-
-.user-submit-buttons:hover{
-  background-color: #316A9E;
-}
-
 #newPass-field{
   display: block;
 }
 
-#resetPass-container{
-  margin-top: 30px;
+#small-submit-btn-margin{
+  margin-left: 15px;
 }
-
-/* .user-profile input[type="password"] {
-  width: 100%;
-  padding: 8px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.user-profile input[type="password"]:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.user-container{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  border: 1px blue
-}
-.user-con{
-  width: 60%;
-} */

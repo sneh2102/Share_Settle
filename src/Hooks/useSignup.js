@@ -9,8 +9,8 @@ export const useSignup = () => {
   const signup = async (name, email, password) => {
     setIsLoading(true)
     setError(null)
-    const serverURL = 'http://localhost:5000';
-    const response = await fetch(`${serverURL}/api/user/signup`, {
+    
+    const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/signup`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({name, email, password })
