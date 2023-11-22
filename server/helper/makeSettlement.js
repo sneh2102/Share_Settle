@@ -7,7 +7,7 @@ const makeSettlement = async(req) =>{
             _id: req.body.id
         });
 
-        console.log(group);
+
         if (!group) {
             var err = new Error("Invalid Group Id");
             err.status = 400;

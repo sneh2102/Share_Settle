@@ -70,10 +70,12 @@ const processPayment = async (req) => {
 
     console.log(`inititaing debit for ${sender}`);
     const isDebitSuccess = await debitAmountFromCard(senderCard, amountToSend);
+    console.log("debit status ", isDebitSuccess);
 
     if(isDebitSuccess == true){
         console.log(`inititaing credit for ${receiver}`);
         const isCreditSuccess = await creditAmountToCard(receiverCard, amountToSend);
+        console.log("credit status", isCreditSuccess);
         
         if(isCreditSuccess == false){
             console.log("error crediting amount");

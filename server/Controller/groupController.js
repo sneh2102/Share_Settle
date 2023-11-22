@@ -3,11 +3,13 @@ const Expense = require("../Models/expenseModel")
 const User = require("../Models/userModel")
 const notificationHandler = require('../helper/NotificationHandler')
 const splitCalculator = require('../helper/spliting')
-const RemoveFromExpense = require('../helper/RemoveFromExpenses')
+const moveMemberToSettled = require('../helper/moveMemberToSettled')
+const scheduler = require('../helper/scheduler')
 
 // create a new group
 const createGroup = async (req, res) => {
-    console.log(req.body);
+    const {jobForSettlement}=scheduler
+    
     var responseStatus = 200;
     var response = {};
     if(!req.body ||!req.body.name || !req.body.members || !req.body.settlePeriod){
@@ -28,23 +30,34 @@ const createGroup = async (req, res) => {
             }
             group.groupExpensesList = splitJson
             
-        console.log(response);
+        
         try {
             const savedGroup = await group.save();
 
             const groupName = savedGroup.name;
+            jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
             const action = 'groupCreation';
 
             for (const member of savedGroup.members) {
                 const user = await User.findOne({email: member});
                 if (user && user.email) {
-                    await notificationHandler(user.email, user.name, groupName, action);
+                    const param={
+                     email: user.email, 
+                     user1: user.name, 
+                     groupName: groupName, 
+                     action: 'groupCreation',
+                     user2: null, 
+                     Status: null,
+                     amount: null,
+                     date: null}
+                    
+                    notificationHandler(param);
                 }
             }
 
             response = savedGroup;
         } catch (err) {
-            console.log({ message: err });
+           
             responseStatus = 500;
             response = {
                 errorStatus: 500, 
@@ -58,7 +71,7 @@ const createGroup = async (req, res) => {
 
 // fetch all groups of a user by user email
 const fetchUserGroups = async (req, res) => {
-    console.log(req.body);
+
     var responseStatus = 200;
     var response;
     if(!req.body && !req.body.email){
@@ -72,9 +85,8 @@ const fetchUserGroups = async (req, res) => {
             response = {
                 groups: queryResults
             };
-            console.log(response);
         } catch(err) {
-            console.log({message: err});
+            
             responseStatus = 500;
             response = {
                 errorStatus: 500, 
@@ -95,9 +107,9 @@ const fetchGroup = async (req, res) => {
             response = {
                 group: queryResults
             };
-            console.log(response);
+            
         } catch(err) {
-            console.log({message: err});
+            
             responseStatus = 500;
             response = {
                 errorStatus: 500, 
@@ -144,7 +156,7 @@ const addExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     group.groupExpensesList[0][ownerOfExpense] += amount
     expenseDistribution = amount / involved.length
     expenseDistribution = Math.round((expenseDistribution  + Number.EPSILON) * 100) / 100;
-    console.log(group);
+    
     for (var user of involved) {
         group.groupExpensesList[0][user] -= expenseDistribution
     }
@@ -156,7 +168,7 @@ const addExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     }
     group.groupExpensesList[0][ownerOfExpense] -= bal
     group.groupExpensesList[0][ownerOfExpense] = Math.round((group.groupExpensesList[0][ownerOfExpense]  + Number.EPSILON) * 100) / 100;
-    console.log(group);
+  
     return await Group.updateOne({
         _id: groupId
     }, group)
@@ -167,7 +179,7 @@ const groupBalanceSheet = async(req, res) =>{
         const group = await Group.findOne({
             _id: req.body.id
         })
-        console.log(group);
+        
         if (!group) {
             var err = new Error("Invalid Group Id")
             err.status = 400
@@ -187,7 +199,7 @@ const groupBalanceSheet = async(req, res) =>{
 const leaveGroup = async (req, res) => {
     try {
       const { email, id } = req.body;
-      console.log(email,id);
+      
   
       const group = await Group.findOne({ members: email, _id: id });
   
@@ -217,7 +229,6 @@ const leaveGroup = async (req, res) => {
   };
   const makeSettlement = async(req, res) =>{
     try{
-        
         const group = await Group.findOne({
             _id: req.body.id
         })
@@ -227,11 +238,12 @@ const leaveGroup = async (req, res) => {
             err.status = 400
             throw err
         }
-        // RemoveFromExpense(id,From)   
+        
        
        group.groupExpensesList[0][From] += Amount
        group.groupExpensesList[0][To] -= Amount
        
+       moveMemberToSettled(id,From)
        
        var update_response = await Group.updateOne({_id: group._id}, {$set:{groupExpensesList: group.groupExpensesList}})
 
@@ -247,7 +259,5 @@ const leaveGroup = async (req, res) => {
         })
     }
 }
- 
-  
 
 module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet, leaveGroup, makeSettlement};

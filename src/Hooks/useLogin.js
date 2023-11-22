@@ -21,6 +21,7 @@ export const useLogin = () => {
     console.log(json);
 
     if (!response.ok) {
+      toast.error(json.error)
       setIsLoading(false)
     }
     if (response.ok) {

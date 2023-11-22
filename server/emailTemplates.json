@@ -23,6 +23,10 @@
       "changeUsername": {
         "subject": "Username Change",
         "text": "Hello {userName},\n\nYour password has been changed successfully. If this wasn't you, please contact support immediately."
+      },
+      "Settlement": {
+        "subject": "Settlement {status} between {user1} and {user2} on Share Settle",
+        "text": " Dear {user1} and {user2},\n\nWe're writing to inform you that the settlement between you two on Share Settle has been {status}.\nAmount: ${amount}\nDate: ${date}\n\nNext Steps:\nPlease log in to Share Settle to see the changes. If you encounter any issues, please contact our support team for assistance.\nThank you for using Share Settle!\nSincerely,\nThe Share Settle Team"
       }
 
   }

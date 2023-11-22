@@ -14,11 +14,11 @@ import Navbar from './Components/Navbar/Navbar';
 import GroupCreation from './Pages/GroupCreation/GroupCreation';
 import Groups from './Pages/Groups/Groups';
 import GroupView from './Pages/Groups/GroupView';
-import CardDetails from './Pages/CardDetails/CardDetails'
+import CardDetails from './Pages/CardDetails/CardDetails';
+import Dashboard from './Pages/Dashboard/Dashboard';
 
 
 function App() {
-  const navigate = useNavigate()
   const { user } = useUserAuth();
   console.log(user);
   const token = window.localStorage.getItem('user');
@@ -32,11 +32,11 @@ function App() {
    
       <div>
         <Routes>
-          <Route path='/' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
-          <Route path='/login' element={!user || !token ? <Login/> : <Navigate to='/home'/>} />
+          <Route path='/' element={!user || !token ? <Login/> : <Navigate to='/dashboard'/>} />
+          <Route path='/login' element={!user || !token ? <Login/> : <Navigate to='/dashboard'/>} />
           {/* <Route path='/home' element={!user || token ? <Groups/> : <Navigate to='/'/>} /> */}
           <Route path='/card-details' element={user || token ? <CardDetails/> : <Navigate to='/'/>} />
-          <Route path='/home' element={token ? <Groups/> : <Navigate to='/login'/>} />
+          <Route path='/dashboard' element={token ? <Dashboard/> : <Navigate to='/login'/>} />
           <Route path='/create-group' element={user || token? <GroupCreation /> : <Navigate to='/' />} /> 
           <Route path='/forgotpass' element={<ForgotPassword/>}/>
           <Route path='/reset-password/:id/:token' element={<ResetPassword/> }/>

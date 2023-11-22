@@ -76,6 +76,7 @@ export const CalenderExpenseGraph = () => {
         const response_group_daily = await dailyExpense(user.email)
         setUserDailyExp(response_group_daily.data)
         console.log(userMonthlyExp);
+        console.log(userDailyExp);
         
 
     }   

@@ -49,7 +49,7 @@ export const useExpenseAnalytics = () => {
           
     }
     const dailyExpense = async (user) => {
-      
+      console.log(user);
       const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/daily-expense`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

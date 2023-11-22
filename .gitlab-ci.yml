@@ -18,7 +18,7 @@ build:
 #   stage: test
 #   script:
 #     - npm install
-#     - npm test
+#     - npx jest
 
 deploy:
   image: node:18.18.0

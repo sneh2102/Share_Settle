@@ -53,7 +53,7 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <div className="page-layout-container">
+      <div className="page-layout-container" style={{display: "flex", width: "100%",  heigth: "1vh", justifyContent: "center", alignItems: "center"}}>
         <div className="page-layout-card">
           <div className="page-layout-header" id="purple-header">
             <h2>User Profile</h2>

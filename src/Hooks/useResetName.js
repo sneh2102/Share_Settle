@@ -10,14 +10,13 @@ export const useResetName = () => {
 
   const resetName = async (id, name) => {
     setIsLoading(true);
-    console.log("hiiiiiii");
+   
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/changeUsername`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, name }),
       });
-      console.log("hiiiii");
       const json =  response.json();
       // dispatch({ type: "LOGIN", payload: json }); 
   

@@ -49,7 +49,7 @@ export default function Login() {
   
       window.localStorage.setItem('user', JSON.stringify(user)); 
       dispatch({ type: "LOGIN", payload: user });
-      navigate("/home");
+      navigate("/dashboard");
       toast.success("Successfully Logged In")
     } catch (err) {
       setError(err.message);
@@ -60,7 +60,7 @@ export default function Login() {
     e.preventDefault();
     try{
         await fSignIn();
-        navigate("/home");
+        navigate("/card-details");
     }catch(err)
     {
       setError(err.message)
@@ -70,7 +70,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const c=await login(LogInEmail, LogInPassword);
-      navigate("/home");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
      

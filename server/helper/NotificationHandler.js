@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer');
 const emailTemplates = require('../emailTemplates.json'); 
 
-const notificationHandler = async (email, userName, groupName, action) => {
+const notificationHandler = async (params) => {
+    const {email, user1, groupName, action, user2, status,amount,date}=params
+    console.log(params);
     const transporter = nodemailer.createTransport({
         host: "smtp-mail.outlook.com",
         secureConnection: false,
@@ -29,7 +31,7 @@ const notificationHandler = async (email, userName, groupName, action) => {
         from: 'sharesettle@outlook.com',
         to: email,
         subject: template.subject,
-        text: template.text.replace('{userName}', userName).replace('{groupName}', groupName)
+        text: template.text.replace('{userName}', user1).replace('{groupName}', groupName).replace('{user1}', user1).replace('{user2}', user2).replace('{status}', status).replace('{Amount}', amount).replace('{Date}', date)
     };
 
     try {
@@ -48,5 +50,6 @@ const notificationHandler = async (email, userName, groupName, action) => {
         };
     }
 };
+
 
 module.exports = notificationHandler;

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography, Container, } from "@mui/material"
+import { Box, Button, Grid, Typography, Container, Card, Paper } from "@mui/material"
 import { Link, Link as RouterLink } from 'react-router-dom';
 import Navbar from "../../Components/Navbar/Navbar";
 import Groups from "../Groups/Groups";
@@ -7,6 +7,7 @@ import CalenderExpenseGraph from './CalenderExpenseGraph'
 import { CategoryExpense } from "./CategoryExpense";
 import { useGroup } from "../../Hooks/useGroup";
 import { useEffect, useState } from "react";
+import {toast} from "react-toastify"
 
 
 const Dashboard = () => {
@@ -23,6 +24,7 @@ const Dashboard = () => {
     }
 
     const [group, setGroup] = useState();
+    const [newUser,setNewUser] = useState();
     const user = JSON.parse(window.localStorage.getItem('user'))
 
     const { fetchGroups } = useGroup()
@@ -30,9 +32,11 @@ const Dashboard = () => {
 
         const getGroup = async () => {
 
-            var group = await fetchGroups(user.email)
-            group = group.slice(0, 6)
+            let Group = await fetchGroups(user.email)
+            let group = Group.slice(0, 6)
+            setNewUser(group.length)
             setGroup(group)
+            console.log(group);
         }
         getGroup();
     }, [])
@@ -82,15 +86,20 @@ const Dashboard = () => {
                                                    Current Groups
                                                 </Typography>
                                 <Grid container spacing={2} style={{display: "flex", alignItems: "center", justifyContent:"center"}}>
-                                    {!group ?
+                                    {!newUser ?
                                         <>
+                             
                                             <Typography variant="body2" fontSize={18} textAlign={'center'}>
                                                 Seems to be new here! Create your first group and add expenses <br />
                                                 <Link
-                                                    to={'/groups'}>
+                                                    to={'/create-group'}>
+                                                        <Button>
+
                                                     Create Group
+                                                        </Button>
                                                 </Link>
                                             </Typography>
+                                        
                                         </> : <>{group.map((group, index) => (
                                             <Link to={`/groups/view/${group._id}`} key={group._id}>
                                                 <div className="card" style={{ width: "200px" }}>

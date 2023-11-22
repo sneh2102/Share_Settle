@@ -2,9 +2,9 @@ const User = require('../Models/userModel')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer');
 const notificationHandler = require('../helper/NotificationHandler');
-const { toast } = require('react-toastify');
+const bankModel = require('../PaymentProcessor/bankModel')
 
-
+const { createBankAccount}=bankModel;
 
 
 const createToken = (_id) =>{
@@ -28,11 +28,20 @@ const signupUser = async (req, res) => {
     try{
         const user = await User.signup(name ,email, password)
         const token= createToken(user._id)
-        const action = 'userSignup';
-        await notificationHandler(user.email, user.name, null, action);
+        const param={
+          email: user.email, 
+          user1: user.name, 
+          groupName: null, 
+          action: 'userSignup',
+          user2: null, 
+          Status: null,
+          amount: null,
+          date: null}
+         notificationHandler(param);
         res.status(200).json({email,token,user})
     } catch(error)
     {
+      
         res.status(400).json({error: error.message})
     }
 }
@@ -42,16 +51,23 @@ const resetPassUser = async (req, res) => {
 
   const { password } = req.body;
   try {
-       console.log(id);
-       console.log(token);
-       console.log(password);
+       
   const user = await User.resetpass(id, password);
-    console.log(user);
+    
     const newToken = createToken(user._id);
-
-    const action = 'resetPassword';
-        await notificationHandler(user.email, user.name, null, action);
-    res.status(200).json({ email: user.email, token: newToken });
+    const param =
+    {
+      email: user.email, 
+      user1: user.name, 
+      groupName: null, 
+      action: 'resetPassword',
+      user2: null, 
+      Status: null,
+      amount: null,
+      date: null
+    }
+    notificationHandler(param);
+    res.status(200).json(param);
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       res.status(400).json({ error: 'Invalid token' });
@@ -107,9 +123,16 @@ const changeUsername = async (req, res) => {
   const { id, name } = req.body;
   try {
     const user = await User.changeUsername(id, name);
-    const action = 'changeUsername';
-    // notificationHandler(user.email, user.name, null, action);
-    console.log(user);
+    const params={
+      email: user.email, 
+      user1: user.name, 
+      groupName: null, 
+      action: 'changeUsername',
+      user2: null, 
+      Status: null,
+      amount: null,
+      date: null}
+    notificationHandler(params);
     res.status(200).json({ email: user.email, token: user.token, user });
   } catch (err) {
     if (err) {
@@ -124,8 +147,16 @@ const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, newConfirmPassword} = req.body;
   try {
     const user = await User.changePassword(email, oldPassword, newPassword, newConfirmPassword);
-    const action = 'passwordChange';
-    await notificationHandler(user.email, user.name, null, action);
+    const param={
+      email: user.email, 
+      user1: user.name, 
+      groupName: null, 
+      action: 'passwordChange',
+      user2: null, 
+      Status: null,
+      amount: null,
+      date: null}
+    await notificationHandler(param);
     res.status(200).json({ user });
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
@@ -156,16 +187,19 @@ const addCardDetailsToUser = async (req, res) => {
           return res.status(404).json({ error: 'User not found' });
       }
 
+
+
       // Update user's card details
-      user.cardDetails = {
+      user.creditCardDetails = {
           cardNumber,
           cardHolderName,
           expiryDate,
           cvv
       };
-
+      
       // Save the updated user
-      await user.save();
+     const savedUser = await user.save();
+     createBankAccount(savedUser.name,savedUser.email,user.creditCardDetails)
 
       res.status(200).json({ message: 'Card details added successfully', user });
   } catch (error) {
