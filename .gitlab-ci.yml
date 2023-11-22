@@ -32,7 +32,7 @@ deploy_frontend:
   script:
     - chmod 400 "${SSH_PRIVATE_KEY}"
     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
-    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "pm2 serve ~/frontend 3000 --spa --name 'frontend' > frontend.log 2>&1 &"
+    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "pm2 serve ~/frontend 80 --spa --name 'frontend' > frontend.log 2>&1 &"
 
 # Backend deploy job
 deploy_backend:
