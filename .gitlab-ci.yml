@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - deploy
 
 # Frontend build job
@@ -25,20 +26,30 @@ build_backend:
     paths:
       - server/
 
-# Frontend deploy job
-deploy_frontend:
+test_backend:
   image: node:18.18.0
-  stage: deploy
+  stage: test
   script:
-    - chmod 400 "${SSH_PRIVATE_KEY}"
-    - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
-    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "pm2 serve ~/frontend 80 --spa --name 'frontend' > frontend.log 2>&1 &"
+    - cd server
+    - npm install
+    - npm test
+  only:
+    - Development
 
-# Backend deploy job
-deploy_backend:
-  image: node:18.18.0
-  stage: deploy
-  script:
-    - chmod 400 "${SSH_PRIVATE_KEY}"
-    - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r server/* student@csci5308vm23.research.cs.dal.ca:~/backend
-    - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend && npm install && pm2 start index.js --name 'backend' > backend.log 2>&1 &"
+# Frontend deploy job
+# deploy_frontend:
+#   image: node:18.18.0
+#   stage: deploy
+#   script:
+#     - chmod 400 "${SSH_PRIVATE_KEY}"
+#     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
+#     - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "pm2 serve ~/frontend 80 --spa --name 'frontend' > frontend.log 2>&1 &"
+
+# # Backend deploy job
+# deploy_backend:
+#   image: node:18.18.0
+#   stage: deploy
+#   script:
+#     - chmod 400 "${SSH_PRIVATE_KEY}"
+#     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r server/* student@csci5308vm23.research.cs.dal.ca:~/backend
+#     - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend && npm install && pm2 start index.js --name 'backend' > backend.log 2>&1 &"
