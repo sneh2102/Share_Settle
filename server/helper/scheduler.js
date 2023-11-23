@@ -4,6 +4,7 @@ const {makeSettlement} = require('./makeSettlement');
 const split = require('./spliting');
 const {processPayment} = require('../PaymentProcessor/processor');
 const {CronTime} = require('cron-time-generator');
+const {calculatePeriodFromString} = require('./dateConversion');
 
 const group = require('../Models/groupModel');
 
@@ -106,39 +107,4 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
     });
 };
 
-async function calculatePeriodFromString(settlementPeriod){
-    let parts = settlementPeriod.split(" ");
-    let numerical = parseInt(parts[0]);
-    let unit = parts[1].toLowerCase();
-
-    let daysInWeek = 7;
-    let avgDaysInMonth = 30;
-    let avgDaysInYear = 365;
-
-    let dateObj = new Date();
-    switch(unit){
-        case "minute":
-        case "minutes":
-            dateObj = CronTime.every(numerical).minutes();
-            break;
-        case "day":
-        case "days":
-            dateObj = CronTime.every(numerical).days();
-            break;
-        case "week":
-        case "weeks":
-            dateObj = CronTime.every(daysInWeek*numerical).days();
-        case "month":
-        case "months":
-            dateObj = CronTime.every(avgDaysInMonth*numerical).days();
-            break;
-        case "year":
-        case "years":
-            dateObj = CronTime.every(avgDaysInYear*numerical).days();
-        default:
-            dateObj = CronTime.every(daysInWeek).days();
-    }
-    return dateObj;
-}
-
-module.exports = {jobForSettlement, calculatePeriodFromString};
+module.exports = {jobForSettlement};
