@@ -11,7 +11,7 @@ const group = require('../Models/groupModel');
 // create a job based on the settlement period (a cron expression)
 const jobForSettlement = async (settlementPeriod, groupId) => {
         const date = await calculatePeriodFromString(settlementPeriod);
-
+        console.log(date);
         const job = schedule.scheduleJob(date, async function(){
         console.log("settlement job started");
         groupObj = await group.findById(groupId);
@@ -53,8 +53,9 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                     amount: settlementInfo[2]
                 }
             };
-            let paymentRes = await processPayment(paymentReq, paymentRes);
+            let paymentRes = await processPayment(paymentReq);
 
+            console.log("payment res", paymentRes);
             // retry payment if failed
             if(paymentRes.error){
                 console.log("Error in payment processor");
@@ -63,8 +64,8 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                 console.log("retrying payment");
                 while(retryCount > 0){
                     retryCount--;
-                    paymentRes = await processPayment(paymentReq, paymentRes);
-                    if(!paymentRes.error){
+                    paymentRes = await processPayment(paymentReq);
+                    if(paymentRes.error){
                         break;
                     }
                 }

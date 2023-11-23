@@ -17,12 +17,13 @@ export const useResetPassword = () => {
         body: JSON.stringify({ password }),
       });
       const json = await response.json();
+      toast.success("Passwored Changed")
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message)
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { resetPass, islLoading, lerror };
+  return { resetPass};
 };

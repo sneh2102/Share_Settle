@@ -55,6 +55,7 @@ const validCard = async (card) => {
 const fetchCardBalance = async (card) => {
     try{
         const account = await userAccountModel.findOne({"cardDetails.cardNumber": card.cardNumber});
+        console.log("Fetch balance for account", account);
         return account.balance;
     } catch(error){
         console.log(error);
@@ -68,8 +69,10 @@ const debitAmountFromCard = async (card, amount) => {
         const currentBalance = await fetchCardBalance(card);
         // deduct the amount from the user
         const updatedAmount = currentBalance - amount;
-
+        console.log("debit amount from card ", card);
         const result = await userAccountModel.updateOne({"cardDetails.cardNumber": card.cardNumber}, {balance: updatedAmount});
+        console.log(result);
+        console.log("debit card", userAccountModel.findOne({"cardDetails.cardNumber":card.cardNumber}));
         if(result.error){
             console.log(result.error);
             return false;
@@ -88,7 +91,11 @@ const creditAmountToCard = async (card, amount) => {
         const currentBalance = await fetchCardBalance(card);
         // credit the amount to user's card
         const updatedAmount = currentBalance + amount;
+        console.log("credit amount from card ", card);
         const result = await userAccountModel.updateOne({"cardDetails.cardNumber": card.cardNumber}, {balance: updatedAmount});
+        
+        console.log(result);
+        console.log("credit amount", userAccountModel.findOne({"cardDetails.cardNumber":card.cardNumber}));
         if(result.error){
             console.log(result.error);
             return false;
