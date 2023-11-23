@@ -6,12 +6,13 @@ const {processPayment} = require('../PaymentProcessor/processor');
 const {CronTime} = require('cron-time-generator');
 const {calculatePeriodFromString} = require('./dateConversion');
 
+const user = require('../Models/userModel');
 const group = require('../Models/groupModel');
+const notificationHandler = require('./NotificationHandler');
 
 // create a job based on the settlement period (a cron expression)
 const jobForSettlement = async (settlementPeriod, groupId) => {
         const date = await calculatePeriodFromString(settlementPeriod);
-
         const job = schedule.scheduleJob(date, async function(){
         console.log("settlement job started");
         groupObj = await group.findById(groupId);
@@ -40,20 +41,30 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
         // payment processing and settlement between members
         settlementAmountArray.forEach(async function(settlementInfo){
 
+            const action = "settlement";
+            let status = "successful";
+
+            const senderEmail = settlementInfo[0];
+            const receiverEmail = settlementInfo[1];
+            const amount = settlementInfo[2];
+
+            const senderName = await getUserFromEmail(senderEmail);
+            const receiverName = await getUserFromEmail(receiverEmail);
+
             // if there is no amount to settle then return
-            if(settlementInfo[2] == 0){
+            if(amount == 0){
                 return;
             }
 
             // settlementInfo consists of these information -> from, to, amount
             let paymentReq = {
                 body:{
-                    sender: settlementInfo[0],
-                    receiver: settlementInfo[1],
-                    amount: settlementInfo[2]
+                    sender: senderEmail,
+                    receiver: receiverEmail,
+                    amount: amount
                 }
             };
-            let paymentRes = await processPayment(paymentReq, paymentRes);
+            let paymentRes = await processPayment(paymentReq);
 
             // retry payment if failed
             if(paymentRes.error){
@@ -63,14 +74,18 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                 console.log("retrying payment");
                 while(retryCount > 0){
                     retryCount--;
-                    paymentRes = await processPayment(paymentReq, paymentRes);
-                    if(!paymentRes.error){
+                    paymentRes = await processPayment(paymentReq);
+                    if(paymentRes.error){
                         break;
                     }
                 }
 
                 if(paymentRes.error){
                     console.log("Payment failed");
+                    status = "failed";
+
+                    // send notifications
+                    pushNotification(senderEmail, senderName, receiverEmail, receiverName, amount, groupObj.name, action, status);
                     return;
                 }
             }
@@ -80,9 +95,9 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
             let settlementReq = {
                 body:{
                     id: groupId,
-                    From: settlementInfo[0],
-                    To: settlementInfo[1],
-                    Amount: settlementInfo[2]
+                    From: senderEmail,
+                    To: receiverEmail,
+                    Amount: amount
                 }
             }
             // make settlement
@@ -91,7 +106,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
             // retry settlement if failed
             if(settlementRes.error){
                 console.log("Error in making settlement");
-                retryCpunt = 3;
+                retryCount = 3;
                 while(retryCount > 0){
                     retryCount--;
                     console.log("retrying settlement");
@@ -101,10 +116,60 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
                     }
                 }
             }
+
+            if(!settlementRes.error){
+                console.log("Settlement successful");
+                status = "successful";
+            }
+            else{
+                console.log("Settlement failed");
+                status = "failed";
+            }
+
+            // send notifications
+            pushNotification(senderEmail, senderName, receiverEmail, receiverName,amount, groupObj.name, action, status);
         });
-
-
     });
 };
+
+
+// create a scheduler for email notifications for reminding users to settle their expenses
+const jobForEmailNotification = async (settlementPeriod, groupId) => {
+    
+}
+
+async function getUserFromEmail(userEmail){
+    const userObj = user.findOne({user: userEmail});
+    if(!userObj){
+        return null;
+    }
+    return userObj.name;
+}
+
+async function pushNotification(senderEmail, senderName, receiverEmail, receiverName, amount, groupName, action, status){
+    // send notification to sender
+    notificationHandler({
+        email: senderEmail,
+        user1: senderName,
+        groupName: groupName,
+        action: action,
+        user2: receiverName,
+        status: status,
+        amount: amount,
+        date: new Date()
+    });
+
+    // send notification to receiver
+    notificationHandler({
+        email: receiverEmail,
+        user1: senderName,
+        groupName: groupName,
+        action: action,
+        user2: receiverName,
+        status: status,
+        amount: amount,
+        date: new Date()
+    });
+}
 
 module.exports = {jobForSettlement};
