@@ -5,23 +5,23 @@ const Expense = require('../Models/expenseModel');
 
 const addExpense = async (req, res) => {
     try {
-        var expense = req.body;
-        var group = await GroupModal.findOne({
+        let expense = req.body;
+        let group = await GroupModal.findOne({
             _id: expense.groupId
         });
 
         if (!group) {
-            var err = new Error("Invalid Group Id");
+            let err = new Error("Invalid Group Id");
             err.status = 400;
             throw err;
         }
 
         expense.expenseDistribution = expense.amount / expense.involved.length;
         
-        var newExp = new Expense(expense);
-        var newExpense = await Expense.create(newExp);
+        let newExp = new Expense(expense);
+        let newExpense = await Expense.create(newExp);
 
-        var update_response = await Group.addExpenseList(
+        let update_response = await Group.addExpenseList(
             expense.groupId,
             expense.amount,
             expense.ownerOfExpense,
@@ -44,15 +44,15 @@ const addExpense = async (req, res) => {
 
 const deleteExpense = async (req, res) => {
     try {
-        var expense = await Expense.findOne({
+        let expense = await Expense.findOne({
             _id: req.body.id
         })
         if (!expense) {
-            var err = new Error("Invalid Expense Id")
+            let err = new Error("Invalid Expense Id")
             err.status = 400
             throw err
         }
-        var deleteExp = await Expense.deleteOne({
+        let deleteExp = await Expense.deleteOne({
             _id: req.body.id
         })
         
@@ -72,18 +72,18 @@ const deleteExpense = async (req, res) => {
 
 const viewGroupExpense = async (req, res) => {
     try {
-        var groupExpense = await Expense.find({
+        let groupExpense = await Expense.find({
             groupId: req.body.id
         }).sort({
             dateOfExpense: -1
         })
         if (groupExpense.length == 0) {
-            var err = new Error("No expense present for the group")
+            let err = new Error("No expense present for the group")
             err.status = 400
             throw err
         }
-        var totalAmount = 0
-        for (var expense of groupExpense) {
+        let totalAmount = 0
+        for (let expense of groupExpense) {
             totalAmount += expense['expenseAmount']
         }
         res.status(200).json({
@@ -112,8 +112,8 @@ const viewUserExpense = async (req, res) => {
             err.status = 400
             throw err
         }
-        var totalAmount = 0
-        for (var expense of userExpense) {
+        let totalAmount = 0
+        for (let expense of userExpense) {
             totalAmount += expense['expenseDistribution']
         }
         res.status(200).json({
@@ -145,8 +145,8 @@ const viewUserGroupExpense = async (req, res) => {
             err.status = 400
             throw err
         }
-        var totalAmount = 0
-        for (var expense of userExpense) {
+        let totalAmount = 0
+        for (let expense of userExpense) {
             totalAmount += expense['expenseDistribution']
         }
         res.status(200).json({
@@ -163,11 +163,11 @@ const viewUserGroupExpense = async (req, res) => {
 }
 const viewExpense = async (req, res) => {
     try {
-        var expense = await Expense.findOne({
+        let expense = await Expense.findOne({
             _id: req.body.id
         })
         if (expense.length == 0) {
-            var err = new Error("No expense present for the Id")
+            let err = new Error("No expense present for the Id")
             err.status = 400
             throw err
         }
@@ -185,7 +185,7 @@ const viewExpense = async (req, res) => {
 
 const categoryExpense = async (req, res) => {
     try {
-        var categoryExpense = await Expense.aggregate([{
+        let categoryExpense = await Expense.aggregate([{
                 $match: {
                     groupId: req.body.id
                 }
@@ -214,7 +214,7 @@ const categoryExpense = async (req, res) => {
 
 const monthlyExpense = async (req, res) => {
     try {
-        var monthlyExpense = await Expense.aggregate([{
+        let monthlyExpense = await Expense.aggregate([{
                 $match: {
                     groupId: req.body.id
                 }
@@ -250,7 +250,7 @@ const monthlyExpense = async (req, res) => {
 
 const userCategoryExpense = async (req, res) => {
     try {
-        var categoryExpense = await Expense.aggregate([
+        let categoryExpense = await Expense.aggregate([
             {
                 $match: {
                     $or: [
@@ -300,7 +300,7 @@ const userCategoryExpense = async (req, res) => {
 
 const userMonthlyExpense = async (req, res) => {
     try {
-        var monthlyExpense = await Expense.aggregate([{
+        let monthlyExpense = await Expense.aggregate([{
                 $match: {
                     $or: [
 
@@ -340,7 +340,7 @@ const userMonthlyExpense = async (req, res) => {
 
 const recentUserExpenses = async (req, res) => {
     try {
-        var recentExpense = await Expense.find({
+        let recentExpense = await Expense.find({
             $or: [
                 {involved: req.body.user},
                 {settleby: req.body.user}
@@ -364,7 +364,7 @@ const recentUserExpenses = async (req, res) => {
 const userDailyExpense = async (req, res) => {
   
     try {
-        var dailyExpense = await Expense.aggregate([{
+        let dailyExpense = await Expense.aggregate([{
                 $match: {
                     $or: [
                         {involved: req.body.user},
