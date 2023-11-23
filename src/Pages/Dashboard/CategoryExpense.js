@@ -60,6 +60,7 @@ export const CategoryExpense = () => {
             const category_exp =
                 await categoryExpense(user.email)
             setCategoryExp(category_exp.data)
+            console.log(categoryExp);
             
         }
         getGroupCategoryExpense()

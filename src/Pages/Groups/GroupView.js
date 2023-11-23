@@ -246,14 +246,16 @@ const GroupView = () => {
                         </Typography>
                       </div>
                       <div>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          style={{ background: '#9ad1d4', color: '#fff' }}
-                          onClick={() => handleSettlement(relationship[0], relationship[1], relationship[2])}
-                        >
-                          Settle
-                        </Button>
+                      {relationship[0] === user.email && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{ background: '#9ad1d4', color: '#fff' }}
+                        onClick={() => handleSettlement(relationship[0], relationship[1], relationship[2])}
+                      >
+                        Settle
+                      </Button>
+                    )}
   
                       </div>
                     </div>

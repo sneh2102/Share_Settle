@@ -155,7 +155,8 @@ const changePassword = async (req, res) => {
       user2: null, 
       Status: null,
       amount: null,
-      date: null}
+      date: null
+    }
     await notificationHandler(param);
     res.status(200).json({ user });
   } catch (err) {
@@ -188,8 +189,6 @@ const addCardDetailsToUser = async (req, res) => {
       }
 
 
-
-      // Update user's card details
       user.creditCardDetails = {
           cardNumber,
           cardHolderName,
@@ -197,7 +196,7 @@ const addCardDetailsToUser = async (req, res) => {
           cvv
       };
       
-      // Save the updated user
+
      const savedUser = await user.save();
      createBankAccount(savedUser.name,savedUser.email,user.creditCardDetails)
 

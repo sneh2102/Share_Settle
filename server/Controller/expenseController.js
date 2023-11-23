@@ -255,8 +255,8 @@ const userCategoryExpense = async (req, res) => {
                 $match: {
                     $or: [
                         { involved: req.body.user },
-                        {settledby: req.body.user},
-                        { ownerOfExpense: req.body.user }
+                        { ownerOfExpense: req.body.user },
+                        {settleby: req.body.user}
                     ]
                 }
             },
@@ -269,9 +269,12 @@ const userCategoryExpense = async (req, res) => {
                                 if: {
                                     $or: [
                                         { $in: [req.body.user, ["$involved"]] },
+                                        {$in: [req.body.user, ["$settleby"]]},
                                         { $in: [req.body.user, ["$ownerOfExpense"]] }
+                                    
                                     ]
                                 },
+                                then: "$expenseDistribution",
                                 then: "$expenseDistribution",
                                 else: "$amount"
                             }

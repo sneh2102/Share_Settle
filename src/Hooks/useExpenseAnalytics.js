@@ -18,7 +18,7 @@ export const useExpenseAnalytics = () => {
     }
 
     const categoryExpense = async (user) => {
-      
+         console.log(user);
         const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/expense/usercategory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -26,6 +26,7 @@ export const useExpenseAnalytics = () => {
           });
           if (response.ok) {
             const data = await response.json();
+            console.log(data);
             return data;
           } else {
             throw new Error('Failed to fetch data');

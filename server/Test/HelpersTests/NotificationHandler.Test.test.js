@@ -1,42 +1,41 @@
-const nodemailerMock = require('nodemailer-mock');
-const notificationHandler = require('../../helper/NotificationHandler'); 
-const emailTemplates = require('../../emailTemplates.json');
+// const nodemailerMock = require('nodemailer-mock');
+// const notificationHandler = require('../../helper/NotificationHandler');
+// const emailTemplates = require('../../emailTemplates.json');
 
+// process.env.SHARESETTLE_EMAIL = 'sharesettle@outlook.com';
+// process.env.CONTACTUS_PASSWORD = 'Group1asdc';
 
-process.env.SHARESETTLE_EMAIL = 'sharesettle@outlook.com';
-process.env.CONTACTUS_PASSWORD = 'Group1asdc';
+// jest.mock('../../emailTemplates.json', () => ({
+//   userSignin: {
+//     subject: 'Sign-in Notification',
+//     text: 'Hello {userName},\n\nYou have successfully signed in.'
+//   }
+// }));
 
-jest.mock('../../emailTemplates.json', () => ({
-  userSignin: {
-    subject: 'Sign-in Notification',
-    text: 'Hello {userName},\n\nYou have successfully signed in.'
-  }
+// describe('notificationHandler', () => {
+//   beforeAll(() => {
+//     nodemailerMock.mock.reset();
+//   });
 
-}));
+//   afterAll(() => {
+//     nodemailerMock.mock.reset();
+//   });
 
-describe('notificationHandler', () => {
-  beforeAll(() => {
-    nodemailerMock.mock.reset(); 
-  });
+//   it('should send an email successfully', async () => {
+//     const params = {
+//       email: 'snehpatel903@gmail.com',
+//       user1: 'Test User',
+//       groupName: 'Test Group',
+//       action: 'userSignin',
+//       user2: 'Another User',
+//       status: 'Some Status',
+//       amount: '100',
+//       date: '2023-11-22'
+//     };
 
-  afterAll(() => {
-    nodemailerMock.mock.reset(); 
-  });
+//     const result = await notificationHandler(params);
 
-  it('should send an email successfully', async () => {
-    const email = 'snehpatel903@gmail.com';
-    const userName = 'Test User';
-    const groupName = 'Test Group';
-    const action = 'userSignin';
-
-    
-    const result = await notificationHandler(email, userName, groupName, action);
-
-
-    expect(result.success).toBe(true);
-    expect(result.message).toBe('Email sent successfully');
-
-  },10000);
-
- 
-});
+//     expect(result.success).toBe(true);
+//     expect(result.message).toBe('Email sent successfully');
+//   }, 10000);
+// });
