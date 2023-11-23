@@ -13,7 +13,14 @@ function ContactUs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    contactUs(name,email,subject,message)
+    try{
+      
+      contactUs(name,email,subject,message)
+      toast.success("Email Sent")
+    }catch(err)
+    {
+      toast.error(err.message)
+    }
     console.log(contactMessage)
   };
 
