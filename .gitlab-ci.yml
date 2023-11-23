@@ -31,6 +31,24 @@ build_backend:
     paths:
       - server/
 
+  code_quality:
+    needs:
+      - code-test
+    stage: quality
+    image: docker:20.10.16
+    services:
+      - docker:20.10.16-dind
+    tags:
+      - cq-sans-dind
+    variables:
+      CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
+      DOCKER_DRIVER: overlay2
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_TLS_CERTDIR: ""
+      REPORT_FORMAT: html
+    artifacts:
+      paths: [gl-code-quality-report.html]
+
 # Frontend deploy job
 
 deploy:
