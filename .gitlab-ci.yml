@@ -44,7 +44,6 @@ code_quality:
     GIT_STRATEGY: none
   allow_failure: true
   services:
-    - docker:19.03.12-dind
     - docker
   script:
     - |
