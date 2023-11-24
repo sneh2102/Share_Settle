@@ -38,12 +38,13 @@ stages:
 #     - Development
 
 code_quality:
-  image: docker:19.03.12
+  image: docker
   stage: code_quality
   variables:
     GIT_STRATEGY: none
   allow_failure: true
-
+  services:
+    - docker
   script:
     - |
       if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
