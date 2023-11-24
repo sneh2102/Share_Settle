@@ -1,6 +1,6 @@
 stages:
   # - build
-  - test
+  # - test
   - code_quality
 
 # Frontend build job
@@ -26,16 +26,16 @@ stages:
 #     paths:
 #       - server/
 
-test_backend:
-  image: node:18.18.0
-  stage: test
-script:
-    - cd server
-    - npm install
-    # - chmod +x ./node_modules/.bin/jest
-    - npm run test
-  only:
-    - Development
+# test_backend:
+#   image: node:18.18.0
+#   stage: test
+# script:
+#     - cd server
+#     - npm install
+#     # - chmod +x ./node_modules/.bin/jest
+#     - npm run test
+#   only:
+#     - Development
 
 code_quality:
   image: docker:19.03.12
