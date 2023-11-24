@@ -50,11 +50,12 @@ code_quality:
   variables:
     DOCKER_HOST: unix:///var/run/docker.so
   script:
-    - |
-      if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
-        export CODE_QUALITY_IMAGE="registry.gitlab.com/gitlab-org/security-products/codequality:latest"
-      fi
-    - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" "$CODE_QUALITY_IMAGE" /code
+    # - |
+    #   if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
+    #     export CODE_QUALITY_IMAGE="registry.gitlab.com/gitlab-org/security-products/codequality:latest"
+    #   fi
+    # - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" "$CODE_QUALITY_IMAGE" /code
+    - ps aux | grep gitlab-runner
 
   # artifacts:
     # paths: [gl-code-quality-report.json]
