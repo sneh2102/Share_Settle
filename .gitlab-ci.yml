@@ -1,8 +1,7 @@
 stages:
   - build
   - test
-  - quality
-  # - deploy
+  - code_quality
 
 # Frontend build job
 build_frontend:
@@ -38,22 +37,23 @@ test_backend:
     - Development
 
 code_quality:
-  needs:
-    - code-test
-  stage: quality
-  image: docker:20.10.16
-  services:
-    - docker:20.10.16-dind
-  tags:
-    - cq-sans-dind
+  image: docker:19.03.12
+  stage: code_quality
   variables:
-    CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    REPORT_FORMAT: html
-  artifacts:
-    paths: [gl-code-quality-report.html]
+    GIT_STRATEGY: none
+  allow_failure: true
+  services:
+    - docker:19.03.12-dind
+  script:
+    - |
+      if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
+        export CODE_QUALITY_IMAGE="registry.gitlab.com/gitlab-org/security-products/codequality:latest"
+      fi
+    - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" --volume /var/run/docker.sock:/var/run/docker.sock "$CODE_QUALITY_IMAGE" /code
+  # artifacts:
+    # paths: [gl-code-quality-report.json]
+  only:
+    - Development
 
 # Frontend deploy job
 # deploy_frontend:
