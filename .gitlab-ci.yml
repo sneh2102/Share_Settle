@@ -60,7 +60,7 @@ code_quality:
     # - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" "$CODE_QUALITY_IMAGE" /code
     # - ps aux | grep gitlab-runner
   artifacts:
-    paths: [gl-code-quality-report.json]
+    paths: gl-code-quality-report.json
   # artifacts:
     # paths: [gl-code-quality-report.json]
   only:
