@@ -29,9 +29,10 @@ stages:
 test_backend:
   image: node:18.18.0
   stage: test
-  script:
+script:
     - cd server
     - npm install
+    - chmod +x ./node_modules/.bin/jest
     - npm run test
   only:
     - Development
