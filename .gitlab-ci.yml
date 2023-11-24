@@ -43,8 +43,7 @@ code_quality:
   variables:
     GIT_STRATEGY: none
   allow_failure: true
-  services:
-    - docker
+
   script:
     - |
       if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
