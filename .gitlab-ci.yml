@@ -38,19 +38,22 @@ stages:
 #     - Development
 
 code_quality:
-  image: docker
+  image: docker:19.03.12  # Use a specific version of the docker image
   stage: code_quality
   variables:
     GIT_STRATEGY: none
   allow_failure: true
   services:
-    - docker
+    - docker:19.03.12-dind  # Use the Docker-in-Docker service
+  before_script:
+    - docker info  # Optional: Print Docker info for debugging purposes
   script:
     - |
       if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
         export CODE_QUALITY_IMAGE="registry.gitlab.com/gitlab-org/security-products/codequality:latest"
       fi
-    - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" --volume /var/run/docker.sock:/var/run/docker.sock "$CODE_QUALITY_IMAGE" /code
+    - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" "$CODE_QUALITY_IMAGE" /code
+
   # artifacts:
     # paths: [gl-code-quality-report.json]
   only:
