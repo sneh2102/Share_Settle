@@ -1,85 +1,11 @@
 stages:
-  # - build
-  # - test
-  - code_quality
+  - test
 
 include:
-  - template: Code-Quality.gitlab-ci.yml
-
-# Frontend build job
-# build_frontend:
-#   image: node:18.18.0
-#   stage: build
-#   script:
-#     - npm install
-#     - npm run build
-#   artifacts:
-#     paths:
-#       - build/
-
-# # Backend build job
-# build_backend:
-#   image: node:18.18.0
-#   stage: build
-#   script:
-#     - cd server
-#     - npm install
-#     # - npm run build
-#   artifacts:
-#     paths:
-#       - server/
-
-# test_backend:
-#   image: node:18.18.0
-#   stage: test
-# script:
-#     - cd server
-#     - npm install
-#     # - chmod +x ./node_modules/.bin/jest
-#     - npm run test
-#   only:
-#     - Development
+  - template: Code-Quality.gitlab.ci.yml
 
 code_quality:
-  # image: docker:19.03.12  # Use a specific version of the docker image
-  stage: code_quality
-  # variables:
-    # GIT_STRATEGY: none
-  # allow_failure: true
-  # services:
-    # - docker:19.03.12-dind  # Use the Docker-in-Docker service
-  # before_script:
-    # - docker info  # Optional: Print Docker info for debugging purposes
-  # variables:
-    # DOCKER_HOST: unix:///var/run/docker.so
-  # script:
-    # - |
-    #   if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
-    #     export CODE_QUALITY_IMAGE="registry.gitlab.com/gitlab-org/security-products/codequality:latest"
-    #   fi
-    # - docker run --env SOURCE_CODE="$PWD" --volume "$PWD:/code" "$CODE_QUALITY_IMAGE" /code
-    # - ps aux | grep gitlab-runner
+  stage: test
   artifacts:
-    paths: gl-code-quality-report.json
-  # artifacts:
-    # paths: [gl-code-quality-report.json]
-  only:
-    - Development
-
-# Frontend deploy job
-# deploy_frontend:
-#   image: node:18.18.0
-#   stage: deploy
-#   script:
-#     - chmod 400 "${SSH_PRIVATE_KEY}"
-#     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r build/* student@csci5308vm23.research.cs.dal.ca:~/frontend
-#     - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "pm2 serve ~/frontend 80 --spa --name 'frontend' > frontend.log 2>&1 &"
-
-# # Backend deploy job
-# deploy_backend:
-#   image: node:18.18.0
-#   stage: deploy
-#   script:
-#     - chmod 400 "${SSH_PRIVATE_KEY}"
-#     - scp -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" -r server/* student@csci5308vm23.research.cs.dal.ca:~/backend
-#     - ssh -o StrictHostKeyChecking=no -i "${SSH_PRIVATE_KEY}" student@csci5308vm23.research.cs.dal.ca "cd ~/backend && npm install && pm2 start index.js --name 'backend' > backend.log 2>&1 &"
+    expose_as: 'Code Quality Report'
+    paths: [gl-code-quality-report.json]
