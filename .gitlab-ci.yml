@@ -47,6 +47,8 @@ code_quality:
     - docker:19.03.12-dind  # Use the Docker-in-Docker service
   before_script:
     - docker info  # Optional: Print Docker info for debugging purposes
+  variables:
+    DOCKER_HOST: unix:///var/run/docker.so
   script:
     - |
       if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
