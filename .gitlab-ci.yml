@@ -45,6 +45,7 @@ code_quality:
   allow_failure: true
   services:
     - docker:19.03.12-dind
+    - docker
   script:
     - |
       if [[ -z "$CODE_QUALITY_IMAGE" ]]; then
