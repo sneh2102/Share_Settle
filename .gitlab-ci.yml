@@ -7,18 +7,19 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 
 code_quality:
-  stage: test
-  image: docker:20.10.16
-  services:
-    - name: docker:20.10.16-dind
   variables:
-    CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
     REPORT_FORMAT: html
   artifacts:
     paths: [gl-code-quality-report.html]
+
+test:
+  image: node:14
+  stage: test
+  script:
+    - cd server
+    - npm install
+    - npx jest
+
 
   
 
@@ -32,13 +33,6 @@ build_frontend:
   artifacts:
     paths:
       - build/
-
-test:
-  image: node:18.18.0
-  stage: test
-  script:
-    - cd server
-    - npx jest
 
 build_backend:
   image: node:18.18.0
