@@ -1,4 +1,4 @@
-const {calculatePeriodFromString, getDate} = require('../../helper/dateConversion');
+const {calculatePeriodFromString, getDate, getNumberOfDays} = require('../../helper/dateConversion');
 const {CronTime} = require('cron-time-generator');
  
 // for calculatePeriodFromString
@@ -100,5 +100,54 @@ describe('getDate', () => {
   it('should return null for empty unit', () => {
     const result = getDate(5, '');
     expect(result).toBeNull();
+  });
+});
+
+// unit tests for getTimeUnits
+
+describe('getTimeUnits', () => {
+  it('should return correct time units for weeks', () => {
+    const result = getNumberOfDays(2, 'week');
+    expect(result).toEqual(14); // 7 days * 2 weeks
+  });
+
+  it('should return correct time units for plural weeks', () => {
+    const result = getNumberOfDays(3, 'weeks');
+    expect(result).toEqual(21); // 7 days * 3 weeks
+  });
+
+  it('should return correct time units for months', () => {
+    const result = getNumberOfDays(4, 'month');
+    expect(result).toEqual(120); // 30 days * 4 months
+  });
+
+  it('should return correct time units for plural months', () => {
+    const result = getNumberOfDays(5, 'months');
+    expect(result).toEqual(150); // 30 days * 5 months
+  });
+
+  it('should return correct time units for years', () => {
+    const result = getNumberOfDays(2, 'year');
+    expect(result).toEqual(730); // 365 days * 2 years
+  });
+
+  it('should return correct time units for plural years', () => {
+    const result = getNumberOfDays(3, 'years');
+    expect(result).toEqual(1095); // 365 days * 3 years
+  });
+
+  it('should return numerical value for other units', () => {
+    const result = getNumberOfDays(7, 'day');
+    expect(result).toEqual(7); // 7 days
+  });
+
+  it('should return numerical value for plural other units', () => {
+    const result = getNumberOfDays(10, 'days');
+    expect(result).toEqual(10); // 10 days
+  });
+
+  it('should return 0 for unknown units', () => {
+    const result = getNumberOfDays(5, 'unknown');
+    expect(result).toEqual(0);
   });
 });
