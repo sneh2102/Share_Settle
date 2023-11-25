@@ -7,7 +7,7 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 
 code_quality:
-  stage: quality
+  stage: test
   image: docker:20.10.16
   services:
     - name: docker:20.10.16-dind
