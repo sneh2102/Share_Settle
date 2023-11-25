@@ -3,6 +3,9 @@ stages:
   - build
   - deploy
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+  
 code_quality:
   stage: test
   script:
@@ -10,6 +13,14 @@ code_quality:
   artifacts:
     reports:
       codequality: gl-code-quality-report.json
+
+
+code_quality_html:
+  extends: code_quality
+  variables:
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
 
 # Frontend build job
 build_frontend:
@@ -22,12 +33,12 @@ build_frontend:
     paths:
       - build/
 
-# test:
-#   image: node:18.18.0
-#   stage: test
-#   script:
-#     - npm install
-#     - npm test
+test:
+  image: node:18.18.0
+  stage: test
+  script:
+    - cd server
+    - npx jest
 
 build_backend:
   image: node:18.18.0
