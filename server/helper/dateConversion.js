@@ -1,18 +1,19 @@
 const {CronTime} = require('cron-time-generator');
+const { is } = require('date-fns/locale');
  
 function calculatePeriodFromString(settlementPeriod){
     let parts = settlementPeriod.split(" ");
     let numerical = parseInt(parts[0]);
     let unit = parts[1].toLowerCase();
  
-    let days = getTimeUnits(numerical, unit);
+    let days = getNumberOfDays(numerical, unit);
     
     // not valid numercials or units
     if(numerical < 0 || isNaN(numerical) || !isValidUnit(unit)){
         return null;
     }
  
-    let timeUnits = getTimeUnits(numerical, unit);
+    let timeUnits = getNumberOfDays(numerical, unit);
     let dateObj = getDate(timeUnits, unit);
     return dateObj;
 }
@@ -37,31 +38,36 @@ function isValidUnit(unit){
     }
     return false;
 }
- 
-function getTimeUnits(numerical, unit){
+
+// get days based on the unit and value
+function getNumberOfDays(numerical, unit){
     let daysInWeek = 7;
     let avgDaysInMonth = 30;
     let avgDaysInYear = 365;
+
+    if(!isValidUnit(unit)){
+        return 0;
+    }
  
-    let timeUnits = 0;
+    let numDays = 0;
     switch(unit){
         case "week":
         case "weeks":
-            timeUnits = daysInWeek*numerical;
+            numDays = daysInWeek*numerical;
             break;
         case "month":
         case "months":
-            timeUnits = avgDaysInMonth*numerical;
+            numDays = avgDaysInMonth*numerical;
             break;
         case "year":
         case "years":
-            timeUnits = avgDaysInYear*numerical;
+            numDays = avgDaysInYear*numerical;
             break;
         default:
-            timeUnits = numerical;
+            numDays = numerical;
             break;
     }
-    return timeUnits;
+    return numDays;
 }
  
-module.exports = {calculatePeriodFromString, getDate};
+module.exports = {calculatePeriodFromString, getDate, getNumberOfDays};
