@@ -5,6 +5,22 @@ stages:
 
 include:
   - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  stage: quality
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+    tags:
+    - cq-sans-dind
+  variables:
+    CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
   
 
 # Frontend build job
@@ -36,21 +52,6 @@ build_backend:
     paths:
       - server/
 
-  code_quality:
-    stage: quality
-    image: docker:20.10.16
-    services:
-      - docker:20.10.16-dind
-    tags:
-      - cq-sans-dind
-    variables:
-      CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
-      DOCKER_DRIVER: overlay2
-      DOCKER_HOST: tcp://docker:2375
-      DOCKER_TLS_CERTDIR: ""
-      REPORT_FORMAT: html
-    artifacts:
-      paths: [gl-code-quality-report.html]
 
 # Frontend deploy job
 
