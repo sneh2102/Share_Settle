@@ -10,8 +10,8 @@ code_quality:
   stage: quality
   image: docker:20.10.16
   services:
-    - docker:20.10.16-dind
-    tags:
+    - name: docker:20.10.16-dind
+  tags:
     - cq-sans-dind
   variables:
     CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
@@ -21,6 +21,7 @@ code_quality:
     REPORT_FORMAT: html
   artifacts:
     paths: [gl-code-quality-report.html]
+
   
 
 # Frontend build job
