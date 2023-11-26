@@ -9,7 +9,6 @@ const {calculatePeriodFromString, getDate} = require('./dateConversion');
 const user = require('../Models/userModel');
 const group = require('../Models/groupModel');
 const notificationHandler = require('./NotificationHandler');
-const { number } = require('prop-types');
 
 // create a job based on the settlement period (a cron expression)
 const jobForSettlement = async (settlementPeriod, groupId) => {
