@@ -103,9 +103,9 @@ describe('getDate', () => {
   });
 });
 
-// unit tests for getTimeUnits
+// unit tests for getNumberOfDays
 
-describe('getTimeUnits', () => {
+describe('getNumberOfDays', () => {
   it('should return correct time units for weeks', () => {
     const result = getNumberOfDays(2, 'week');
     expect(result).toEqual(14); // 7 days * 2 weeks
