@@ -50,7 +50,7 @@ const createGroup = async (req, res) => {
 
             // notification 2 days before the settlement period
             let daysToRepeat = getNumberOfDays(numerical, unit) - 2;
-            jobForEmailNotification(daysToRepeat, savedGroup._id);
+            jobForEmailNotification(daysToRepeat, unit,savedGroup._id);
 
             for (const member of savedGroup.members) {
                 const user = await User.findOne({email: member});
