@@ -102,7 +102,7 @@ const GroupCreation = () => {
                   onChange={handleSettlementPeriodChange}
                 >
                   <option value="">Select Period</option>
-                  <option value="1 minute">60 second</option>
+                  <option value="3 minutes">3 Minutes</option>
                   <option value="1 week">Weekly</option>
                   <option value="2 weeks">Biweekly</option>
                   <option value="1 month">Monthly</option>
