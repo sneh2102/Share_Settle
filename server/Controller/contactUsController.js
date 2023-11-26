@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 const contactUs = (req, res) => {
     const {name, email, subject, message} = req.body;
-    console.log(name)
+   
     const transporter = nodemailer.createTransport({
         host: process.env.CONTACTUS_EMAIL_HOST,
         secureConnection: false,
@@ -16,7 +16,7 @@ const contactUs = (req, res) => {
         }
     });
     
-    var mailOptions = {
+    let mailOptions = {
         from: process.env.CONTACTUS_USERNAME,
         to: process.env.SHARESETTLE_EMAIL,
         subject: `User contacted: ${subject}`,
@@ -25,7 +25,6 @@ const contactUs = (req, res) => {
 
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            console.log(error);
             res.status(500).send({error: error});
         } else {
             console.log('Email sent: ' + info.response);

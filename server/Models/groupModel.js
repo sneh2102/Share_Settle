@@ -10,8 +10,15 @@ const groupSchema = new mongoose.Schema({
         default: []
     },
     groupExpensesList:{
-        type: Array,
-        default: []
+        type: Array
+    },
+    groupTotal: {
+        type: Number, 
+        default: 0
+    },
+    settlePeriod:  {
+        type: String,
+        required: true
     }
 });
 

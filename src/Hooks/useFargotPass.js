@@ -9,9 +9,9 @@ export const useForgotPass = () => {
 
   const forgotPass = async (email) => {
     setIsLoading(true); // Set loading to true when the API call starts.
-    const serverURL = 'http://localhost:5000';
+    
     try {
-      const response = await fetch(`${serverURL}/api/user/forgotpass`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/forgotpass`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

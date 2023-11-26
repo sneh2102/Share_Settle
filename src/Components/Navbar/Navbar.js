@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useLogout from '../../Hooks/useLogout';
 import './Navbar.css';
@@ -15,8 +15,26 @@ function Navbar() {
     setIsCollapsed(!isCollapsed);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      // Automatically collapse the sidebar when the window width is less than 768 pixels
+      setIsCollapsed(window.innerWidth < 768);
+    };
+
+    // Add event listener to handle window resize
+    window.addEventListener('resize', handleResize);
+
+    // Initial check on component mount
+    handleResize();
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
 
       <div className="navbar-header">
         {/* <h2 className={`${isCollapsed ? 'hidden' : ''}`}>Share<i className='fa fa-dollar-sign'></i><span>ettle</span></h2> */}
@@ -54,11 +72,6 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/notifications">
-              <i className="fi-rr-document-signed"></i><span>Notifications</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/contact">
               <i className="fi-rr-magic-wand"></i><span>Contact Us</span>
             </Link>
@@ -70,7 +83,7 @@ function Navbar() {
           </li>
         </ul>
       </div>
-    </aside>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './Login.css';
 import { useUserAuth } from '../../Context/AuthContext';
 import { Alert } from 'react-bootstrap';
@@ -6,9 +6,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignup } from '../../Hooks/useSignup';
 import { useLogin } from '../../Hooks/useLogin';
 import { useResetPassword } from '../../Hooks/useResetPassword';
+import { toast } from 'react-toastify';
 
 export default function Login() {
-  const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const isSignUpActiveRef = useRef(false); 
   const [LogInEmail,setLogInEmail]=useState("");
   const [LogInPassword, setLogInPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -24,32 +25,66 @@ export default function Login() {
 
 
   const handleToggle = () => {
-    setIsSignUpActive(!isSignUpActive);
+
+    isSignUpActiveRef.current = !isSignUpActiveRef.current;
   };
-  const handleSubmit= async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      console.log(userName,email,password);
-        await signup(userName, email, password)
-        if(!serror)
-        {
-          handleToggle()
-        }
-        
-        
-    } catch(err){
-        setError(err.message);
+    try {
+      const c=signup(userName, email, password);
+      navigate('/card-details');
+
+    } catch (err) {
+      if(serror){
+        handleToggle()
+      }
     }
   };
-  const handleGoogleSignIn =async(e)=>{
+  const handleGoogleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await gSignIn(); 
+      console.log(result);
+      const user = {
+        user: {name: result.user.displayName},
+        email: result.user.email,
+      };
+      await signup(result.user.displayName,result.user.email,result.user.accessToken)
+
+      dispatch({ type: "LOGIN", payload: user });
+      navigate("/card-details");
+      toast.success("Successfully Logged In")
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  const handleGoogleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await gSignIn(); 
+      console.log(result);
+      const user = {
+        user: {name: result.user.displayName},
+        email: result.user.email,
+      };
+  
+      window.localStorage.setItem('user', JSON.stringify(user)); 
+      login(result.user.email,result.user.accessToken)
+      dispatch({ type: "LOGIN", payload: user });
+      navigate("/dashboard");
+      toast.success("Successfully Logged In")
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  
+  const handleFacebookSignUp =async(e)=>{
     e.preventDefault();
     try{
-        await gSignIn();
-        dispatch({type: "LOGIN", payload:`${gSignIn()}`})
-        navigate("/home");
+        await fSignIn();
+        navigate("/card-details");
     }catch(err)
     {
-
       setError(err.message)
     }
   }
@@ -57,24 +92,23 @@ export default function Login() {
     e.preventDefault();
     try{
         await fSignIn();
-        navigate("/home");
+        navigate("/card-details");
     }catch(err)
     {
       setError(err.message)
     }
   }
-  const handleLogin= async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try{
-      await login(LogInEmail,LogInPassword)
-      navigate("/home")
-      
-        
-    } catch(err){
-      setError(err.message)
+    try {
+      const c=await login(LogInEmail, LogInPassword);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
+     
     }
   };
-
+  
 
 
 
@@ -86,8 +120,8 @@ export default function Login() {
           <form action="#" onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className="social-container">
-              <a href="#" className="social" onClick={handleFacebookSignIn}><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="social" onClick={handleGoogleSignIn}><i className="fab fa-google-plus-g"></i></a>
+              <a href="#" className="social" onClick={handleFacebookSignUp}><i className="fab fa-facebook-f"></i></a>
+              <a href="#" className="social" onClick={handleGoogleSignUp}><i className="fab fa-google-plus-g"></i></a>
             </div>
           {serror && <Alert variant='danger'>{serror}</Alert>}
             <input type="text" placeholder="UserName" onChange={(e)=>setUserName(e.target.value)}/>

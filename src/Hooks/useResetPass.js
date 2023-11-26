@@ -11,14 +11,14 @@ export const useResetPass = () => {
     setIsLoading(true);
     console.log(email,oldPassword,newPassword,newConfirmPassword);
 
-    const serverURL = 'http://localhost:5000';
+    
     try {
-      const response = await fetch(`${serverURL}/api/user/changePassword`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/changePassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, oldPassword, newPassword, newConfirmPassword }),
       });
-    //   dispatch({type:"LOGOUT"});
+
       const json = await response.json();
       return json;
     } catch (error) {

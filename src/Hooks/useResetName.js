@@ -1,34 +1,35 @@
+// useResetName.js
 
 import { useState } from 'react';
 import { useUserAuth } from '../Context/AuthContext';
+import { toast } from 'react-toastify';
 
 export const useResetName = () => {
   const [lerror, setError] = useState(null);
   const [islLoading, setIsLoading] = useState(false);
   const { dispatch, user } = useUserAuth();
 
-  const resetName = async (id , name) => {
+  const resetName = async (id, name) => {
     setIsLoading(true);
-
-    const serverURL = 'http://localhost:5000';
+   
     try {
-      const response = await fetch(`${serverURL}/api/user/changeUsername`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_LINK}/api/user/changeUsername`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id , name }),
+        body: JSON.stringify({ id, name }),
       });
-      dispatch({type:"LOGIN"});
-      const json = await response.json();
-      console.log(json);
-      window.localStorage.setItem('user',json)
-
+      const json =  response.json();
+      // dispatch({ type: "LOGIN", payload: json }); 
+  
+      window.localStorage.setItem('user', JSON.stringify(json));
+      console.log(JSON.stringify(json));
       return json;
     } catch (error) {
-      setError(error.message);
+      console.error("FetchError:",error)
+      toast.error("Something Went Wrong")
     } finally {
       setIsLoading(false);
     }
-    
   };
 
   return { resetName, islLoading, lerror };
