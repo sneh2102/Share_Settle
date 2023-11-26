@@ -4,15 +4,16 @@ const {makeSettlement} = require('./makeSettlement');
 const split = require('./spliting');
 const {processPayment} = require('../PaymentProcessor/processor');
 const {CronTime} = require('cron-time-generator');
-const {calculatePeriodFromString} = require('./dateConversion');
+const {calculatePeriodFromString, getDate} = require('./dateConversion');
 
 const user = require('../Models/userModel');
 const group = require('../Models/groupModel');
 const notificationHandler = require('./NotificationHandler');
+const { number } = require('prop-types');
 
 // create a job based on the settlement period (a cron expression)
 const jobForSettlement = async (settlementPeriod, groupId) => {
-        const date = await calculatePeriodFromString(settlementPeriod);
+        const date = calculatePeriodFromString(settlementPeriod);
         const job = schedule.scheduleJob(date, async function(){
         console.log("settlement job started");
         groupObj = await group.findById(groupId);
@@ -134,8 +135,45 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
 
 
 // create a scheduler for email notifications for reminding users to settle their expenses
-const jobForEmailNotification = async (settlementPeriod, groupId) => {
-    
+// notifications are sent 2 days before the settlement period
+const jobForEmailNotification = async (numberOfDays, groupId) => {
+    const date = CronTime.every(numberOfDays).days();
+    const jobId = schedule.scheduleJob(date, async function(){
+        const groupObj = group.findById(groupId);
+        if(!groupObj){
+            console.log("No group is present");
+            console.log("Cancelling the job");
+            // cancel associated scheduler
+            jobId.cancel();
+            return;
+        }
+
+        // no members present in the group
+        if(groupObj.members.length == 0){
+            console.log("No group members present in the group");
+            console.log("Cancelling the job as no members are present");
+            // cancel associated scheduler
+            jobId.cancel();
+            return;
+        }
+
+        // send email notifications to all the members
+        settlementAmountArray = split(groupObj.groupExpensesList[0]);
+
+        settlementAmountArray.forEach(async function(settlementInfo){
+            const senderEmail = settlementInfo[0];
+            const receiverEmail = settlementInfo[1];
+            const amount = settlementInfo[2];
+
+            const senderName = await getUserFromEmail(senderEmail);
+            const receiverName = await getUserFromEmail(receiverEmail);
+
+            const action = "settlementReminder";
+
+            // send notifications
+            pushNotification(senderEmail, senderName, receiverEmail, receiverName, amount, groupObj.name, action, null);
+        });
+    });
 }
 
 async function getUserFromEmail(userEmail){
