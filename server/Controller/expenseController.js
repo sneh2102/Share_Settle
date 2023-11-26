@@ -4,6 +4,7 @@ const Expense = require('../Models/expenseModel');
 
 
 const addExpense = async (req, res) => {
+    console.log(req.body);
     try {
         let expense = req.body;
         let group = await GroupModal.findOne({
@@ -20,6 +21,7 @@ const addExpense = async (req, res) => {
         
         let newExp = new Expense(expense);
         let newExpense = await Expense.create(newExp);
+        console.log(newExpense);
 
         let update_response = await Group.addExpenseList(
             expense.groupId,
@@ -27,6 +29,7 @@ const addExpense = async (req, res) => {
             expense.ownerOfExpense,
             expense.involved
         );
+        console.log(update_response);
         
 
         res.status(200).json({
@@ -40,7 +43,7 @@ const addExpense = async (req, res) => {
             message: err.message
         });
     }
-};
+}
 
 const deleteExpense = async (req, res) => {
     try {
@@ -128,6 +131,7 @@ const viewUserExpense = async (req, res) => {
         })
     }
 }
+
 const viewUserGroupExpense = async (req, res) => {
    
     try {
@@ -161,6 +165,7 @@ const viewUserGroupExpense = async (req, res) => {
         })
     }
 }
+
 const viewExpense = async (req, res) => {
     try {
         let expense = await Expense.findOne({
@@ -250,40 +255,29 @@ const monthlyExpense = async (req, res) => {
 
 const userCategoryExpense = async (req, res) => {
     try {
-        let categoryExpense = await Expense.aggregate([
+        var categoryExpense = await Expense.aggregate([
             {
                 $match: {
                     $or: [
-                        { involved: req.body.user },
-                        { ownerOfExpense: req.body.user },
-                        {settleby: req.body.user}
+
+                       { involved: req.body.user},
+                       { settledby: req.body.user}
                     ]
+
                 }
             },
             {
                 $group: {
                     _id: "$category",
                     amount: {
-                        $sum: {
-                            $cond: {
-                                if: {
-                                    $or: [
-                                        { $in: [req.body.user, ["$involved"]] },
-                                        {$in: [req.body.user, ["$settleby"]]},
-                                        { $in: [req.body.user, ["$ownerOfExpense"]] }
-                                    
-                                    ]
-                                },
-                                then: "$expenseDistribution",
-                                then: "$expenseDistribution",
-                                else: "$amount"
-                            }
-                        }
+                        $sum: "$expenseDistribution"
                     }
                 }
             },
             { $sort: { "_id": 1 } }
         ]);
+
+        console.log('Intermediate Result:', categoryExpense); // Log intermediate result
 
         res.status(200).json({
             status: "success",
@@ -295,8 +289,6 @@ const userCategoryExpense = async (req, res) => {
         });
     }
 };
-
-
 
 const userMonthlyExpense = async (req, res) => {
     try {
@@ -354,7 +346,6 @@ const recentUserExpenses = async (req, res) => {
             expense: recentExpense
         })
     } catch (err) {
-        console.error(err);
         res.status(err.status || 500).json({
             message: err.message
         })

@@ -18,7 +18,6 @@ import { useExpenseAnalytics } from '../../Hooks/useExpenseAnalytics'
             console.log(user.email);
             const recent_exp = await recentExpense(user.email)
             setRecentExp(recent_exp.expense)
-            
         }
         getRecentExp()
 

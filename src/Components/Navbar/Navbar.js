@@ -72,11 +72,6 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/notifications">
-              <i className="fi-rr-document-signed"></i><span>Notifications</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/contact">
               <i className="fi-rr-magic-wand"></i><span>Contact Us</span>
             </Link>

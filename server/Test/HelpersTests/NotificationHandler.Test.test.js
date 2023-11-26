@@ -2,7 +2,7 @@ const nodemailerMock = require('nodemailer-mock');
 const notificationHandler = require('../../helper/NotificationHandler');
 const emailTemplates = require('../../emailTemplates.json');
 
-process.env.SHARESETTLE_EMAIL = 'sharesettle@outlook.com';
+process.env.SHARESETTLE_EMAIL = 'sneh.patel.canada@outlook.com';
 process.env.CONTACTUS_PASSWORD = 'Group1asdc';
 
 jest.mock('../../emailTemplates.json', () => ({

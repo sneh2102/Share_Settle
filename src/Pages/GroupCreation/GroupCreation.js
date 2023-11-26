@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select'; 
+import Select from 'react-select';
 import './GroupCreation.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -52,13 +52,22 @@ const GroupCreation = () => {
 
   const handleMembersChange = (selectedOptions) => {
     const members = selectedOptions.map((option) => option.value);
+    
+    // Ensure the currently logged-in user is always included
+    if (!members.includes(user.email)) {
+      members.push(user.email);
+    }
+  
     setSelectedMembers(members);
   };
+
+
 
   // Transform availableMembers into the format expected by react-select
   const options = availableMembers.map((member) => ({
     value: member.email,
     label: member.email,
+    isDisabled: member.email === user.email, 
   }));
 
   return (
@@ -102,7 +111,7 @@ const GroupCreation = () => {
                   onChange={handleSettlementPeriodChange}
                 >
                   <option value="">Select Period</option>
-                  <option value="1 minute">60 second</option>
+                  <option value="3 minutes">3 minute</option>
                   <option value="1 week">Weekly</option>
                   <option value="2 weeks">Biweekly</option>
                   <option value="1 month">Monthly</option>

@@ -263,5 +263,3 @@ aside.active{
 .nav__links ul li:hover i{
     color: #3781DE;
 }
-/* Ensure the navbar is not duplicated in the DOM */
-/* You may need to inspect your React components to ensure you are not rendering the navbar twice */

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useContact } from '../../Hooks/useContact';
 import '../../PagesCommonCSS/PagesCommonCSS.css';
+import {toast} from 'react-toastify'
 
 function ContactUs() {
   const [name, setName] = useState('');
@@ -19,7 +20,6 @@ function ContactUs() {
       toast.success("Email Sent")
     }catch(err)
     {
-      toast.error(err.message)
     }
     console.log(contactMessage)
   };

@@ -26,6 +26,7 @@ const UserProfile = () => {
     try {
       await resetName(user.user._id, newUsername);
       console.log(user.user._id,newUsername);
+      setUserName(newUsername)
       
     } catch (error) {
     }

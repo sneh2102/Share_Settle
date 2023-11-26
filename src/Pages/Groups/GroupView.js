@@ -68,7 +68,7 @@ const GroupView = () => {
       // e.preventDefault();
       try {
         console.log(user);
-        const data = await getUserGroupExpenses("test@gmail.com", id);
+        const data = await getUserGroupExpenses(user.email, id);
         setUserExpenses(data.expense)
 
       } catch (error) {
@@ -138,10 +138,8 @@ const GroupView = () => {
     }
 
     try {
-      // Add expense
       await addExpense(id, expenseName, expenseDescription, parseFloat(expenseAmount), "CAD", category, expenseOwner, selectedMembers);
 
-      // Fetch and update group expenses
       const groupExpenses = await fetchGroupExpense(id);
       setExpense(groupExpenses.expense);
 
@@ -273,7 +271,6 @@ const GroupView = () => {
         {/* Toggle between "Group Expenses" and "User Expenses" */}
         <Paper elevation={3} style={{ margin: '20px', padding: '20px', borderRadius: '15px', background: '#f0f0f0' }}>
           <Box mb={2} display="flex" justifyContent="center">
-  
             <Tabs value={selectedTab} onChange={(e, newValue) => setSelectedTab(newValue)}>
               <Tab label="Group Expenses" value="group" />
               <Tab label="User Expenses" value="user" />
@@ -391,4 +388,5 @@ const GroupView = () => {
 };
 
 export default GroupView;
+
 

@@ -6,7 +6,7 @@ const splitCalculator = require('../helper/spliting')
 const moveMemberToSettled = require('../helper/moveMemberToSettled')
 const scheduler = require('../helper/scheduler')
 
-// create a new group
+
 const createGroup = async (req, res) => {
     const {jobForSettlement}=scheduler
     
@@ -35,8 +35,19 @@ const createGroup = async (req, res) => {
             const savedGroup = await group.save();
 
             const groupName = savedGroup.name;
-            jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
-            const action = 'groupCreation';
+
+            // scheduler for settlement
+            await jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
+        
+
+            // get the number of days for scheduler reminder notification
+            let parts = savedGroup.settlePeriod.split(" ");
+            let numerical = parseInt(parts[0]);
+            let unit = parts[1].toLowerCase();
+
+            // notification 2 days before the settlement period
+            let daysToRepeat = getNumberOfDays(numerical, unit) - 2;
+            await jobForEmailNotification(daysToRepeat, unit, savedGroup._id);
 
             for (const member of savedGroup.members) {
                 const user = await User.findOne({email: member});
