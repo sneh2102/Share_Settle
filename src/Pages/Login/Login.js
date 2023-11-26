@@ -30,11 +30,29 @@ export default function Login() {
   const handleSubmit= async(e)=>{
     e.preventDefault();
     try{
-      console.log(userName,email,password);
+      
         await signup(userName, email, password)
         navigate('/card-details')
     } catch(err){
-        toast.error(err.message);
+      toast(err.error)
+    }
+  };
+  const handleGoogleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await gSignIn(); 
+      console.log(result);
+      const user = {
+        user: {name: result.user.displayName},
+        email: result.user.email,
+      };
+      await signup(result.user.displayName,result.user.email,result.user.accessToken)
+
+      dispatch({ type: "LOGIN", payload: user });
+      navigate("/card-details");
+      toast.success("Successfully Logged In")
+    } catch (err) {
+      setError(err.message);
     }
   };
   const handleGoogleSignIn = async (e) => {
@@ -48,6 +66,7 @@ export default function Login() {
       };
   
       window.localStorage.setItem('user', JSON.stringify(user)); 
+      login(result.user.email,result.user.accessToken)
       dispatch({ type: "LOGIN", payload: user });
       navigate("/dashboard");
       toast.success("Successfully Logged In")
@@ -56,6 +75,16 @@ export default function Login() {
     }
   };
   
+  const handleFacebookSignUp =async(e)=>{
+    e.preventDefault();
+    try{
+        await fSignIn();
+        navigate("/card-details");
+    }catch(err)
+    {
+      setError(err.message)
+    }
+  }
   const handleFacebookSignIn =async(e)=>{
     e.preventDefault();
     try{
@@ -88,8 +117,8 @@ export default function Login() {
           <form action="#" onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className="social-container">
-              <a href="#" className="social" onClick={handleFacebookSignIn}><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="social" onClick={handleGoogleSignIn}><i className="fab fa-google-plus-g"></i></a>
+              <a href="#" className="social" onClick={handleFacebookSignUp}><i className="fab fa-facebook-f"></i></a>
+              <a href="#" className="social" onClick={handleGoogleSignUp}><i className="fab fa-google-plus-g"></i></a>
             </div>
           {serror && <Alert variant='danger'>{serror}</Alert>}
             <input type="text" placeholder="UserName" onChange={(e)=>setUserName(e.target.value)}/>
