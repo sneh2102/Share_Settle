@@ -1,5 +1,4 @@
 const {CronTime} = require('cron-time-generator');
-const { is } = require('date-fns/locale');
  
 function calculatePeriodFromString(settlementPeriod){
     let parts = settlementPeriod.split(" ");
