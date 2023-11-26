@@ -3,13 +3,25 @@ stages:
   - build
   - deploy
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 code_quality:
+  variables:
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
+
+test:
+  image: node:14
   stage: test
   script:
-    - analyze
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
+    - cd server
+    - npm install
+    - npx jest
+
+
+  
 
 # Frontend build job
 build_frontend:
@@ -22,13 +34,6 @@ build_frontend:
     paths:
       - build/
 
-# test:
-#   image: node:18.18.0
-#   stage: test
-#   script:
-#     - npm install
-#     - npm test
-
 build_backend:
   image: node:18.18.0
   stage: build
@@ -40,23 +45,6 @@ build_backend:
     paths:
       - server/
 
-  # code_quality:
-  #   needs:
-  #     - code-test
-  #   stage: quality
-  #   image: docker:20.10.16
-  #   services:
-  #     - docker:20.10.16-dind
-  #   tags:
-  #     - cq-sans-dind
-  #   variables:
-  #     CODE_QUALITY_IMAGE: registry.gitlab.com/gitlab-org/ci-cd/codequality:latest
-  #     DOCKER_DRIVER: overlay2
-  #     DOCKER_HOST: tcp://docker:2375
-  #     DOCKER_TLS_CERTDIR: ""
-  #     REPORT_FORMAT: html
-  #   artifacts:
-  #     paths: [gl-code-quality-report.html]
 
 # Frontend deploy job
 
