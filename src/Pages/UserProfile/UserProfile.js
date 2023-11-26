@@ -5,6 +5,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import {useUserAuth} from '../../Context/AuthContext'
 import { useResetPass } from '../../Hooks/useResetPass';
 import '../../PagesCommonCSS/PagesCommonCSS.css';
+import {toast} from 'react-toastify'
 
 const UserProfile = () => {
   // const user = JSON.parse(window.localStorage.getItem('user'));
@@ -27,17 +28,20 @@ const UserProfile = () => {
       await resetName(user.user._id, newUsername);
       console.log(user.user._id,newUsername);
       setUserName(newUsername)
+      toast.success("Username Changed")
       
     } catch (error) {
+      toast.error("Something went wrong")
     }
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords don't match");
+      toast.error("Passwords don't match");
     } else {
       resetP(userEmail,oldPassword,newPassword,confirmPassword)
+      toast.success("Password changed Successfully")
     }
   };
   useEffect(() => {

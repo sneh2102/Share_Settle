@@ -8,6 +8,7 @@ export const useSignup = () => {
   const [issLoading, setIsLoading] = useState(null)
   const { dispatch } = useUserAuth()
 
+
   const signup = async (name, email, password) => {
     setIsLoading(true)
     setError(null)
@@ -18,7 +19,7 @@ export const useSignup = () => {
       body: JSON.stringify({name, email, password })
     })
     const json = await response.json()
-
+    console.log(json);
     if (!response.ok) {
       setIsLoading(false)
       setError(json.error)
@@ -33,5 +34,5 @@ export const useSignup = () => {
     }
   }
 
-  return { signup, issLoading, serror }
+  return { signup, issLoading, serror}
 }

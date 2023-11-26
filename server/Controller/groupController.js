@@ -11,7 +11,7 @@ const { get } = require("lodash");
 // create a new group
 const createGroup = async (req, res) => {
     const {jobForSettlement, jobForEmailNotification}=scheduler;
-    const {calculatePeriodFromString, getDate, getNumberOfDays}=dateConversion;
+    const {getNumberOfDays}=dateConversion;
     
     let responseStatus = 200;
     let response = {};
@@ -50,7 +50,7 @@ const createGroup = async (req, res) => {
 
             // notification 2 days before the settlement period
             let daysToRepeat = getNumberOfDays(numerical, unit) - 2;
-            jobForEmailNotification(daysToRepeat, savedGroup._id);
+            jobForEmailNotification(daysToRepeat, unit ,savedGroup._id);
 
             for (const member of savedGroup.members) {
                 const user = await User.findOne({email: member});
@@ -65,7 +65,7 @@ const createGroup = async (req, res) => {
                      amount: null,
                      date: null}
                     
-                    notificationHandler(param);
+                   await notificationHandler(param);
                 }
             }
 

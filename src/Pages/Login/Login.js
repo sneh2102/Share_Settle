@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './Login.css';
 import { useUserAuth } from '../../Context/AuthContext';
 import { Alert } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import { useResetPassword } from '../../Hooks/useResetPassword';
 import { toast } from 'react-toastify';
 
 export default function Login() {
-  const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const isSignUpActiveRef = useRef(false); 
   const [LogInEmail,setLogInEmail]=useState("");
   const [LogInPassword, setLogInPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -25,16 +25,19 @@ export default function Login() {
 
 
   const handleToggle = () => {
-    setIsSignUpActive(!isSignUpActive);
+
+    isSignUpActiveRef.current = !isSignUpActiveRef.current;
   };
-  const handleSubmit= async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      
-        await signup(userName, email, password)
-        navigate('/card-details')
-    } catch(err){
-      toast(err.error)
+    try {
+      const c=signup(userName, email, password);
+      navigate('/card-details');
+
+    } catch (err) {
+      if(serror){
+        handleToggle()
+      }
     }
   };
   const handleGoogleSignUp = async (e) => {

@@ -107,7 +107,7 @@ const Dashboard = () => {
                                                         style={{ backgroundColor: getRandomBackgroundColor() }}></i>
                                                     <div className="card-body">
                                                         <h5 className="card-title">{group.name}</h5>
-                                                        <p className='settlement-period'>Settlement period</p>
+                                                        <p className='settlement-period'>{group.settlePeriod}</p>
                                                     </div>
                                                 </div>
                                             </Link>))}</>

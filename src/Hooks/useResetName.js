@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useUserAuth } from '../Context/AuthContext';
+import { toast } from 'react-toastify';
 
 export const useResetName = () => {
   const [lerror, setError] = useState(null);
@@ -25,6 +26,7 @@ export const useResetName = () => {
       return json;
     } catch (error) {
       console.error("FetchError:",error)
+      toast.error("Something Went Wrong")
     } finally {
       setIsLoading(false);
     }
