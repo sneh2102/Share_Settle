@@ -209,4 +209,4 @@ async function pushNotification(senderEmail, senderName, receiverEmail, receiver
     });
 }
 
-module.exports = {jobForSettlement};
+module.exports = {jobForSettlement, jobForEmailNotification};
