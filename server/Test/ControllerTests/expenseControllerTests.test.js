@@ -662,8 +662,7 @@ describe('viewExpense', () => {
           expense: recentExpenses,
         });
       } catch (error) {
-        console.error(error);
-        console.error(res.json.mock.calls[0][0]);
+    
       }
     });
     
