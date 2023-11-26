@@ -1,7 +1,7 @@
 const bankModel = require('../../PaymentProcessor/bankModel');
-const userAccountModel = require('../Models/userAccountModel');
+const userAccountModel = require('../../Models/userAccountModel');
 
-jest.mock('../Models/userAccountModel', () => ({
+jest.mock('../../Models/userAccountModel', () => ({
   findOne: jest.fn(),
   updateOne: jest.fn(),
 }));
@@ -37,7 +37,7 @@ describe('Bank Functions', () => {
       userAccountModel.findOne.mockResolvedValue({
         cardDetails: {
           cardNumber: '1234567890123456',
-          expiryDate: '2023-01-01',
+          expiryDate: '2025-01-01',
         },
       });
 
@@ -52,13 +52,14 @@ describe('Bank Functions', () => {
       userAccountModel.findOne.mockResolvedValue({
         cardDetails: {
           cardNumber: '1234567890123456',
+          expiryDate: '2025-01-01',
         },
-        balance: 1000,
+        balance: 5000,
       });
 
       const result = await bankModel.fetchCardBalance({ cardNumber: '1234567890123456' });
 
-      expect(result).toBe(1000);
+      expect(result).toBe(5000);
     });
 
     test('should return -1 if card is not found in the database', async () => {
@@ -72,10 +73,18 @@ describe('Bank Functions', () => {
 
   describe('debitAmountFromCard', () => {
     test('should update balance and return true if debit is successful', async () => {
-      userAccountModel.fetchCardBalance.mockResolvedValue(1000);
+      userAccountModel.findOne.mockResolvedValue({
+        cardDetails: {
+          cardNumber: '1234567890123456',
+          expiryDate: '2025-01-01',
+        },
+        balance: 1000,
+      });
       userAccountModel.updateOne.mockResolvedValue({});
 
-      const result = await bankModel.debitAmountFromCard({ cardNumber: '1234567890123456' }, 500);
+      const inputCard = { cardNumber: '1234567890123456' };
+      const inputAmount = 500;
+      const result = await bankModel.debitAmountFromCard(inputCard, inputAmount);
 
       expect(result).toBe(true);
       expect(userAccountModel.updateOne).toHaveBeenCalledWith(
@@ -85,7 +94,7 @@ describe('Bank Functions', () => {
     });
 
     test('should return false if an error occurs during debit', async () => {
-      userAccountModel.fetchCardBalance.mockRejectedValue(new Error('Debit error'));
+      userAccountModel.updateOne.mockResolvedValue({error: 'Test Debit error'});
 
       const result = await bankModel.debitAmountFromCard({ cardNumber: '1234567890123456' }, 500);
 
@@ -95,7 +104,14 @@ describe('Bank Functions', () => {
 
   describe('creditAmountToCard', () => {
     test('should update balance and return true if credit is successful', async () => {
-      userAccountModel.fetchCardBalance.mockResolvedValue(1000);
+      userAccountModel.findOne.mockResolvedValue({
+        cardDetails: {
+          cardNumber: '1234567890123456',
+          expiryDate: '2025-01-01',
+        },
+        balance: 1000,
+      });
+
       userAccountModel.updateOne.mockResolvedValue({});
 
       const result = await bankModel.creditAmountToCard({ cardNumber: '1234567890123456' }, 500);
@@ -108,7 +124,7 @@ describe('Bank Functions', () => {
     });
 
     test('should return false if an error occurs during credit', async () => {
-      userAccountModel.fetchCardBalance.mockRejectedValue(new Error('Credit error'));
+      userAccountModel.updateOne.mockResolvedValue({error: 'Test Credit error'});
 
       const result = await bankModel.creditAmountToCard({ cardNumber: '1234567890123456' }, 500);
 
