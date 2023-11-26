@@ -12,7 +12,9 @@ const notificationHandler = require('./NotificationHandler');
 
 // create a job based on the settlement period (a cron expression)
 const jobForSettlement = async (settlementPeriod, groupId) => {
+
         const date = calculatePeriodFromString(settlementPeriod);
+        console.log("Date:  ",date);
         const job = schedule.scheduleJob(date, async function(){
         console.log("settlement job started");
         groupObj = await group.findById(groupId);
@@ -136,10 +138,14 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
 
 // create a scheduler for email notifications for reminding users to settle their expenses
 // notifications are sent 2 days before the settlement period
-const jobForEmailNotification = async (numberOfDays, groupId) => {
-    const date = CronTime.every(numberOfDays).days();
+const jobForEmailNotification = async (numberOfDays,unit, groupId) => {
+
+    const date = getDate(numberOfDays,unit)
     const jobId = schedule.scheduleJob(date, async function(){
-        const groupObj = group.findById(groupId);
+     const groupObj = await group.findById(groupId);
+     console.log("Group: -----------------------------",groupObj);
+        console.log("email notification job started for group: ",groupObj.name);
+
         if(!groupObj){
             console.log("No group is present");
             console.log("Cancelling the job");
@@ -165,6 +171,9 @@ const jobForEmailNotification = async (numberOfDays, groupId) => {
             const receiverEmail = settlementInfo[1];
             const amount = settlementInfo[2];
 
+            if(amount == 0){
+                return;
+            }
             const senderName = await getUserFromEmail(senderEmail);
             const receiverName = await getUserFromEmail(receiverEmail);
 
@@ -177,7 +186,9 @@ const jobForEmailNotification = async (numberOfDays, groupId) => {
 }
 
 async function getUserFromEmail(userEmail){
-    const userObj = user.findOne({user: userEmail});
+    console.log(userEmail);
+    const userObj = await user.findOne({email: userEmail});
+    console.log(userObj.email);
     if(!userObj){
         return null;
     }

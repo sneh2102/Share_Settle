@@ -1,14 +1,17 @@
 const Group = require("../Models/groupModel");
-const Expense = require("../Models/expenseModel")
-const User = require("../Models/userModel")
-const notificationHandler = require('../helper/NotificationHandler')
-const splitCalculator = require('../helper/spliting')
-const moveMemberToSettled = require('../helper/moveMemberToSettled')
-const scheduler = require('../helper/scheduler')
+const Expense = require("../Models/expenseModel");
+const User = require("../Models/userModel");
+const notificationHandler = require('../helper/NotificationHandler');
+const splitCalculator = require('../helper/spliting');
+const moveMemberToSettled = require('../helper/moveMemberToSettled');
+const scheduler = require('../helper/scheduler');
+const dateConversion = require('../helper/dateConversion');
+const { get } = require("lodash");
 
-
+// create a new group
 const createGroup = async (req, res) => {
-    const {jobForSettlement}=scheduler
+    const {jobForSettlement, jobForEmailNotification}=scheduler;
+    const {calculatePeriodFromString, getDate, getNumberOfDays}=dateConversion;
     
     let responseStatus = 200;
     let response = {};
@@ -37,8 +40,8 @@ const createGroup = async (req, res) => {
             const groupName = savedGroup.name;
 
             // scheduler for settlement
-            await jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
-        
+            jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
+            const action = 'groupCreation';
 
             // get the number of days for scheduler reminder notification
             let parts = savedGroup.settlePeriod.split(" ");
@@ -47,7 +50,7 @@ const createGroup = async (req, res) => {
 
             // notification 2 days before the settlement period
             let daysToRepeat = getNumberOfDays(numerical, unit) - 2;
-            await jobForEmailNotification(daysToRepeat, unit, savedGroup._id);
+            jobForEmailNotification(daysToRepeat, savedGroup._id);
 
             for (const member of savedGroup.members) {
                 const user = await User.findOne({email: member});
