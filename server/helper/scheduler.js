@@ -140,6 +140,8 @@ const jobForEmailNotification = async (numberOfDays, groupId) => {
     const date = CronTime.every(numberOfDays).days();
     const jobId = schedule.scheduleJob(date, async function(){
         const groupObj = group.findById(groupId);
+        console.log("email notification job started for group: ",groupObj.name);
+
         if(!groupObj){
             console.log("No group is present");
             console.log("Cancelling the job");
@@ -165,6 +167,9 @@ const jobForEmailNotification = async (numberOfDays, groupId) => {
             const receiverEmail = settlementInfo[1];
             const amount = settlementInfo[2];
 
+            if(amount == 0){
+                return;
+            }
             const senderName = await getUserFromEmail(senderEmail);
             const receiverName = await getUserFromEmail(receiverEmail);
 
