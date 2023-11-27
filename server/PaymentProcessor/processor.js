@@ -2,13 +2,19 @@ const mongoose = require('mongoose');
 const userModel = require("../Models/userModel");
 const bankModel = require("../PaymentProcessor/bankModel");
 const {validCard, fetchCardBalance, debitAmountFromCard, creditAmountToCard} = bankModel;
-
+ 
 // request has information about from user and to user and the amount.
 const processPayment = async (req) => {
     console.log(req.body)
     let res = {};
+ 
+    // condensing missing fields check into a function
+    const missingFields = () => {
+        return !req || !req.body || !req.body.sender || !req.body.receiver || !req.body.amount;
+    }
+ 
     // if the request doesn't have all required fields then return error
-    if(!req || !req.body || !req.body.sender || !req.body.receiver || !req.body.amount){
+    if(missingFields){
         res = {
             error:{
                 errorCode: "40001",
@@ -17,12 +23,12 @@ const processPayment = async (req) => {
         };
         return res;
     }
-
+ 
     const body = req.body;
     const sender = body.sender;
     const receiver = body.receiver;
     const amountToSend = body.amount;
-
+ 
     // retrieving user's card details
     const senderCard = await fetchCard(sender);
     const receiverCard = await fetchCard(receiver);
@@ -40,7 +46,7 @@ const processPayment = async (req) => {
         };
         return res;
     }
-
+ 
     const validReceiverCard = await validCard(receiverCard);
     if(!validReceiverCard){
         res = {
@@ -53,10 +59,10 @@ const processPayment = async (req) => {
         };
         return res;
     }
-
+ 
     // check if the sender has enough balance
     const isBalanceAvailable = await checkBalance(senderCard, amountToSend);
-    if(isBalanceAvailable == false){
+    if(!isBalanceAvailable){
         res = {
             sender: sender,
             receiver: receiver,
@@ -67,28 +73,28 @@ const processPayment = async (req) => {
         };
         return res;
     }
-
+ 
     console.log(`inititaing debit for ${sender}`);
     const isDebitSuccess = await debitAmountFromCard(senderCard, amountToSend);
     console.log("debit status ", isDebitSuccess);
-
-    if(isDebitSuccess == true){
+ 
+    if(isDebitSuccess){
         console.log(`inititaing credit for ${receiver}`);
         const isCreditSuccess = await creditAmountToCard(receiverCard, amountToSend);
         console.log("credit status", isCreditSuccess);
         
-        if(isCreditSuccess == false){
+        if(!isCreditSuccess){
             console.log("error crediting amount");
-
+ 
             console.log(`reverting amount to  ${sender}`);
             // revert if amount to sender when credit fails
             let isRevertSuccessful = await creditAmountToCard(senderCard, amountToSend);
-
+ 
             // retry revert amount until successful, to ensure consistency
-            while(isRevertSuccessful == false){
-                isRevetSuccessful = await creditAmountToCard(senderCard, amountToSend);
+            while(!isRevertSuccessful){
+                isRevertSuccessful = await creditAmountToCard(senderCard, amountToSend);
             }
-
+ 
             res = {
                 sender: sender,
                 receiver: receiver,
@@ -111,7 +117,7 @@ const processPayment = async (req) => {
         };
         return res;
     }
-
+ 
     res = {
         message: "payment processed successfully",
         sender: sender,
@@ -119,17 +125,17 @@ const processPayment = async (req) => {
     };
     return res;
 };
-
+ 
 // fetch user's card details
 async function fetchCard(userEmail){
     try{
         const user = await userModel.findOne({email: userEmail});
-
+ 
         if(!user || user.errors){
             console.log("user not found or error fetching card");
             return {};
         }
-
+ 
         const cardDetails = user.creditCardDetails;
         return cardDetails;
     } catch(error){
@@ -137,8 +143,8 @@ async function fetchCard(userEmail){
         return {};
     }
 }
-
-
+ 
+ 
 // get the balance from the database
 async function checkBalance(card, amount){
     const balance = await fetchCardBalance(card);
@@ -148,5 +154,5 @@ async function checkBalance(card, amount){
     }
     return true;
 }
-
+ 
 module.exports = {processPayment};
