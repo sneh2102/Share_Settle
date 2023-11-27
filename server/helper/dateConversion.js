@@ -32,10 +32,8 @@ function getDate(timeUnits, unit){
  
 function isValidUnit(unit){
     let units = ["minute", "minutes", "day", "days", "week", "weeks", "month", "months", "year", "years"];
-    if(units.includes(unit)){
-        return true;
-    }
-    return false;
+    
+    return units.includes(unit);
 }
 
 // get days based on the unit and value
