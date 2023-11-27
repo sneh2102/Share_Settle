@@ -17,7 +17,7 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
         console.log("Date:  ",date);
         const job = schedule.scheduleJob(date, async function(){
         console.log("settlement job started");
-        groupObj = await group.findById(groupId);
+        const groupObj = await group.findById(groupId);
 
         // no group present
         if(!groupObj){
@@ -38,13 +38,13 @@ const jobForSettlement = async (settlementPeriod, groupId) => {
         }
         
         // split the expenses among the members
-        settlementAmountArray = split(groupObj.groupExpensesList[0]);
+       let settlementAmountArray = split(groupObj.groupExpensesList[0]);
         
         // payment processing and settlement between members
         settlementAmountArray.forEach(async function(settlementInfo){
 
             const action = "settlement";
-            let status = "successful";
+            let status ;
 
             const senderEmail = settlementInfo[0];
             const receiverEmail = settlementInfo[1];

@@ -49,14 +49,13 @@ const signupUser = async (req, res) => {
 }
 
 const resetPassUser = async (req, res) => {
-  const { id, token } = req.params;
+  const { id } = req.params;
 
   const { password } = req.body;
   try {
        
   const user = await User.resetpass(id, password);
     
-    const newToken = createToken(user._id);
     const param =
     {
       email: user.email, 
