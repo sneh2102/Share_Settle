@@ -1,7 +1,7 @@
 const Group = require('../Models/groupModel');
 
 const makeSettlement = async(req) =>{
-    res = {};
+    let res = {};
     try{
         const group = await Group.findOne({
             _id: req.body.id

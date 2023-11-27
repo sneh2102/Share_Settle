@@ -25,7 +25,7 @@ describe('processPayment', () => {
 
   // Test case 1: Successful payment
   it('should process payment successfully', async () => {
-    cardDetails = createMockCardDetails(
+    let cardDetails = createMockCardDetails(
       '1234567890123456', 
       'John Doe', 
       "2025-01-01", 
