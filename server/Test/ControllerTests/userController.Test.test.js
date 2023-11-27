@@ -1,6 +1,4 @@
-const request = require('supertest');
-const app = require('../../index'); 
-const nodemailer = require('nodemailer');
+
 
 // Mock dependencies
 jest.mock('../../Models/userModel');

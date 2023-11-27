@@ -9,7 +9,7 @@ import { useResetPassword } from '../../Hooks/useResetPassword';
 import { toast } from 'react-toastify';
 
 export default function Login() {
-  const isSignUpActiveRef = useRef(false); 
+  const [isSignUpActive,setIsSignInActive]=useState(false)
   const [LogInEmail,setLogInEmail]=useState("");
   const [LogInPassword, setLogInPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -26,7 +26,7 @@ export default function Login() {
 
   const handleToggle = () => {
 
-    isSignUpActiveRef.current = !isSignUpActiveRef.current;
+    setIsSignInActive(!isSignUpActive);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();

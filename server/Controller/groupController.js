@@ -13,9 +13,14 @@ const createGroup = async (req, res) => {
     const {jobForSettlement, jobForEmailNotification}=scheduler;
     const {getNumberOfDays}=dateConversion;
     
+    const condition=()=>{
+       const result = !req.body ||!req.body.name || !req.body.members || !req.body.settlePeriod
+       return result;
+    }
+
     let responseStatus = 200;
     let response = {};
-    if(!req.body ||!req.body.name || !req.body.members || !req.body.settlePeriod){
+    if(condition){
         responseStatus = 404;
         response = { 
             errorMessage: "Invalid request body"
@@ -41,7 +46,6 @@ const createGroup = async (req, res) => {
 
             // scheduler for settlement
             jobForSettlement(savedGroup.settlePeriod, savedGroup._id);
-            const action = 'groupCreation';
 
             // get the number of days for scheduler reminder notification
             let parts = savedGroup.settlePeriod.split(" ");
