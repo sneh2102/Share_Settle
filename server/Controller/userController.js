@@ -1,16 +1,33 @@
+/**
+ * User Controller:
+ * This controller handles various operations related to users, such as user authentication,
+ * password reset, profile updates, and adding card details.
+ * It interacts with the User model and other helper functions.
+ */
+
+// Importing required modules and models.
 const User = require('../Models/userModel')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer');
 const notificationHandler = require('../helper/NotificationHandler');
 const { toast } = require('react-toastify');
 
-
-
-
+/**
+ * createToken Function:
+ * Creates a JSON Web Token (JWT) for a user's _id.
+ * @param {string} _id - The user's _id.
+ * @returns {string} - The generated JWT.
+ */
 const createToken = (_id) =>{
    return jwt.sign({_id}, process.env.JWTTOKEN, {expiresIn: '3d'})
 }
 
+/**
+ * loginUser Function:
+ * Authenticates a user and generates a JWT.
+ * @param {Object} req - The Express request object containing the user's email and password.
+ * @param {Object} res - The Express response object to send the authentication status and JWT.
+ */
 const loginUser = async (req, res) => {
     const {email, password} = req.body
     try{
@@ -23,6 +40,12 @@ const loginUser = async (req, res) => {
     }
 }
 
+/**
+ * signupUser Function:
+ * Creates a new user account and sends a notification.
+ * @param {Object} req - The Express request object containing the user's name, email, and password.
+ * @param {Object} res - The Express response object to send the account creation status and JWT.
+ */
 const signupUser = async (req, res) => {
     const {name, email, password} = req.body
     try{
@@ -37,6 +60,12 @@ const signupUser = async (req, res) => {
     }
 }
 
+/**
+ * resetPassUser Function:
+ * Resets the user's password and sends a notification.
+ * @param {Object} req - The Express request object containing the user's id, token, and new password.
+ * @param {Object} res - The Express response object to send the password reset status and new JWT.
+ */
 const resetPassUser = async (req, res) => {
   const { id, token } = req.params;
 
@@ -63,7 +92,12 @@ const resetPassUser = async (req, res) => {
   }
 };
 
-
+/**
+ * forgotPassUser Function:
+ * Sends a password reset link to the user's email.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the password reset status.
+ */
 const forgotPassUser = async (req, res) => {
     const {email} = req.body
     try{
@@ -103,6 +137,12 @@ const forgotPassUser = async (req, res) => {
     } 
 }
 
+/**
+ * changeUsername Function:
+ * Changes the user's username and sends a notification.
+ * @param {Object} req - The Express request object containing the user's id and new username.
+ * @param {Object} res - The Express response object to send the username change status and new JWT.
+ */
 const changeUsername = async (req, res) => {
   const { id, name } = req.body;
   try {
@@ -118,8 +158,12 @@ const changeUsername = async (req, res) => {
   }
 };
 
-
-
+/**
+ * changePassword Function:
+ * Changes the user's password and sends a notification.
+ * @param {Object} req - The Express request object containing the user's email, old and new passwords.
+ * @param {Object} res - The Express response object to send the password change status.
+ */
 const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, newConfirmPassword} = req.body;
   try {
@@ -138,6 +182,12 @@ const changePassword = async (req, res) => {
   }
 }
 
+/**
+ * getUser Function:
+ * Retrieves the user details.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object to send the user details.
+ */
   const getUser = async (req,res) => {
     try {
       const user = await User.getUser();
@@ -146,6 +196,13 @@ const changePassword = async (req, res) => {
     }
   
 };
+
+/**
+ * addCardDetailsToUser Function:
+ * Adds card details to the user's profile.
+ * @param {Object} req - The Express request object containing the user's id and card details.
+ * @param {Object} res - The Express response object to send the status of adding card details.
+ */
 const addCardDetailsToUser = async (req, res) => {
   const { id,cardNumber, cardHolderName, expiryDate, cvv } = req.body;
 
@@ -174,6 +231,5 @@ const addCardDetailsToUser = async (req, res) => {
   }
 };
 
-
-
+// Exporting the user-related functions.
 module.exports = { signupUser, loginUser ,forgotPassUser, resetPassUser, changeUsername, changePassword, getUser, addCardDetailsToUser}

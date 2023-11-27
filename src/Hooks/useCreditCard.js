@@ -1,7 +1,22 @@
+/**
+ * useCreditCard Module:
+ * This module provides a custom hook for handling credit card-related functionality.
+ * It includes a function to add credit card details to the server.
+ */
 
-
+// Defining the useCreditCard custom hook.
 export const useCreditCard = () => {
  
+    /**
+   * addCard Function:
+   * Sends a POST request to the server to add credit card details.
+   * @param {string} id - The user ID associated with the credit card.
+   * @param {string} cardNumber - The credit card number.
+   * @param {string} cardHolderName - The name of the cardholder.
+   * @param {string} expiryDate - The expiry date of the credit card.
+   * @param {string} cvv - The CVV (Card Verification Value) of the credit card.
+   * @returns {Promise} - A promise that resolves to the groups data if successful, or rejects with an error.
+   */
     const addCard = async (id,cardNumber,
         cardHolderName,
         expiryDate,
@@ -24,6 +39,8 @@ export const useCreditCard = () => {
           }
           
     }
+
+    // Returning the addCard function within an object.
     return{
         addCard
     }

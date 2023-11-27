@@ -1,3 +1,11 @@
+/**
+ * Group Controller:
+ * This controller handles various operations related to groups, such as creating a new group,
+ * fetching groups of a user, adding and clearing expenses, and handling settlements.
+ * It interacts with the Group model and other helper functions.
+ */
+
+// Importing required modules and models.
 const Group = require("../Models/groupModel");
 const Expense = require("../Models/expenseModel")
 const User = require("../Models/userModel")
@@ -5,7 +13,12 @@ const notificationHandler = require('../helper/NotificationHandler')
 const splitCalculator = require('../helper/spliting')
 const RemoveFromExpense = require('../helper/RemoveFromExpenses')
 
-// create a new group
+/**
+ * createGroup Function:
+ * Creates a new group and sends notifications to group members.
+ * @param {Object} req - The Express request object containing the group details.
+ * @param {Object} res - The Express response object to send the status of the operation.
+ */
 const createGroup = async (req, res) => {
     console.log(req.body);
     var responseStatus = 200;
@@ -56,7 +69,12 @@ const createGroup = async (req, res) => {
     res.status(responseStatus).send(response);
 };
 
-// fetch all groups of a user by user email
+/**
+ * fetchUserGroups Function:
+ * Fetches all groups of a user by user email.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the retrieved user groups.
+ */
 const fetchUserGroups = async (req, res) => {
     console.log(req.body);
     var responseStatus = 200;
@@ -86,6 +104,12 @@ const fetchUserGroups = async (req, res) => {
     res.status(responseStatus).send(response);
 }
 
+/**
+ * fetchGroup Function:
+ * Fetches details of a specific group by group id.
+ * @param {Object} req - The Express request object containing the group id.
+ * @param {Object} res - The Express response object to send the retrieved group details.
+ */
 const fetchGroup = async (req, res) => {
     const { id } = req.params;
     var responseStatus = 200;
@@ -108,7 +132,15 @@ const fetchGroup = async (req, res) => {
     res.status(responseStatus).send(response);
 }
 
-
+/**
+ * clearExpenseList Function:
+ * Clears the expense list for a group after an expense is deleted.
+ * @param {string} groupId - The group id.
+ * @param {number} amount - The amount of the deleted expense.
+ * @param {string} ownerOfExpense - The owner of the deleted expense.
+ * @param {Array} involved - The list of members involved in the deleted expense.
+ * @returns {Object} - The updated group after clearing the expense list.
+ */
 const clearExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     var group = await Group.findOne({
         _id: groupId
@@ -135,7 +167,15 @@ const clearExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     }, group)
 }
 
-
+/**
+ * addExpenseList Function:
+ * Adds the expense to the group's expense list.
+ * @param {string} groupId - The group id.
+ * @param {number} amount - The amount of the new expense.
+ * @param {string} ownerOfExpense - The owner of the new expense.
+ * @param {Array} involved - The list of members involved in the new expense.
+ * @returns {Object} - The updated group after adding the expense to the list.
+ */
 const addExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     var group = await Group.findOne({
         _id: groupId
@@ -162,6 +202,12 @@ const addExpenseList = async (groupId, amount, ownerOfExpense, involved) => {
     }, group)
 }
 
+/**
+ * groupBalanceSheet Function:
+ * Retrieves the group balance sheet, indicating how much each member owes or is owed.
+ * @param {Object} req - The Express request object containing the group id.
+ * @param {Object} res - The Express response object to send the group balance sheet.
+ */
 const groupBalanceSheet = async(req, res) =>{
     try {
         const group = await Group.findOne({
@@ -184,6 +230,12 @@ const groupBalanceSheet = async(req, res) =>{
     }
 }
 
+/**
+ * leaveGroup Function:
+ * Handles the process when a user leaves a group, checking for unsettled expenses.
+ * @param {Object} req - The Express request object containing the user's email and group id.
+ * @param {Object} res - The Express response object to send the status of the operation.
+ */
 const leaveGroup = async (req, res) => {
     try {
       const { email, id } = req.body;
@@ -215,6 +267,13 @@ const leaveGroup = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+
+/**
+ * makeSettlement Function:
+ * Handles the settlement process within a group.
+ * @param {Object} req - The Express request object containing the settlement details.
+ * @param {Object} res - The Express response object to send the status of the settlement.
+ */
   const makeSettlement = async(req, res) =>{
     try{
         
@@ -248,6 +307,5 @@ const leaveGroup = async (req, res) => {
     }
 }
  
-  
-
+// Exporting the group-related functions.
 module.exports = {createGroup, fetchUserGroups, fetchGroup, addExpenseList,clearExpenseList, groupBalanceSheet, leaveGroup, makeSettlement};

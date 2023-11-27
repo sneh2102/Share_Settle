@@ -1,7 +1,21 @@
+/**
+ * ExpenseCard Component:
+ * This component represents a card displaying information about an expense.
+ * It takes 'expense' and 'onClick' as props to display and handle click events.
+ */
+
 import React from 'react';
 import { Card, CardContent, Chip, Typography } from '@mui/material';
 
+/**
+ * ExpenseCard Functional Component:
+ * @param {Object} props - The props for this component.
+ *   @property {Object} expense - An object containing details of the expense.
+ *   @property {function} onClick - A callback function to handle click events on the card.
+ */
+
 const ExpenseCard = ({ expense, onClick }) => {
+  // Destructuring expense object for easier access to its properties.
   const {
     name,
     amount,
@@ -9,6 +23,7 @@ const ExpenseCard = ({ expense, onClick }) => {
     expenseDistribution,
   } = expense;
 
+  // Styling for the card component.
   const cardStyle = {
     maxWidth: 200,
     margin: '8px',
@@ -16,7 +31,13 @@ const ExpenseCard = ({ expense, onClick }) => {
     
   };
 
+  /**
+   * Render Method:
+   * Renders the JSX structure of the ExpenseCard component.
+   * @returns {JSX.Element} - The JSX structure representing the ExpenseCard.
+   */
   return (
+    // Card component with styles and click event handler.
     <Card style={cardStyle} onClick={() => onClick(expense)}>
       <CardContent>
         <Typography variant="h6">{name}</Typography>
@@ -28,4 +49,5 @@ const ExpenseCard = ({ expense, onClick }) => {
   );
 };
 
+// Exporting the ExpenseCard component as the default export.
 export default ExpenseCard;

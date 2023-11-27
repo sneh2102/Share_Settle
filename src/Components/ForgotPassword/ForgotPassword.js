@@ -1,3 +1,9 @@
+/**
+ * ForgotPassword Component:
+ * This component represents the UI for the "Forgot Password" feature.
+ * It provides a form to enter the user's email for password recovery.
+ * Utilizes the useForgotPass custom hook for handling the password recovery logic.
+ */
 import React, { useState } from 'react'
 import './forgotpassword.css'
 import { useForgotPass } from '../../Hooks/useFargotPass'
@@ -7,16 +13,23 @@ const ForgotPassword = () => {
 const {forgotPass} = useForgotPass();
 const [email,setemail]=useState();
 const navigate = useNavigate();
+
+/**
+ * handleForgetPassword Method:
+ * Handles the submission of the forgot password form.
+ * Attempts to trigger the forgot password functionality using the entered email.
+ * On success, navigates the user to the home page ("/").
+ * @param {Event} e - The form submission event.
+ */
 const handleForgetPassword = (e) => {
     try{
       forgotPass(email);
       navigate("/")
         
     } catch(err){
-     
     }
 }
-
+  // Rendering the UI for the "Forgot Password" feature.
   return (
     <div className='lcontainer'>
     <div className='fcontainer'>
@@ -35,4 +48,5 @@ const handleForgetPassword = (e) => {
   )
 }
 
+// Exporting the ForgotPassword component as the default export.
 export default ForgotPassword

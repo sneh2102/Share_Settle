@@ -1,3 +1,8 @@
+/**
+ * ResetPassword Component:
+ * This component allows users to reset their password by providing a new password and confirming it.
+ * Utilizes the useResetPassword custom hook for handling the password reset logic.
+ */
 import React, {useState} from 'react'
 import { useResetPassword } from '../../Hooks/useResetPassword'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +16,15 @@ const [cpass,setcpass]=useState();
 const [error,setError]=useState();
 const navigate = useNavigate();
 const {resetPass}=useResetPassword();
+
+/**
+   * handleResetPassword Method:
+   * Handles the submission of the reset password form.
+   * Validates that the entered passwords match before initiating the password reset process.
+   * If passwords match, triggers the reset password functionality and navigates the user to the home page ("/").
+   * If passwords don't match, sets an error message.
+   * @param {Event} e - The form submission event.
+   */
 const handleResetPassword = async (e) => {
     e.preventDefault()
     if(pass==cpass)
@@ -26,9 +40,11 @@ const handleResetPassword = async (e) => {
 
     }
     else{
+        // Setting an error message if the entered passwords don't match.
         setError("Password does't Match")
     }
 }
+  // Rendering the UI for the "Reset Password" feature.
   return (
     <div>
       <div className='lcontainer'>
@@ -51,4 +67,5 @@ const handleResetPassword = async (e) => {
   )
 }
 
+// Exporting the ResetPassword component as the default export.
 export default ResetPassword

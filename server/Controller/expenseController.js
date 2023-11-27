@@ -1,8 +1,20 @@
+/**
+ * Expense Controller:
+ * This controller handles various operations related to expenses, such as adding, deleting, and viewing expenses.
+ * It interacts with the Expense model and the Group controller for updating group expenses.
+ */
+
+// Importing required modules and models.
 const Group = require('../Controller/groupController');
 const GroupModal=require('../Models/groupModel')
 const Expense = require('../Models/expenseModel');
 
-
+/**
+ * addExpense Function:
+ * Adds a new expense to the system and updates the group's expense list.
+ * @param {Object} req - The Express request object containing the expense details.
+ * @param {Object} res - The Express response object to send the status of the operation.
+ */
 const addExpense = async (req, res) => {
     try {
         var expense = req.body;
@@ -42,6 +54,12 @@ const addExpense = async (req, res) => {
     }
 };
 
+/**
+ * deleteExpense Function:
+ * Deletes an existing expense and updates the group's expense list accordingly.
+ * @param {Object} req - The Express request object containing the expense id.
+ * @param {Object} res - The Express response object to send the status of the operation.
+ */
 const deleteExpense = async (req, res) => {
     try {
         var expense = await Expense.findOne({
@@ -71,6 +89,12 @@ const deleteExpense = async (req, res) => {
     }
 }
 
+/**
+ * viewGroupExpense Function:
+ * Retrieves expenses for a specific group and calculates the total amount.
+ * @param {Object} req - The Express request object containing the group id.
+ * @param {Object} res - The Express response object to send the retrieved expenses.
+ */
 const viewGroupExpense = async (req, res) => {
     try {
         var groupExpense = await Expense.find({
@@ -99,6 +123,12 @@ const viewGroupExpense = async (req, res) => {
     }
 }
 
+/**
+ * viewUserExpense Function:
+ * Retrieves expenses for a specific user and calculates the total amount.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the retrieved expenses.
+ */
 const viewUserExpense = async (req, res) => {
     try {
         const userExpense = await Expense.find({
@@ -125,6 +155,13 @@ const viewUserExpense = async (req, res) => {
         })
     }
 }
+
+/**
+ * viewUserGroupExpense Function:
+ * Retrieves expenses for a specific user within a group and calculates the total amount.
+ * @param {Object} req - The Express request object containing the user's email and group id.
+ * @param {Object} res - The Express response object to send the retrieved expenses.
+ */
 const viewUserGroupExpense = async (req, res) => {
     console.log(req.body);
     try {
@@ -154,6 +191,13 @@ const viewUserGroupExpense = async (req, res) => {
         })
     }
 }
+
+/**
+ * viewExpense Function:
+ * Retrieves details of a specific expense.
+ * @param {Object} req - The Express request object containing the expense id.
+ * @param {Object} res - The Express response object to send the retrieved expense details.
+ */
 const viewExpense = async (req, res) => {
     try {
         var expense = await Expense.findOne({
@@ -176,6 +220,12 @@ const viewExpense = async (req, res) => {
     }
 }
 
+/**
+ * categoryExpense Function:
+ * Retrieves and aggregates expenses based on categories for a specific group.
+ * @param {Object} req - The Express request object containing the group id.
+ * @param {Object} res - The Express response object to send the retrieved category-wise expenses.
+ */
 const categoryExpense = async (req, res) => {
     try {
         var categoryExpense = await Expense.aggregate([{
@@ -205,6 +255,12 @@ const categoryExpense = async (req, res) => {
     }
 }                           
 
+/**
+ * monthlyExpense Function:
+ * Retrieves and aggregates expenses based on months for a specific group.
+ * @param {Object} req - The Express request object containing the group id.
+ * @param {Object} res - The Express response object to send the retrieved monthly expenses.
+ */
 const monthlyExpense = async (req, res) => {
     try {
         var monthlyExpense = await Expense.aggregate([{
@@ -241,6 +297,12 @@ const monthlyExpense = async (req, res) => {
     }
 }
 
+/**
+ * userCategoryExpense Function:
+ * Retrieves and aggregates expenses based on categories for a specific user.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the retrieved category-wise expenses.
+ */
 const userCategoryExpense = async (req, res) => {
     try {
         var categoryExpense = await Expense.aggregate([
@@ -285,8 +347,12 @@ const userCategoryExpense = async (req, res) => {
     }
 };
 
-
-
+/**
+ * userMonthlyExpense Function:
+ * Retrieves and aggregates expenses based on months for a specific user.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the retrieved monthly expenses.
+ */
 const userMonthlyExpense = async (req, res) => {
     try {
         var monthlyExpense = await Expense.aggregate([{
@@ -322,6 +388,12 @@ const userMonthlyExpense = async (req, res) => {
     }
 }
 
+/**
+ * recentUserExpenses Function:
+ * Retrieves the most recent expenses for a specific user.
+ * @param {Object} req - The Express request object containing the user's email.
+ * @param {Object} res - The Express response object to send the retrieved expenses.
+ */
 const recentUserExpenses = async (req, res) => {
     try {
         var recentExpense = await Expense.find({
@@ -342,7 +414,5 @@ const recentUserExpenses = async (req, res) => {
     }
 }
 
-
-
-
+// Exporting the expense-related functions.
 module.exports = { addExpense, deleteExpense, viewGroupExpense, viewUserExpense , viewExpense, viewUserGroupExpense, categoryExpense, monthlyExpense, userCategoryExpense, userMonthlyExpense, recentUserExpenses};

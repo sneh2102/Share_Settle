@@ -4,18 +4,24 @@ import useLogout from '../../Hooks/useLogout';
 import './Navbar.css';
 
 function Navbar() {
+  // State to manage the collapsed/expanded state of the sidebar
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  // Custom hook to handle user logout
   const { logout } = useLogout();
 
+  // Function to handle user logout
   const handleLogout = () => {
     logout();
   };
 
+  // Function to toggle the collapsed/expanded state of the sidebar
   const toggleNavbar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   useEffect(() => {
+    // Function to handle window resize and automatically collapse the sidebar when the window width is less than 768 pixels
     const handleResize = () => {
       // Automatically collapse the sidebar when the window width is less than 768 pixels
       setIsCollapsed(window.innerWidth < 768);
@@ -31,8 +37,13 @@ function Navbar() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, []); // Empty dependency array to ensure the effect runs only on mount and unmount
 
+  /**
+   * Render Method:
+   * Renders the JSX structure of the Navbar component.
+   * @returns {JSX.Element} - The JSX structure representing the Navbar.
+   */
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
 
@@ -92,4 +103,5 @@ function Navbar() {
   );
 }
 
+// Exporting the Navbar component as the default export.
 export default Navbar;
