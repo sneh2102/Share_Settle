@@ -1,0 +1,53 @@
+#purple-header{
+  background-color: #9C27B0;
+}
+
+.user-details{
+  font-family: 'Nunito', sans-serif;
+}
+
+#userName{
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+#userEmail{
+  margin-top: 1px;
+}
+
+#reset-buttons{
+  border: 2px solid #9C27B0;
+}
+
+#reset-buttons:hover{
+  /* background-color: #316A9E; */
+  background-color: #9C27B0;
+  color: white;
+}
+
+#resetPass-container{
+  border: 2px solid #9C27B0;
+  margin-top: 30px;
+}
+
+#resetPass-container:hover{
+  background-color: #9C27B0;
+  color: white;
+}
+
+.user-field-input{
+  margin-top: 10px;
+  padding: 8px; 
+  margin-bottom: 5px; 
+  border-radius: 4px; 
+  border: 1px solid #ccc;
+  font-family: 'Nunito', sans-serif;
+  /* display: block; */
+}
+
+#newPass-field{
+  display: block;
+}
+
+#small-submit-btn-margin{
+  margin-left: 15px;
+}

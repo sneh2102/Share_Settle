@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+
+.small-submit-buttons{
+    padding: 10px; 
+    background-color: #4682A9; 
+    color: white; 
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .small-submit-buttons:hover{
+    background-color: #316A9E;
+  }
+
+.submit-create-button {
+    width: 100%;
+    padding: 10px; 
+    background-color: #4682A9; 
+    color: white; 
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+}
+
+.submit-create-button:hover{
+    background-color: #316A9E;
+}
+
+.field-input{
+    width: 100%;
+    padding: 8px; 
+    margin-bottom: 15px; 
+    border-radius: 4px; 
+    border: 1px solid #ccc;
+    font-family: 'Nunito', sans-serif;
+}
+
+.page-layout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.page-layout-card {
+    background-color: #ffffff; 
+    border-radius: 18px;
+    max-width: 100%;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-left: 200px;
+    margin-top: 10px;
+}
+
+.page-layout-fields{
+    padding: 30px;
+    font-weight:10;
+    font-family: 'Nunito', sans-serif;
+    color: #333;
+}
+
+.page-layout-header {   
+    color: white;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+}
+  
+.page-layout-header h2 {
+    font-family: 'Montserrat', sans-serif; 
+    font-weight: 500;
+}
+
+.bordered-btn{
+    padding: 8px;
+    background-color: white;
+    transition-duration: 0.4s;
+    color: #333; 
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .page-layout-container {
+        padding-left: 10px; 
+        padding-right: 10px;
+    }
+    .page-layout-header{
+      font-size: 15px;
+    }
+    .page-layout-card{
+      margin: auto;
+    }
+}

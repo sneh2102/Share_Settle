@@ -1,0 +1,48 @@
+.card-list{
+  display: flex;
+  width: 80%;
+  margin-left: 350px;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin: 1.5em;
+  display: inline-block;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 4px 10px 0px rgba(34, 34, 34, 0.32);
+  color: #444;
+  width:200px;
+  height: 250px;
+  user-select: none;
+  text-align: left;
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.custom-icon{
+  text-align: center;
+  padding: 40px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 60px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: white;
+}
+
+.card-title{
+  font-family: 'Montserrat', sans-serif; 
+  font-size: 24px;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.settlement-period{
+  font-weight:10;
+  font-family: 'Nunito', sans-serif;
+  color: #333;
+  text-align: center;
+}

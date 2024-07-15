@@ -1,0 +1,33 @@
+stages:
+  - test
+  - build
+
+test:
+  image: node:14
+  stage: test
+  script:
+    - cd server
+    - npm install
+    - npx jest
+
+# Frontend build job
+build_frontend:
+  image: node:18.18.0
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+build_backend:
+  image: node:18.18.0
+  stage: build
+  script:
+    - cd server
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - server/
